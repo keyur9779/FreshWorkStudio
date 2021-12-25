@@ -1,7 +1,7 @@
 package com.app.freshworkstudio.model
 
 data class GiphyResponseModel(
-    val data: List<Data>,
-    val meta: Meta,
-    val pagination: Pagination
+    var data: List<GifData>? = null,
+    var meta: Meta? = null,
+    var pagination: Pagination? = null,
 )

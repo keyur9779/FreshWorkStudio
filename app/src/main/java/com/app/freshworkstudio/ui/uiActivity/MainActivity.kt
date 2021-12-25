@@ -1,31 +1,28 @@
 package com.app.freshworkstudio.ui.uiActivity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2
+import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivityMainBinding
 import com.app.freshworkstudio.ui.adapter.SectionsPagerAdapter
 import com.app.freshworkstudio.utils.DataUtils.pagerTitleList
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.skydoves.bindables.BindingActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        with(binding) {
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+            viewPager.adapter = SectionsPagerAdapter(supportFragmentManager, lifecycle)
+            TabLayoutMediator(tabs, viewPager) { tab, position ->
+                tab.text = pagerTitleList[position]
+            }.attach()
+        }
 
-        val sectionsPagerAdapter = SectionsPagerAdapter( supportFragmentManager, lifecycle)
-        val viewPager: ViewPager2 = binding.viewPager
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = binding.tabs
-        TabLayoutMediator(tabs, viewPager) { tab, position ->
-            tab.text = pagerTitleList[position]
-        }.attach()
 
     }
 }

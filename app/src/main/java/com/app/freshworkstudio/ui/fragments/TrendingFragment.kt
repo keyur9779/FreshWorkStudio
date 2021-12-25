@@ -4,35 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.FragmentMainBinding
+import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
+import com.skydoves.bindables.BindingFragment
 
 /**
  * A trending fragment containing a recyclerview to load all gif.
  */
-class TrendingFragment : Fragment() {
+class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
-    private lateinit var trendingViewModel: TrendingViewModel
-    private var _binding: FragmentMainBinding? = null
+    private val trendingViewModel: TrendingViewModel by viewModels()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        trendingViewModel = ViewModelProvider(this).get(TrendingViewModel::class.java)
-    }
+    private val gifListAdapter: GifListAdapter by lazy { GifListAdapter() }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+        return binding {
+            adapter = gifListAdapter
+            viewModel = trendingViewModel
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,8 +57,5 @@ class TrendingFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

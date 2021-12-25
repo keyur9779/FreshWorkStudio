@@ -11,6 +11,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 object RepositoryModule {
+
     @Provides
     @ViewModelScoped
     fun provideGiphyTrendingRepository(

@@ -7,11 +7,30 @@ import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
 
 class GiphyTrendingRepository constructor(
     private val giphyService: GiphyApiService
 ) {
 
+
+    @WorkerThread
+    fun loadTrendingGif(page: Int, success: () -> Unit) = flow {
+
+        kotlinx.coroutines.delay(5000)
+        Log.d("keyur", "fit1  and  page $page")
+
+        val response = giphyService.fetchTrendingGif("id", 20,page)
+        response.suspendOnSuccess {
+
+            emit(data)
+            /*emit(Results.Success(data.results))
+
+            val dataString = Gson().toJson(data)
+
+            fileMovieDao.insertMovieByPage(FilmMovies(null, page, id, dataString))*/
+        }
+    }.onCompletion { success() }.flowOn(Dispatchers.IO)
 
     @WorkerThread
     fun loadTrendingGif(page: Int = 0) = flow {

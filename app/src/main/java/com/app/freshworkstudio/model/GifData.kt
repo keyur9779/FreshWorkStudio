@@ -1,6 +1,6 @@
 package com.app.freshworkstudio.model
 
-data class Data(
+data class GifData(
     val bitly_gif_url: String,
     val bitly_url: String,
     val content_url: String,
