@@ -19,6 +19,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CircularProgress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorLightRed</item>
+    </style>
     <style name="Theme.FreshWorkStudio.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.FreshWorkStudio.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

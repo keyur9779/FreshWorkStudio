@@ -1,13 +1,18 @@
 package com.app.freshworkstudio.utils.binding
 
 import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 
@@ -24,22 +29,46 @@ object ViewBinding {
     }
 
     @JvmStatic
-    @BindingAdapter("loadGif")
-    fun loadGif(itemView: AppCompatImageView, url: String) {
+    @BindingAdapter("loadGif", "progressGif")
+    fun loadGif(itemView: AppCompatImageView, url: String, progress: ProgressBar) {
 
-        val circularProgressDrawable = CircularProgressDrawable(itemView.context)
+        /*val circularProgressDrawable = CircularProgressDrawable(itemView.context)
         circularProgressDrawable.strokeWidth = 5f
         circularProgressDrawable.centerRadius = 30f
 
-        circularProgressDrawable.start()
+        circularProgressDrawable.start()*/
+        progress.visibility = View.VISIBLE
         Glide.with(itemView.context)
             .asGif()
             .load(url)
+            .listener(object : RequestListener<GifDrawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress.visibility = View.GONE
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: GifDrawable?,
+                    model: Any?,
+                    target: Target<GifDrawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    progress.visibility = View.GONE
+                    return false
+                }
+
+
+            })
             .apply(
                 RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     //.placeholder(ColorDrawable(ColoredPlaceholderGenerator.generate(itemView.context)))
-                    .placeholder(circularProgressDrawable)
                     .centerCrop()
             )
             .transition(DrawableTransitionOptions.withCrossFade(250))

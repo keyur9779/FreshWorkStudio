@@ -23,4 +23,9 @@
     <color name="colorLightPurple">#892EE5</color>
     <color name="colorLightGreen">#00E589</color>
     <color name="colorLightRed">#E55C5C</color>
+
+
+    <color name="colorWhiteBack">#F3F3F3</color>
+    <color name="placeholder_grey">#AAADC4</color>
+    <color name="placeholder_grey_20">#33AAADC4</color>
 </resources>

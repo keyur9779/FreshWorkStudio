@@ -10,13 +10,15 @@ import com.app.freshworkstudio.databinding.FragmentMainBinding
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.skydoves.bindables.BindingFragment
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A trending fragment containing a recyclerview to load all gif.
  */
+@AndroidEntryPoint
 class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
-    private val trendingViewModel: TrendingViewModel by viewModels()
+    private val vm: TrendingViewModel by viewModels()
 
     private val gifListAdapter: GifListAdapter by lazy { GifListAdapter() }
 
@@ -28,7 +30,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
         super.onCreateView(inflater, container, savedInstanceState)
         return binding {
             adapter = gifListAdapter
-            viewModel = trendingViewModel
+            viewModel = vm
         }.root
     }
 
@@ -49,11 +51,11 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
          */
         @JvmStatic
         fun newInstance(sectionNumber: Int): TrendingFragment {
-            return TrendingFragment().apply {
+            return TrendingFragment()/*.apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
                 }
-            }
+            }*/
         }
     }
 

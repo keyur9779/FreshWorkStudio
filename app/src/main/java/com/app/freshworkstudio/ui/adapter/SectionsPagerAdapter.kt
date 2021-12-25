@@ -16,7 +16,7 @@ class SectionsPagerAdapter(
     lifecycle: Lifecycle
 ) :
     FragmentStateAdapter(fm, lifecycle) {
-    override fun getItemCount() = 2
+    override fun getItemCount() = 1
 
     override fun createFragment(position: Int): Fragment {
         return TrendingFragment.newInstance(position)
