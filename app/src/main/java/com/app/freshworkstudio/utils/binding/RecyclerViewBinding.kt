@@ -41,11 +41,11 @@ object RecyclerViewBinding {
                     viewModel.possibleTotalPage = modelData.pagination!!.total_count / pageCount
 
                     // make clear when search is done
-                    if (viewModel.searchQuery.isNotEmpty() && (viewModel.lastPageNumber == item || viewModel.lastPageNumber == loading)) {
+                    if (viewModel.searchQuery.isNotEmpty() && (viewModel.lastPageNumber == item /*|| viewModel.lastPageNumber == loading*/)) {
                         adapter?.clear()
                     }
                     // make clear when search is removed
-                    if (viewModel.searchQuery.isEmpty() && (viewModel.lastPageNumber == item || viewModel.lastPageNumber == loading)) {
+                    if (viewModel.searchQuery.isEmpty() && (viewModel.lastPageNumber == item /*|| viewModel.lastPageNumber == loading*/)) {
                         adapter?.clear()
                     }
                     adapter?.addGif(modelData.data)
@@ -70,6 +70,8 @@ object RecyclerViewBinding {
     fun paginationGifList(view: RecyclerView, viewModel: TrendingViewModel) {
 
         Log.d("keyur", "paginationMovieList")
+
+        //TODO replace this pagination with our custom one
         RecyclerViewPaginator(
             recyclerView = view,
             isLoading = {
@@ -102,8 +104,8 @@ object RecyclerViewBinding {
             },
             onLast = { viewModel.isLastPage }
         ).run {
-            threshold = 4
-            currentPage = 0
+            threshold = 1
+            currentPage = 1
         }
     }
 
