@@ -1,11 +1,12 @@
 package com.app.freshworkstudio.data.repository
 
 import androidx.annotation.WorkerThread
+import com.app.freshworkstudio.BuildConfig
+import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.data.api.service.GiphyApiService
 import com.app.freshworkstudio.data.room.GFavouriteDao
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
-import com.app.freshworkstudio.utils.DataUtils.apiKEY
 import com.app.freshworkstudio.utils.DataUtils.api_key
 import com.app.freshworkstudio.utils.DataUtils.delay
 import com.app.freshworkstudio.utils.DataUtils.item
@@ -51,7 +52,7 @@ class GiphyTrendingRepository constructor(
 
 
         val map = mutableMapOf<String, String>()
-        map[api_key] = apiKEY
+        map[api_key] = API_KEY
         map[limit] = pageCount.toString()
         map[offset] = page.toString()
         val queryPath = if (q.isEmpty()) {

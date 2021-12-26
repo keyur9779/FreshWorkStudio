@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import com.app.freshworkstudio.BuildConfig
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.FragmentMainBinding
 import com.app.freshworkstudio.model.GifData
@@ -90,6 +91,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                 return false
             }
         })
+
 
         val closeButton: View? =
             binding.searchView.findViewById(androidx.appcompat.R.id.search_close_btn)

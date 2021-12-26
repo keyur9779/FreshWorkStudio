@@ -4,7 +4,7 @@ object DataUtils {
 
     const val HOST = "https://api.giphy.com/"
 
-    const val apiKEY = "5RpODkIcun4RcVqdKz0eOaP8ACHT8R8M"
+    /*const val apiKEY = "5RpODkIcun4RcVqdKz0eOaP8ACHT8R8M"*/
 
     val pagerTitleList = arrayListOf<String>("Trending", "Favourite")
 
