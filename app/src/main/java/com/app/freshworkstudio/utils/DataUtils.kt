@@ -2,6 +2,8 @@ package com.app.freshworkstudio.utils
 
 object DataUtils {
 
+    const val landScapSpanCount = 3
+    const val portraitSpanCount = 2
     const val HOST = "https://api.giphy.com/"
 
     /*const val apiKEY = "5RpODkIcun4RcVqdKz0eOaP8ACHT8R8M"*/

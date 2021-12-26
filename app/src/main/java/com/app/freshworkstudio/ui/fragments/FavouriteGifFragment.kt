@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.ui.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +8,13 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.FragmentFavBinding
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifFavListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.FavouriteGifViewModel
+import com.app.freshworkstudio.utils.DataUtils
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +45,20 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
             adapter = gifListAdapter
             viewModel = vm
         }.root
+    }
+
+    /*
+    * when configuration chagnes we should not re create the fragment , just handle the ui changes
+    * */
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        val layoutManager = binding.recyclerView.layoutManager as GridLayoutManager
+        layoutManager.spanCount =
+            if (newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
+                DataUtils.landScapSpanCount
+            } else {
+                DataUtils.portraitSpanCount
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
