@@ -19,6 +19,8 @@ import javax.inject.Inject
 /**
  * class is used to fetch and save data related to trending and searched gif.
  *
+ * Note: BindingViewModel - base view model class derived from skydoves-bindables library which makes easier to maintain the view model
+ *
  * @param giphyTrendingRepository = repository class of model, used to fetch data from network or room based on call stack
  * */
 @HiltViewModel

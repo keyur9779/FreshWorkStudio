@@ -77,11 +77,11 @@ class GifListAdapter(
         val previousItemSize = items.size
         items.addAll(gifs)
         val newSize = items.size
-        if (newSize == pageCount) {
+        /*if (newSize == pageCount) {
             notifyDataSetChanged()
-        } else {
+        } else {*/
             notifyItemRangeInserted(previousItemSize, newSize)
-        }
+        //}
     }
 
 

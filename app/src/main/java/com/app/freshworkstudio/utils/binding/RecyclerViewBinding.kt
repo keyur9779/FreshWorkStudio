@@ -2,6 +2,7 @@ package com.app.freshworkstudio.utils.binding
 
 import android.util.Log
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.model.GiphyResponseModel
@@ -12,7 +13,6 @@ import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
-import com.skydoves.baserecyclerviewadapter.RecyclerViewPaginator
 import com.skydoves.whatif.whatIfNotNull
 
 object RecyclerViewBinding {
@@ -71,7 +71,50 @@ object RecyclerViewBinding {
 
         Log.d("keyur", "paginationMovieList")
 
-        //TODO replace this pagination with our custom one
+        view.addOnScrollListener(object :
+            PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
+            override fun loadMoreItems() {
+
+                // apply load more logic over here
+                Log.d("keyur", "load more")
+                val itemCount = view.adapter?.itemCount!!
+                if (itemCount > loading) {
+
+                    val ioTask = viewModel.gifList
+                    if (ioTask is IOTaskResult.OnSuccess<*>) {
+                        if (ioTask.data is GiphyResponseModel) {
+                            Log.d("keyur", "new page available now")
+                            if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
+                                viewModel.lastPageNumber += loading
+                                viewModel.loadGifPage(viewModel.lastPageNumber)
+                            } else {
+                                viewModel.isLastPage = true
+                            }
+                        }
+                    } else {
+                        if (FreshWorkApp.isInternetAvailable()) {
+                            Log.d("keyur", "try loading previous page")
+                            viewModel.loadGifPage(viewModel.lastPageNumber.minus(loading))
+                        }
+                    }
+                }
+            }
+
+            override fun getTotalPageCount(): Int {
+                return viewModel.possibleTotalPage
+            }
+
+            override fun isLastPage(): Boolean {
+                return viewModel.isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return viewModel.isLoading
+            }
+        })
+
+
+        /*//TODO replace this pagination with our custom one
         RecyclerViewPaginator(
             recyclerView = view,
             isLoading = {
@@ -106,7 +149,7 @@ object RecyclerViewBinding {
         ).run {
             threshold = 1
             currentPage = 1
-        }
+        }*/
     }
 
 
