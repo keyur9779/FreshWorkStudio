@@ -1,6 +1,7 @@
 package com.app.freshworkstudio.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +53,9 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
     * */
     private fun onAdapterPositionClicked(): (GifData) -> Unit {
         return {
-            vm.insertItem(GifFavourite(null, gifID = it.id, url = it.images.fixed_width.url))
+
+            Log.d("keyur", "inserting item to db ${it.id}")
+            vm.insertItem(GifFavourite(gifID = it.id, url = it.images.fixed_width.url))
         }
 
     }

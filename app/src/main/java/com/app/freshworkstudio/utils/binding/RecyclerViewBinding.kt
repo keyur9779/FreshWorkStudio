@@ -1,22 +1,17 @@
 package com.app.freshworkstudio.utils.binding
 
 import android.util.Log
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.model.GiphyResponseModel
 import com.app.freshworkstudio.model.IOTaskResult
-import com.app.freshworkstudio.model.entity.GifFavourite
-import com.app.freshworkstudio.ui.adapter.GifFavListAdapter
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
-import com.app.freshworkstudio.ui.viewDataModels.FavouriteGifViewModel
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
+import com.skydoves.baserecyclerviewadapter.BaseAdapter
 import com.skydoves.baserecyclerviewadapter.RecyclerViewPaginator
 import com.skydoves.whatif.whatIfNotNull
 
@@ -24,7 +19,7 @@ object RecyclerViewBinding {
 
     @JvmStatic
     @BindingAdapter("adapter")
-    fun bindAdapter(view: RecyclerView, baseAdapter: GifListAdapter) {
+    fun bindAdapter(view: RecyclerView, baseAdapter: BaseAdapter) {
 
         view.adapter = baseAdapter
     }
@@ -41,12 +36,16 @@ object RecyclerViewBinding {
 
             if (ioTask is IOTaskResult.OnSuccess<*>) {
                 if (ioTask.data is GiphyResponseModel) {
-                    val modelData = ioTask.data as GiphyResponseModel
+                    val modelData = ioTask.data
 
                     viewModel.possibleTotalPage = modelData.pagination!!.total_count / pageCount
 
                     // make clear when search is done
-                    if (/*viewModel.searchQuery.isNotEmpty() && (*/viewModel.lastPageNumber == item || viewModel.lastPageNumber == loading)/*)*/ {
+                    if (viewModel.searchQuery.isNotEmpty() && (viewModel.lastPageNumber == item || viewModel.lastPageNumber == loading)) {
+                        adapter?.clear()
+                    }
+                    // make clear when search is removed
+                    if (viewModel.searchQuery.isEmpty() && (viewModel.lastPageNumber == item || viewModel.lastPageNumber == loading)) {
                         adapter?.clear()
                     }
                     adapter?.addGif(modelData.data)
@@ -61,70 +60,6 @@ object RecyclerViewBinding {
                 }
             }
 
-        } ?: kotlin.run {
-            adapter?.showErrorPage("Something went Wrong")
-        }
-    }
-
-    @JvmStatic
-    @BindingAdapter("adapterLocalGifList", "adapterLocalGifModel", "errorFavView")
-    fun bindLocalGifList(
-        view: RecyclerView,
-        gif: List<GifFavourite>,
-        viewModel: FavouriteGifViewModel, errorFavView: AppCompatTextView
-    ) {
-
-        val adapter = (view.adapter as? GifFavListAdapter)
-        gif.whatIfNotNull {
-
-            errorFavView.visibility = if (gif.isEmpty()) {
-                VISIBLE
-            } else {
-                GONE
-            }
-            adapter?.addGif(gif)
-        }
-    }
-
-    @JvmStatic
-    @BindingAdapter("adapterSearchedGifList")
-    fun bindAdapterSearchedGifList(
-        view: RecyclerView,
-        gif: IOTaskResult<*>/*,
-        viewModel: TrendingViewModel*/
-    ) {
-        Log.d("keyur", "bindAdapterSearchedGifList")
-
-        /*if (viewModel.searchQuery.isEmpty()) {
-            return
-        }
-*/
-        val adapter = (view.adapter as? GifListAdapter)
-
-        gif.whatIfNotNull {
-
-            val ioTask = gif as IOTaskResult<Any>
-
-            if (ioTask is IOTaskResult.OnSuccess<*>) {
-
-                /* if (viewModel.lastPageNumber == DataUtils.item) {
-                     adapter?.clear()
-                 }
- */
-
-                if (ioTask.data is GiphyResponseModel) {
-                    val modelData = ioTask.data as GiphyResponseModel
-                    //adapter?.addSearchedGif(modelData.data)
-                }
-                return@whatIfNotNull
-            }
-
-            if (ioTask is IOTaskResult.OnFailed<*>) {
-                if (ioTask.message is String) {
-                    val modelData = ioTask.message
-                    adapter?.showErrorPage("Retry $modelData")
-                }
-            }
         } ?: kotlin.run {
             adapter?.showErrorPage("Something went Wrong")
         }

@@ -16,14 +16,12 @@
 
 package com.app.freshworkstudio.ui.adapter
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ItemGifBinding
 import com.app.freshworkstudio.model.Media
 import com.app.freshworkstudio.model.entity.GifFavourite
-import com.app.freshworkstudio.utils.DataUtils.item
 import com.skydoves.bindables.binding
 
 
@@ -47,39 +45,30 @@ class GifFavListAdapter(
 
     override fun onBindViewHolder(holder: GifFavListViewHolder, position: Int) {
         with(holder.binding) {
+            square.isChecked = true
             media = Media(items[position].url)
         }
     }
 
-    private fun removeLoadingFooter() {
-        notifyItemRemoved(itemCount - item)
-    }
-
     fun addGif(gifs: List<GifFavourite>) {
-        Log.d("keyur", "list came ${gifs.size}")
-
-        val previousItemSize = items.size
+        items.clear()
         items.addAll(gifs)
-
         notifyDataSetChanged()
 
     }
 
     override fun getItemCount(): Int = items.size
-    fun clear() {
-        items.clear()
-        notifyDataSetChanged()
-
-
-    }
 
     inner class GifFavListViewHolder(
         val binding: ItemGifBinding,
         private val onAdapterPositionClicked: (GifFavourite) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.square.setOnClickListener() {
-                onAdapterPositionClicked(items[adapterPosition])
+            binding.square.apply {
+                isChecked = true
+                setOnClickListener() {
+                    onAdapterPositionClicked(items[adapterPosition])
+                }
             }
         }
     }

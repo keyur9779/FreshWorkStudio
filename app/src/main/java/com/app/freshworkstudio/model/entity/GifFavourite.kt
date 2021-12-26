@@ -2,12 +2,13 @@ package com.app.freshworkstudio.model.entity
 
 import android.os.Parcelable
 import androidx.room.Entity
-import kotlinx.parcelize.Parcelize
+import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(primaryKeys = [("id")])
+@Entity()//primaryKeys = [("id")]
 data class GifFavourite(
-    var id: Int? = null,
-    val gifID:String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val gifID: String,
     val url: String
 ) : Parcelable

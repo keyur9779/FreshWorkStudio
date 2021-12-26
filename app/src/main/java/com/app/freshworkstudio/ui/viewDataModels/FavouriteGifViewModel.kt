@@ -1,12 +1,12 @@
 package com.app.freshworkstudio.ui.viewDataModels
 
 import androidx.databinding.Bindable
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.freshworkstudio.data.repository.GiFavouriteRepository
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
 import com.skydoves.bindables.BindingViewModel
-import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import javax.inject.Inject
 /**
  * class is used to fetch and save data related to trending and searched gif.
  *
- * @param giphyTrendingRepository = repository class of model, used to fetch data from network or room based on call stack
+ * @param giFavouriteRepository = repository class of model, used to fetch data from network or room based on call stack
  * */
 @HiltViewModel
 class FavouriteGifViewModel @Inject constructor(private val giFavouriteRepository: GiFavouriteRepository) :
@@ -32,16 +32,15 @@ class FavouriteGifViewModel @Inject constructor(private val giFavouriteRepositor
 
     // gif mutable state flow to fetch data in pagination
     private val localGif: MutableStateFlow<Int> = MutableStateFlow(DataUtils.item)
-    private val gifListFlow = localGif.flatMapLatest {
+    private val localGifListFlow = localGif.flatMapLatest {
         isLoading = true
         giFavouriteRepository.loadFavGif {
             isLoading = false
         }
     }
 
-    // bindable list property to bind fetched list to recycler view using binding-adapter property
-    @get:Bindable
-    val gifList: List<GifFavourite> by gifListFlow.asBindingProperty(viewModelScope, emptyList())
+    // we used to to make sure we fetch latest changes from room db
+    val localGifList = localGifListFlow.asLiveData()
 
     //delete fav to database
     fun deleteItem(fav: GifFavourite) {

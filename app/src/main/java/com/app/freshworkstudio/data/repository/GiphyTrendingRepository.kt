@@ -8,6 +8,7 @@ import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils.apiKEY
 import com.app.freshworkstudio.utils.DataUtils.api_key
 import com.app.freshworkstudio.utils.DataUtils.delay
+import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.limit
 import com.app.freshworkstudio.utils.DataUtils.offset
 import com.app.freshworkstudio.utils.DataUtils.pageCount
@@ -31,9 +32,10 @@ class GiphyTrendingRepository constructor(
     private val gFavouriteDao: GFavouriteDao
 ) {
 
-
     fun insertFav(data: GifFavourite) {
-        gFavouriteDao.insertGenre(data)
+        if (gFavouriteDao.getGifById(data.gifID) == item) {
+            gFavouriteDao.insertGenre(data)
+        }
     }
 
 
@@ -52,7 +54,7 @@ class GiphyTrendingRepository constructor(
         map[api_key] = apiKEY
         map[limit] = pageCount.toString()
         map[offset] = page.toString()
-        val queryPath = if (query.isEmpty()) {
+        val queryPath = if (q.isEmpty()) {
             trend
 //            "$trend?api_key=$apiKEY&limit=$pageCount&offset=$page"
         } else {

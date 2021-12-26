@@ -25,12 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:adapter="@{adapter}"
-            app:adapterLocalGifList="@{viewModel.gifList}"
-            app:adapterLocalGifModel="@{viewModel}"
-            app:errorFavView="@{errorText}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/item_gif" />-
+            tools:listitem="@layout/item_gif" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/errorText"
@@ -39,13 +36,6 @@
             android:layout_marginTop="@dimen/appbar_padding"
             android:text="You haven't marked any GIF as Favourite, Please to do it from trending screen."
             android:visibility="gone" />
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/appbar_padding"
-            app:visible="@{viewModel.loading}" />
 
     </RelativeLayout>
 </layout>

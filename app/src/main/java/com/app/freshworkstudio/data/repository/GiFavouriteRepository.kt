@@ -2,20 +2,8 @@ package com.app.freshworkstudio.data.repository
 
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.data.room.GFavouriteDao
-import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
-import com.app.freshworkstudio.utils.DataUtils.apiKEY
-import com.app.freshworkstudio.utils.DataUtils.api_key
-import com.app.freshworkstudio.utils.DataUtils.delay
-import com.app.freshworkstudio.utils.DataUtils.limit
-import com.app.freshworkstudio.utils.DataUtils.offset
-import com.app.freshworkstudio.utils.DataUtils.pageCount
-import com.app.freshworkstudio.utils.DataUtils.query
-import com.app.freshworkstudio.utils.DataUtils.search
-import com.app.freshworkstudio.utils.DataUtils.trend
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 
@@ -30,8 +18,8 @@ class GiFavouriteRepository constructor(
 ) {
 
 
-     fun delete(data: GifFavourite) {
-        gFavouriteDao.deleteByGifId(data)
+    suspend fun delete(data: GifFavourite) {
+        gFavouriteDao.deleteByGif(data)
     }
 
 
@@ -39,6 +27,8 @@ class GiFavouriteRepository constructor(
     * This method is used to fetch gif from local room data
     * */
     @WorkerThread
-    fun loadFavGif(success: () -> Unit) = gFavouriteDao.getGifList().onCompletion { success() }.flowOn(Dispatchers.IO)
+    fun loadFavGif(success: () -> Unit) =
+        gFavouriteDao.getGifList()
+            .onCompletion { success() }.flowOn(Dispatchers.IO)
 
 }

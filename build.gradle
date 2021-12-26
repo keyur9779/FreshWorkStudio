@@ -29,7 +29,7 @@ buildscript {
         // architecture components
         archCompomentVersion = '2.0.0'
         lifecycleVersion = '2.2.0'
-        roomVersion = '2.2.6'
+        roomVersion = '2.2.5'
         // binding
         bindablesVersion = '1.0.8'
 

@@ -3,6 +3,8 @@ package com.app.freshworkstudio.ui.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.app.freshworkstudio.R
@@ -40,6 +42,18 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
             adapter = gifListAdapter
             viewModel = vm
         }.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        vm.localGifList.observe(viewLifecycleOwner) {
+            binding.errorText.visibility = if (it.isEmpty()) {
+                VISIBLE
+            } else {
+                GONE
+            }
+            gifListAdapter.addGif(it)
+        }
     }
 
     /*
