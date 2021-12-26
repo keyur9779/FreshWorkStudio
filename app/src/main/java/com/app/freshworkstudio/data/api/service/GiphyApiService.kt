@@ -9,9 +9,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
+/**
+ *
+ * Network api list based on network and room
+ * */
 interface GiphyApiService {
-
-
     /*
     * generic method to fetch both trending and searched GIF
     * */

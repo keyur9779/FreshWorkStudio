@@ -8,6 +8,6 @@ import kotlinx.parcelize.Parcelize
 @Entity(primaryKeys = [("id")])
 data class GifFavourite(
     var id: Int? = null,
-    val gifID:Int,
+    val gifID:String,
     val url: String
 ) : Parcelable

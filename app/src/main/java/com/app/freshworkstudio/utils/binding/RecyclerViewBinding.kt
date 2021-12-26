@@ -1,12 +1,18 @@
 package com.app.freshworkstudio.utils.binding
 
 import android.util.Log
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.model.GiphyResponseModel
 import com.app.freshworkstudio.model.IOTaskResult
+import com.app.freshworkstudio.model.entity.GifFavourite
+import com.app.freshworkstudio.ui.adapter.GifFavListAdapter
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
+import com.app.freshworkstudio.ui.viewDataModels.FavouriteGifViewModel
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
@@ -22,6 +28,7 @@ object RecyclerViewBinding {
 
         view.adapter = baseAdapter
     }
+
 
     @JvmStatic
     @BindingAdapter("adapterGifList", "adapterGifModel")
@@ -56,6 +63,26 @@ object RecyclerViewBinding {
 
         } ?: kotlin.run {
             adapter?.showErrorPage("Something went Wrong")
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("adapterLocalGifList", "adapterLocalGifModel", "errorFavView")
+    fun bindLocalGifList(
+        view: RecyclerView,
+        gif: List<GifFavourite>,
+        viewModel: FavouriteGifViewModel, errorFavView: AppCompatTextView
+    ) {
+
+        val adapter = (view.adapter as? GifFavListAdapter)
+        gif.whatIfNotNull {
+
+            errorFavView.visibility = if (gif.isEmpty()) {
+                VISIBLE
+            } else {
+                GONE
+            }
+            adapter?.addGif(gif)
         }
     }
 

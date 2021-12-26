@@ -4,7 +4,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.app.freshworkstudio.ui.fragments.FavouriteGifFragment
 import com.app.freshworkstudio.ui.fragments.TrendingFragment
+import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.utils.DataUtils.item
 
 
 /**
@@ -16,9 +19,12 @@ class SectionsPagerAdapter(
     lifecycle: Lifecycle
 ) :
     FragmentStateAdapter(fm, lifecycle) {
-    override fun getItemCount() = 1
+    override fun getItemCount() = DataUtils.pagerTitleList.size
 
     override fun createFragment(position: Int): Fragment {
-        return TrendingFragment.newInstance(position)
+        return when (position) {
+            item -> TrendingFragment.newInstance()
+            else -> FavouriteGifFragment.newInstance()
+        }
     }
 }

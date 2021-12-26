@@ -1,16 +1,18 @@
 package com.app.freshworkstudio.data.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.app.freshworkstudio.model.entity.GifFavourite
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GFavouriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertGenre(genre: List<GifFavourite>)
+   suspend fun insertGenre(gif: GifFavourite)
 
     @Query("SELECT * FROM GifFavourite")
-    fun getGenreList(): List<GifFavourite>
+    suspend  fun getGifList(): Flow<List<GifFavourite>>
+
+    @Delete
+    suspend fun deleteByGif(gif: GifFavourite)
+
 }

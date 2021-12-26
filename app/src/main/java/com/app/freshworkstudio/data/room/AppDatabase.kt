@@ -6,7 +6,7 @@ import com.app.freshworkstudio.model.entity.GifFavourite
 
 @Database(
     entities = [(GifFavourite::class)],
-    version = 1, exportSchema = false
+    version = 2, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun gifFavouriteDao(): GFavouriteDao

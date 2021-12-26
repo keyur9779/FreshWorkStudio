@@ -1,7 +1,6 @@
 package com.app.freshworkstudio.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.FragmentMainBinding
+import com.app.freshworkstudio.model.GifData
+import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils.item
@@ -16,25 +17,22 @@ import com.app.freshworkstudio.utils.DataUtils.loading
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
-
 /**
  * A trending fragment containing a recyclerview to load all gif.
  */
 @AndroidEntryPoint
 class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
+
+    // initialized view model
     private val vm: TrendingViewModel by viewModels()
 
+    // initialized adapter while getting used first time
     private val gifListAdapter: GifListAdapter by lazy {
         GifListAdapter(
             onAdapterPositionClicked(),
             onRetry()
         )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -49,20 +47,23 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
         }.root
     }
 
-    private fun onAdapterPositionClicked(): (Int) -> Unit {
+    /*
+    *  callback to save item in db for fav.
+    * */
+    private fun onAdapterPositionClicked(): (GifData) -> Unit {
         return {
-            // save to database and check to list
-            Log.d("keyur", "onAdapterPositionClicked")
+            vm.insertItem(GifFavourite(null, gifID = it.id, url = it.images.fixed_width.url))
         }
 
     }
 
+    /*
+    *  callback to retry emit last page due to recovery from error
+    * */
     private fun onRetry(): (Int) -> Unit {
         return {
-            Log.d("keyur", "onRetry")
             vm.loadGifPage(vm.lastPageNumber.plus(loading))
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,9 +82,8 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                //if (!newText.isNullOrEmpty()) {
                 newText?.let { vm.searchQuery = newText }
-                //}
+
                 return false
             }
         })
@@ -91,10 +91,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
         val closeButton: View? =
             binding.searchView.findViewById(androidx.appcompat.R.id.search_close_btn)
         closeButton?.setOnClickListener {
-            Log.d("keyur", "on search cleared")
-
             vm.searchQuery = ""
-
             with(binding.searchView) {
                 setQuery(vm.searchQuery, false)
                 clearFocus()
@@ -107,23 +104,14 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
     }
 
     companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber: Int): TrendingFragment {
-            return TrendingFragment()/*.apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }*/
+        fun newInstance(): TrendingFragment {
+            return TrendingFragment()
         }
     }
 

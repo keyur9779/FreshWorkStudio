@@ -1,10 +1,10 @@
 package com.app.freshworkstudio.data.repository
 
-import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.data.api.service.GiphyApiService
+import com.app.freshworkstudio.data.room.GFavouriteDao
 import com.app.freshworkstudio.model.IOTaskResult
-import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils.apiKEY
 import com.app.freshworkstudio.utils.DataUtils.api_key
 import com.app.freshworkstudio.utils.DataUtils.delay
@@ -20,9 +20,21 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 
+
+/**
+ * class is used to fetch and save data related to trending and searched gif.
+ *
+ * @param giphyService = list of network methods
+ * */
 class GiphyTrendingRepository constructor(
-    private val giphyService: GiphyApiService
+    private val giphyService: GiphyApiService,
+    private val gFavouriteDao: GFavouriteDao
 ) {
+
+
+    fun insertFav(data: GifFavourite) {
+        gFavouriteDao.insertGenre(data)
+    }
 
 
     /*
@@ -30,7 +42,7 @@ class GiphyTrendingRepository constructor(
     * avoid maintaining multiple list for gifs.
     * */
     @WorkerThread
-    fun loadTrendingGif(page: Int, q: String, success: () -> Unit) = flow{
+    fun loadTrendingGif(page: Int, q: String, success: () -> Unit) = flow {
 
         //TODO : Please remove this delay when releasing to production as added to slow down downloading process bit
         kotlinx.coroutines.delay(delay.toLong())
@@ -56,13 +68,20 @@ class GiphyTrendingRepository constructor(
         if (response.isSuccessful) {
             emit(IOTaskResult.OnSuccess(response.body()!!))
         } else {
+
+            // you can improve error handling by adding error code based message - I'M just passing all error as message
             emit(IOTaskResult.OnFailed("Retry with error ${response.errorBody()?.string()}"))
         }
     }.catch { e ->
-
+        // you can improve error handling by adding error code based message - I'M just passing all error as message
         emit(IOTaskResult.OnFailed("Retry with error ${e.message}"))
         return@catch
-    }.onCompletion { success() }.flowOn(Dispatchers.IO)
+    }.onCompletion {
+        // higher order function to send callback
+        success()
+    }.flowOn(Dispatchers.IO)
+
+
 /*
 
 

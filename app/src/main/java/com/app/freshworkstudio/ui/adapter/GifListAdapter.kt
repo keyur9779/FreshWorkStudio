@@ -29,14 +29,19 @@ import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.bindables.binding
 
 
-// add lamba function as callback
+/**
+ * gif list adapter for searched and trending gifs
+ *
+ * @param onAdapterPositionClicked = higher order function return clicked item model to save it in local db
+ * @param onRetry = retry download same page on error
+ * */
 class GifListAdapter(
-    private val onAdapterPositionClicked: (Int) -> Unit,
+    private val onAdapterPositionClicked: (GifData) -> Unit,
     private val onRetry: (Int) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val items: MutableList<GifData> = arrayListOf()
+    val items: MutableList<GifData> = arrayListOf()
     private var retryPageLoad: Boolean = false
     private var errorMsg: String? = ""
 
@@ -44,15 +49,14 @@ class GifListAdapter(
 
         return if (viewType == item) {
             val binding = parent.binding<ItemGifBinding>(R.layout.item_gif)
-            return GifListViewHolder(binding, onAdapterPositionClicked)
+            GifListViewHolder(binding, onAdapterPositionClicked)
         } else {
             val binding = parent.binding<ItemLoadingBinding>(R.layout.item_loading)
-            return LoadingVH(errorMsg!!, binding, onRetry)
+            LoadingVH(errorMsg!!, binding, onRetry)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         if (getItemViewType(position) == item) {
             with((holder as GifListViewHolder).binding) {
                 media = items[position].images.fixed_width
@@ -61,9 +65,7 @@ class GifListAdapter(
     }
 
     private fun removeLoadingFooter() {
-
         notifyItemRemoved(itemCount - item)
-
     }
 
     fun addGif(gifs: List<GifData>) {
@@ -82,19 +84,6 @@ class GifListAdapter(
         }
     }
 
-    /*fun addSearchedGif(data: List<GifData>) {
-
-        Log.d("keyur", "list came")
-        if (retryPageLoad) {
-            retryPageLoad = false
-            removeLoadingFooter()
-        }
-
-        val previousItemSize = items.size
-        items.addAll(data)
-        notifyItemRangeInserted(previousItemSize, items.size)
-
-    }*/
 
     override fun getItemViewType(position: Int): Int {
         val itemSize = items.size
@@ -122,36 +111,32 @@ class GifListAdapter(
 
     fun showErrorPage(s: String) {
 
-        Log.d("keyur", "on error $s")
         retryPageLoad = true
         val itemSize = items.size
         this.errorMsg = s
         val size = if (itemSize >= loading) itemSize - loading else item
         notifyItemChanged(size)
-
     }
 
-
     fun clear() {
-        Log.d("keyur", "itemed cleared now")
         items.clear()
         notifyDataSetChanged()
 
 
     }
 
-    class GifListViewHolder(
+    inner class GifListViewHolder(
         val binding: ItemGifBinding,
-        private val onAdapterPositionClicked: (Int) -> Unit
+        private val onAdapterPositionClicked: (GifData) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.square.setOnClickListener() {
-                onAdapterPositionClicked(adapterPosition)
+                onAdapterPositionClicked(items[adapterPosition])
             }
         }
     }
 
-    class LoadingVH(
+    inner class LoadingVH(
         errorMsg: String,
         binding: ItemLoadingBinding,
         private val onRetry: (Int) -> Unit

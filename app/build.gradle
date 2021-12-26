@@ -60,6 +60,7 @@ dependencies {
     implementation "com.github.rubensousa:gravitysnaphelper:$nestedVersion"
     implementation "com.github.skydoves:bindables:$bindablesVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     testImplementation "androidx.arch.core:core-testing:$archCompomentVersion"
 

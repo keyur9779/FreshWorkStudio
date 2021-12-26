@@ -9,6 +9,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.skydoves.bindables.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Main class where user will interact with application
+ * */
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
 

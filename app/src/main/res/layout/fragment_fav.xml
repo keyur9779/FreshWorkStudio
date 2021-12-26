@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.app.freshworkstudio.ui.viewDataModels.FavouriteGifViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.app.freshworkstudio.ui.adapter.GifFavListAdapter" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.TrendingFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:adapter="@{adapter}"
+            app:adapterLocalGifList="@{viewModel.gifList}"
+            app:adapterLocalGifModel="@{viewModel}"
+            app:errorFavView="@{errorText}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_gif" />-
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/errorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/appbar_padding"
+            android:text="You haven't marked any GIF as Favourite, Please to do it from trending screen."
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/appbar_padding"
+            app:visible="@{viewModel.loading}" />
+
+    </RelativeLayout>
+</layout>
