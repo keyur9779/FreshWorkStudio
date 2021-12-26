@@ -47,7 +47,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
-
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
     // architecture components
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"

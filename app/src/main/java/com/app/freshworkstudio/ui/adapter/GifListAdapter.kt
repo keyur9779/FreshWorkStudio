@@ -25,11 +25,16 @@ import com.app.freshworkstudio.databinding.ItemLoadingBinding
 import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
+import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.bindables.binding
 
 
 // add lamba function as callback
-class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GifListAdapter(
+    private val onAdapterPositionClicked: (Int) -> Unit,
+    private val onRetry: (Int) -> Unit
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val items: MutableList<GifData> = arrayListOf()
     private var retryPageLoad: Boolean = false
@@ -37,52 +42,69 @@ class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-
         return if (viewType == item) {
             val binding = parent.binding<ItemGifBinding>(R.layout.item_gif)
-            return MovieListViewHolder(binding)
+            return GifListViewHolder(binding, onAdapterPositionClicked)
         } else {
             val binding = parent.binding<ItemLoadingBinding>(R.layout.item_loading)
-            return LoadingVH(binding)
+            return LoadingVH(errorMsg!!, binding, onRetry)
         }
-
-
-        /*  val binding = parent.binding<ItemGifBinding>(R.layout.item_gif)
-          return MovieListViewHolder(binding).apply {
-              binding.root.setOnClickListener {
-                val movie = adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
-                  ?: return@setOnClickListener
-                MovieDetailActivity.startActivityModel(it.context, items[movie])
-              }*/
-
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         if (getItemViewType(position) == item) {
-            with((holder as MovieListViewHolder).binding) {
+            with((holder as GifListViewHolder).binding) {
                 media = items[position].images.fixed_width
             }
         }
     }
 
-    fun addGif(gifs: List<GifData>) {
-        Log.d("keyur", "list came")
+    private fun removeLoadingFooter() {
 
+        notifyItemRemoved(itemCount - item)
+
+    }
+
+    fun addGif(gifs: List<GifData>) {
+        Log.d("keyur", "list came ${gifs.size}")
+        if (retryPageLoad) {
+            retryPageLoad = false
+            removeLoadingFooter()
+        }
         val previousItemSize = items.size
         items.addAll(gifs)
-        notifyItemRangeInserted(previousItemSize, items.size)
+        val newSize = items.size
+        if (newSize == pageCount) {
+            notifyDataSetChanged()
+        } else {
+            notifyItemRangeInserted(previousItemSize, newSize)
+        }
     }
+
+    /*fun addSearchedGif(data: List<GifData>) {
+
+        Log.d("keyur", "list came")
+        if (retryPageLoad) {
+            retryPageLoad = false
+            removeLoadingFooter()
+        }
+
+        val previousItemSize = items.size
+        items.addAll(data)
+        notifyItemRangeInserted(previousItemSize, items.size)
+
+    }*/
 
     override fun getItemViewType(position: Int): Int {
         val itemSize = items.size
         val size = if (itemSize >= loading) itemSize - loading else item
-        return  if (position == size && retryPageLoad) {
-                loading
-            } else {
-                item
-            }
+        return if (position == size && retryPageLoad) {
+            loading
+        } else {
+            item
         }
+    }
 
 
     override fun getItemCount(): Int {
@@ -103,12 +125,46 @@ class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         Log.d("keyur", "on error $s")
         retryPageLoad = true
         val itemSize = items.size
+        this.errorMsg = s
         val size = if (itemSize >= loading) itemSize - loading else item
         notifyItemChanged(size)
-        this.errorMsg = s
 
     }
 
-    class MovieListViewHolder(val binding: ItemGifBinding) : RecyclerView.ViewHolder(binding.root)
-    class LoadingVH(binding: ItemLoadingBinding) : RecyclerView.ViewHolder(binding.root)
+
+    fun clear() {
+        Log.d("keyur", "itemed cleared now")
+        items.clear()
+        notifyDataSetChanged()
+
+
+    }
+
+    class GifListViewHolder(
+        val binding: ItemGifBinding,
+        private val onAdapterPositionClicked: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.square.setOnClickListener() {
+                onAdapterPositionClicked(adapterPosition)
+            }
+        }
+    }
+
+    class LoadingVH(
+        errorMsg: String,
+        binding: ItemLoadingBinding,
+        private val onRetry: (Int) -> Unit
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.loadmoreErrorlayout.setOnClickListener {
+                onRetry(adapterPosition)
+            }
+            binding.loadmoreRetry.setOnClickListener {
+                onRetry(adapterPosition)
+            }
+            binding.loadmoreErrortxt.text = "$errorMsg"
+        }
+    }
 }

@@ -1,67 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
     </data>
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/loadmore_errorlayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:visibility="visible">
 
-        <ProgressBar
-            android:id="@+id/loadmore_progress"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/loadmore_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_24dp"
+            android:clickable="false"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_refresh"
+            android:tintMode="src_in" />
 
         <LinearLayout
-            android:id="@+id/loadmore_errorlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/_24dp"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/loadmore_retry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_24dp"
-                android:background="@drawable/bg_selector"
-                android:padding="@dimen/_8sdp"
-                android:src="@drawable/ic_refresh"
-
-                android:tintMode="src_in"
-                tools:targetApi="lollipop" />
-
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/loadmore_errortxt"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/_24dp"
-                android:layout_marginStart="@dimen/fab_margin"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:text="@string/error_msg_no_internet" />
 
-                <TextView
-                    android:id="@+id/loadmore_errortxt"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_width="match_parent"
-                    android:text="@string/error_msg_no_internet"
-                    android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Base.TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_to_reload" />
 
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Caption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tap_to_reload" />
-
-            </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
 
-    </FrameLayout>
 </layout>

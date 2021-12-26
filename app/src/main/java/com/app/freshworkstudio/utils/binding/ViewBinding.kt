@@ -32,11 +32,6 @@ object ViewBinding {
     @BindingAdapter("loadGif", "progressGif")
     fun loadGif(itemView: AppCompatImageView, url: String, progress: ProgressBar) {
 
-        /*val circularProgressDrawable = CircularProgressDrawable(itemView.context)
-        circularProgressDrawable.strokeWidth = 5f
-        circularProgressDrawable.centerRadius = 30f
-
-        circularProgressDrawable.start()*/
         progress.visibility = View.VISIBLE
         Glide.with(itemView.context)
             .asGif()

@@ -14,33 +14,56 @@
             type="com.app.freshworkstudio.ui.adapter.GifListAdapter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragments.TrendingFragment">
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/appbar_padding"
+            android:background="@color/colorPrimary"
+            app:iconifiedByDefault="false"
+            app:queryHint="@string/user_name"
+            app:theme="@style/SearchView" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/searchView"
             app:adapter="@{adapter}"
             app:adapterGifList="@{viewModel.gifList}"
+            app:adapterGifModel="@{viewModel}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
+            app:paginationGifList="@{viewModel}"
+            app:spanCount="2"
+            tools:listitem="@layout/item_gif" />
+
+        <!--<androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/searchView"
+            app:adapter="@{adapter}"
+            app:adapterGifList="@{viewModel.gifList}"
+            app:adapterSearchedGifList="@{viewModel.searchedGifList}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:paginationMovieList="@{viewModel}"
             app:spanCount="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_gif" />
+            tools:listitem="@layout/item_gif" />-->
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/searchView"
             android:layout_centerHorizontal="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/appbar_padding"
             app:visible="@{viewModel.loading}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>
