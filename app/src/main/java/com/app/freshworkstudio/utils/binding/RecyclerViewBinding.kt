@@ -2,6 +2,7 @@ package com.app.freshworkstudio.utils.binding
 
 import android.util.Log
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.FreshWorkApp
@@ -14,6 +15,7 @@ import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
 import com.skydoves.whatif.whatIfNotNull
+
 
 object RecyclerViewBinding {
 
@@ -112,6 +114,13 @@ object RecyclerViewBinding {
                 return viewModel.isLoading
             }
         })
+
+        view.addItemDecoration(
+            DividerItemDecoration(
+                view.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
 
 
         /*//TODO replace this pagination with our custom one

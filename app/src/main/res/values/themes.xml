@@ -30,8 +30,8 @@
     <style name="SearchView" parent="Widget.AppCompat.SearchView">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/background800</item>
-        <item name="queryBackground">@android:color/transparent</item>
-        <item name="android:editTextColor">@color/white</item>
+        <item name="queryBackground">@color/background800</item>
+        <item name="android:editTextColor">@color/colorLightRed</item>
         <item name="android:textColorHint">@color/background800</item>
     </style>
 

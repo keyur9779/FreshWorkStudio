@@ -1,7 +1,6 @@
 package com.app.freshworkstudio.data.repository
 
 import androidx.annotation.WorkerThread
-import com.app.freshworkstudio.BuildConfig
 import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.data.api.service.GiphyApiService
 import com.app.freshworkstudio.data.room.GFavouriteDao
@@ -9,7 +8,6 @@ import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils.api_key
 import com.app.freshworkstudio.utils.DataUtils.delay
-import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.limit
 import com.app.freshworkstudio.utils.DataUtils.offset
 import com.app.freshworkstudio.utils.DataUtils.pageCount
@@ -33,12 +31,19 @@ class GiphyTrendingRepository constructor(
     private val gFavouriteDao: GFavouriteDao
 ) {
 
-    fun insertFav(data: GifFavourite) {
-        if (gFavouriteDao.getGifById(data.gifID) == item) {
+    @WorkerThread
+    suspend fun insertFav(data: GifFavourite) {
+
+        // Just making sure we are not duplicating by any means, as url of
+        // gif are getting different all time, so sometimes room is not able to resolve conflicts replace
+        val item = gFavouriteDao.getGifById(data.gifID)
+
+        if (item == null) {
             gFavouriteDao.insertGenre(data)
+        } else {
+            gFavouriteDao.deleteByGif(item)
         }
     }
-
 
     /*
     * This method is used to fetch both trending and searched gif data, I have optimized it bit with QueryMap to
@@ -69,41 +74,26 @@ class GiphyTrendingRepository constructor(
             giphyService.fetchTrendingGif(queryPath/*, apiKEY, pageCount, page,query*/, map)
 
         if (response.isSuccessful) {
-            emit(IOTaskResult.OnSuccess(response.body()!!))
+            val body = response.body()
+            body?.let {
+                if (it.data.isNotEmpty()) {
+                    emit(IOTaskResult.OnSuccess(it))
+                } else {
+                    emit(IOTaskResult.OnFailed("No Result for your searched query."))
+                }
+            } ?: kotlin.run {
+                emit(IOTaskResult.OnFailed("No Result for your searched query."))
+            }
         } else {
-
-            // you can improve error handling by adding error code based message - I'M just passing all error as message
+            // can be improve error handling by adding error code based message - I'M just passing all error as message
             emit(IOTaskResult.OnFailed("Retry with error ${response.errorBody()?.string()}"))
         }
     }.catch { e ->
-        // you can improve error handling by adding error code based message - I'M just passing all error as message
+        // can be improve error handling based on type of exception - I'M just passing all error as message
         emit(IOTaskResult.OnFailed("Retry with error ${e.message}"))
         return@catch
     }.onCompletion {
         // higher order function to send callback
         success()
     }.flowOn(Dispatchers.IO)
-
-
-/*
-
-
-    @WorkerThread
-    fun searchGif(query: String, page: Int = DataUtils.item, success: () -> Unit) = flow {
-
-        Log.d("keyur", "fit1  and  page $page")
-
-        val response = giphyService.fetchSearchGif(apiKEY, pageCount, page, query)
-        if (response.isSuccessful) {
-            emit(IOTaskResult.OnSuccess(response.body()!!))
-        } else {
-            emit(IOTaskResult.OnFailed("Retry with error ${response.errorBody()?.string()}"))
-        }
-    }.catch { e ->
-        emit(IOTaskResult.OnFailed("Retry with error ${e.message}"))
-        return@catch
-    }.onCompletion { success() }.flowOn(Dispatchers.IO)
-*/
-
-
 }

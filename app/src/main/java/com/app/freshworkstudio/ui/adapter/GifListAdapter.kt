@@ -18,14 +18,14 @@ package com.app.freshworkstudio.ui.adapter
 
 import android.util.Log
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
-import com.app.freshworkstudio.databinding.ItemGifBinding
+import com.app.freshworkstudio.databinding.ItemGifDetailsBinding
 import com.app.freshworkstudio.databinding.ItemLoadingBinding
 import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
-import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.bindables.binding
 
 
@@ -48,7 +48,7 @@ class GifListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return if (viewType == item) {
-            val binding = parent.binding<ItemGifBinding>(R.layout.item_gif)
+            val binding = parent.binding<ItemGifDetailsBinding>(R.layout.item_gif_details)
             GifListViewHolder(binding, onAdapterPositionClicked)
         } else {
             val binding = parent.binding<ItemLoadingBinding>(R.layout.item_loading)
@@ -59,7 +59,7 @@ class GifListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == item) {
             with((holder as GifListViewHolder).binding) {
-                media = items[position].images.fixed_width
+                gifData = items[position]
             }
         }
     }
@@ -80,7 +80,7 @@ class GifListAdapter(
         /*if (newSize == pageCount) {
             notifyDataSetChanged()
         } else {*/
-            notifyItemRangeInserted(previousItemSize, newSize)
+        notifyItemRangeInserted(previousItemSize, newSize)
         //}
     }
 
@@ -126,11 +126,13 @@ class GifListAdapter(
     }
 
     inner class GifListViewHolder(
-        val binding: ItemGifBinding,
+        val binding: ItemGifDetailsBinding,
         private val onAdapterPositionClicked: (GifData) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.square.setOnClickListener() {
+                val item = items[adapterPosition]
+                item.images.fixed_width.isFav = (it as AppCompatCheckBox).isChecked
                 onAdapterPositionClicked(items[adapterPosition])
             }
         }

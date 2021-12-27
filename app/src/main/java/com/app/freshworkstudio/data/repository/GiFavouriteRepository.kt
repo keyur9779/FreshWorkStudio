@@ -17,7 +17,7 @@ class GiFavouriteRepository constructor(
     private val gFavouriteDao: GFavouriteDao
 ) {
 
-
+    @WorkerThread
     suspend fun delete(data: GifFavourite) {
         gFavouriteDao.deleteByGif(data)
     }

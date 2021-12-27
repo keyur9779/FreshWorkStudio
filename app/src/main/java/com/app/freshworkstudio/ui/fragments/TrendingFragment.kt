@@ -1,14 +1,11 @@
 package com.app.freshworkstudio.ui.fragments
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.FragmentMainBinding
 import com.app.freshworkstudio.model.GifData
@@ -16,9 +13,7 @@ import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils.item
-import com.app.freshworkstudio.utils.DataUtils.landScapSpanCount
 import com.app.freshworkstudio.utils.DataUtils.loading
-import com.app.freshworkstudio.utils.DataUtils.portraitSpanCount
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,38 +29,18 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
 
     // initialized adapter while getting used first time
     private val gifListAdapter: GifListAdapter by lazy {
-        GifListAdapter(
-            onAdapterPositionClicked(),
-            onRetry()
-        )
+        GifListAdapter(onAdapterPositionClicked(), onRetry())
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         return binding {
-
             adapter = gifListAdapter
             viewModel = vm
         }.root
-    }
-
-
-    /*
-    * when configuration chagnes we should not re create the fragment , just handle the ui changes.
-    * */
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        val layoutManager = binding.recyclerView.layoutManager as GridLayoutManager
-        layoutManager.spanCount =
-            if (newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
-                landScapSpanCount
-            } else {
-                portraitSpanCount
-            }
     }
 
     /*
@@ -73,8 +48,6 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
     * */
     private fun onAdapterPositionClicked(): (GifData) -> Unit {
         return {
-
-            Log.d("keyur", "inserting item to db ${it.id}")
             vm.insertItem(GifFavourite(gifID = it.id, url = it.images.fixed_width.url))
         }
 

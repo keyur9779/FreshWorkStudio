@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/appbar_padding"
-            android:background="@color/colorPrimary"
             app:iconifiedByDefault="false"
             app:queryHint="@string/user_name"
             app:theme="@style/SearchView" />
@@ -39,10 +38,9 @@
             app:adapter="@{adapter}"
             app:adapterGifList="@{viewModel.gifList}"
             app:adapterGifModel="@{viewModel}"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:paginationGifList="@{viewModel}"
-            app:spanCount="2"
-            tools:listitem="@layout/item_gif" />
+            tools:listitem="@layout/item_gif_details" />
 
         <!--<androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

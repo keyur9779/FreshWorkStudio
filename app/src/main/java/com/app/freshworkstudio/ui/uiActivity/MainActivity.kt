@@ -4,6 +4,8 @@ import android.os.Bundle
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivityMainBinding
 import com.app.freshworkstudio.ui.adapter.SectionsPagerAdapter
+import com.app.freshworkstudio.utils.DataUtils.item
+import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pagerTitleList
 import com.google.android.material.tabs.TabLayoutMediator
 import com.skydoves.bindables.BindingActivity
@@ -25,7 +27,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 tab.text = pagerTitleList[position]
             }.attach()
         }
+    }
 
-
+    /*
+    * Handle back stack of tab layout, just make sure activity is not finishing.
+    * */
+    override fun onBackPressed() {
+        with(binding) {
+            if (viewPager.currentItem > item) {
+                viewPager.currentItem = viewPager.currentItem - loading
+            } else {
+                super.onBackPressed()
+            }
+        }
     }
 }

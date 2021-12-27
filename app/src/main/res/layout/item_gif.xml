@@ -20,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            app:progressGif="@{progressBar}"
-            app:loadGif="@{media.url}" />
+            app:loadGif="@{media.url}"
+            app:progressGif="@{progressBar}" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -35,7 +35,9 @@
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/square"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:button="@drawable/square_checkbox"
+            android:checked="@{media.isFav}" />
 
 
     </RelativeLayout>

@@ -30,28 +30,20 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
 
     // initialized adapter while getting used first time
     private val gifListAdapter: GifFavListAdapter by lazy {
-        GifFavListAdapter(
-            onAdapterPositionClicked()
-        )
+        GifFavListAdapter(onAdapterPositionClicked())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,
+        savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        return binding {
-            adapter = gifListAdapter
-            viewModel = vm
-        }.root
+        return binding {adapter = gifListAdapter
+            viewModel = vm}.root
     }
 
     /*
     * when configuration chagnes we should not re create the fragment , just handle the ui changes
     * */
     override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
         val layoutManager = binding.recyclerView.layoutManager as GridLayoutManager
         layoutManager.spanCount =
             if (newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
@@ -59,16 +51,13 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
             } else {
                 DataUtils.portraitSpanCount
             }
+        super.onConfigurationChanged(newConfig)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.localGifList.observe(viewLifecycleOwner) {
-            binding.errorText.visibility = if (it.isEmpty()) {
-                VISIBLE
-            } else {
-                GONE
-            }
+            binding.errorText.visibility = if (it.isEmpty()) VISIBLE else  GONE
             gifListAdapter.addGif(it)
         }
     }
@@ -77,10 +66,7 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
     *  callback to save item in db for fav.
     * */
     private fun onAdapterPositionClicked(): (GifFavourite) -> Unit {
-        return {
-            vm.deleteItem(it)
-        }
-
+        return { vm.deleteItem(it) }
     }
 
 
@@ -94,6 +80,4 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
             return FavouriteGifFragment()
         }
     }
-
-
 }

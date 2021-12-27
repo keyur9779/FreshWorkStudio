@@ -11,16 +11,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GFavouriteDao {
     @Insert()
-    fun insertGenre(gif: GifFavourite)
+    suspend fun insertGenre(gif: GifFavourite)
 
     @Query("SELECT * FROM GifFavourite")
     fun getGifList(): Flow<List<GifFavourite>>
 
-    @Query("SELECT COUNT(gifID) FROM GifFavourite WHERE gifID = :gifID")
-    fun getGifById(gifID: String): Int
-
+    @Query("SELECT * FROM GifFavourite WHERE gifID = :gifID")
+    suspend fun getGifById(gifID: String): GifFavourite
 
     @Delete
-    fun deleteByGif(gif: GifFavourite)
+    suspend fun deleteByGif(gif: GifFavourite)
 
 }

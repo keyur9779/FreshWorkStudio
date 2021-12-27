@@ -62,8 +62,7 @@ object ViewBinding {
             })
             .apply(
                 RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    //.placeholder(ColorDrawable(ColoredPlaceholderGenerator.generate(itemView.context)))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
             )
             .transition(DrawableTransitionOptions.withCrossFade(250))

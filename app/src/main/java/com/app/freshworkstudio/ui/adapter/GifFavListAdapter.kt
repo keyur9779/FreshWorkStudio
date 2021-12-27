@@ -22,6 +22,7 @@ import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ItemGifBinding
 import com.app.freshworkstudio.model.Media
 import com.app.freshworkstudio.model.entity.GifFavourite
+import com.app.freshworkstudio.utils.DataUtils.item
 import com.skydoves.bindables.binding
 
 
@@ -45,15 +46,29 @@ class GifFavListAdapter(
 
     override fun onBindViewHolder(holder: GifFavListViewHolder, position: Int) {
         with(holder.binding) {
-            square.isChecked = true
-            media = Media(items[position].url)
+
+            media = Media(items[position].url,true)
         }
     }
 
     fun addGif(gifs: List<GifFavourite>) {
+
+        val oItemSize = items.size
+
+        if (oItemSize == gifs.size) {
+            return
+        }
+
         items.clear()
         items.addAll(gifs)
-        notifyDataSetChanged()
+
+        val nItemSize = items.size
+        if (oItemSize == item) {
+            notifyDataSetChanged()
+        } else {
+            notifyItemRangeInserted(oItemSize, nItemSize)
+
+        }
 
     }
 
@@ -65,9 +80,12 @@ class GifFavListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.square.apply {
-                isChecked = true
                 setOnClickListener() {
-                    onAdapterPositionClicked(items[adapterPosition])
+                    val pos = adapterPosition
+                    val item = items[adapterPosition]
+                    items.removeAt(pos)
+                    notifyItemRemoved(pos)
+                    onAdapterPositionClicked(item)
                 }
             }
         }
