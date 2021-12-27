@@ -47,7 +47,7 @@ class GifFavListAdapter(
     override fun onBindViewHolder(holder: GifFavListViewHolder, position: Int) {
         with(holder.binding) {
 
-            media = Media(items[position].url,true)
+            media = Media(items[position].url, true)
         }
     }
 
@@ -81,8 +81,8 @@ class GifFavListAdapter(
         init {
             binding.square.apply {
                 setOnClickListener() {
-                    val pos = adapterPosition
-                    val item = items[adapterPosition]
+                    val pos = absoluteAdapterPosition
+                    val item = items[pos]
                     items.removeAt(pos)
                     notifyItemRemoved(pos)
                     onAdapterPositionClicked(item)

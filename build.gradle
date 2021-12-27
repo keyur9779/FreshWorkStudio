@@ -12,7 +12,7 @@ buildscript {
 
         // build tool
         splashVersion = '1.0.0-alpha01'
-        gradleBuildTool = '7.1.0-alpha08'
+        gradleBuildTool = '7.0.0'
         readMore = '1.0.0'
 
         // support library
@@ -31,19 +31,19 @@ buildscript {
         lifecycleVersion = '2.2.0'
         roomVersion = '2.2.5'
         // binding
-        bindablesVersion = '1.0.8'
+        bindablesVersion = '1.0.9'
 
         // di
         hiltCoreVersion = '2.38.1'
         hiltVersion = '1.0.0'
 
         // coroutines
-        coroutinesVersion = '1.4.3'
+        coroutinesVersion = '1.6.0'
 
         // network
         retrofitVersion = '2.9.0'
         okhttpVersion = '4.9.0'
-        sandwichVersion = '1.2.0'
+        sandwichVersion = '1.2.2'
         gsonVersion = '2.8.5'
         nestedVersion = '2.2.2'
 
@@ -55,7 +55,7 @@ buildscript {
         glidePaletteVersion = '2.1.2'
 
         // whatIf
-        whatIfVersion = '1.1.0'
+        whatIfVersion = '1.1.1'
 
         // adapter
         baseAdapterVersion = '1.0.4'

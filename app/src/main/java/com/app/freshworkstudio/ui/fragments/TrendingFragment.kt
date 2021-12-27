@@ -1,6 +1,7 @@
 package com.app.freshworkstudio.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,11 +62,12 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
 
             with(dBinding) {
 
+
                 alert.setView(root)
                 vm.gifFavID = gifData.id
                 viewModel = vm
                 media = gifData.images.fixed_width
-                alert.show()
+                val alertView = alert.show()
                 val radim = gifData.id.substring(Random.nextInt(gifData.id.length))
                 vm.fetchGifFavMarket(radim)
                 square.setOnClickListener {
@@ -76,6 +78,9 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                             url = gifData.images.fixed_width.url
                         )
                     )
+                }
+                cancelAction.setOnClickListener {
+                    alertView.dismiss()
                 }
             }
         }
@@ -99,15 +104,21 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                 if (query.isNullOrEmpty()) {
                     return false
                 }
-                val cacheItem = if (vm.lastPageNumber > item) item else loading
                 vm.lastPageNumber = item
-                vm.loadGifPage(cacheItem)
+                vm.loadGifPage(vm.getCurrentPage().plus(loading))
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { vm.searchQuery = newText }
-
+                newText?.let {
+                    vm.searchQuery = it
+                    if (it.isEmpty()) {
+                        val dataPage = vm.getCurrentPage()
+                        vm.lastPageNumber = item
+                        Log.d("keyur", "empty value came now of new page is $dataPage")
+                        vm.loadGifPage(dataPage.plus(loading))
+                    }
+                }
                 return false
             }
         })
@@ -120,9 +131,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                     setQuery(vm.searchQuery, false)
                     clearFocus()
                 }
-                val cacheCount = vm.lastPageNumber
-                vm.lastPageNumber = item
-                vm.loadGifPage(cacheCount.plus(loading))
+
             }
         }
 

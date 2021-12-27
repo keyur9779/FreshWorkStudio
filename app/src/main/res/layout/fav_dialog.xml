@@ -15,7 +15,7 @@
     </data>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -28,6 +28,15 @@
             android:scaleType="fitXY"
             app:loadGif="@{media.url}"
             app:progressGif="@{progressBar}" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_baseline_cancel_24"
+            android:layout_margin="@dimen/fab_margin"
+            android:id="@+id/cancel_action"
+            />
 
         <ProgressBar
             android:id="@+id/progressBar"

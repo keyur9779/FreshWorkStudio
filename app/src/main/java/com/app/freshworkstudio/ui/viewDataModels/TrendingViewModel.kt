@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.ui.viewDataModels
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
@@ -64,6 +63,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
         }
     }
 
+
     // bindable list property to bind fetched list to recycler view using binding-adapter property
     @get:Bindable
     val gifList: IOTaskResult<Any> by gifListFlow.asBindingProperty(
@@ -77,6 +77,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     //insert fav to database
 
     fun insertItem(fav: GifFavourite) {
+
         viewModelScope.launch(Dispatchers.IO) {
             giphyTrendingRepository.insertFav(fav)
         }
@@ -86,7 +87,6 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
 
     private val gifFavouriteStateFlow: MutableStateFlow<String> = MutableStateFlow("")
     private val gifFavFlow = gifFavouriteStateFlow.flatMapLatest {
-        Log.d("keyur", "yes we are getting viewmodel $gifFavID")
         giphyTrendingRepository.getGifByID(gifFavID)
     }
 
@@ -96,5 +96,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     )
 
     fun fetchGifFavMarket(id: String) = gifFavouriteStateFlow.tryEmit(id)
+
+    fun getCurrentPage() :Int = gifPageStateFlow.value
 
 }

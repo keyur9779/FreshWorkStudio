@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.data.repository
 
-import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.data.api.service.GiphyApiService
@@ -48,11 +47,7 @@ class GiphyTrendingRepository constructor(
 
     @WorkerThread
     suspend fun getGifByID(gifID: String) = flow {
-
-        Log.d("keyur", "yes we are getting $gifID")
-
         val item = gFavouriteDao.getGifById(gifID)
-        Log.d("keyur", "yes we are gettin ${item == null}")
         emit(arrayListOf(item))
     }.flowOn(Dispatchers.IO)
 

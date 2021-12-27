@@ -69,7 +69,6 @@ class GifListAdapter(
     }
 
     fun addGif(gifs: List<GifData>) {
-        Log.d("keyur", "list came ${gifs.size}")
         if (retryPageLoad) {
             retryPageLoad = false
             removeLoadingFooter()
@@ -131,7 +130,7 @@ class GifListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.square.setOnClickListener() {
-                val item = items[adapterPosition]
+                val item = items[absoluteAdapterPosition]
                 //item.images.fixed_width.isFav = (it as AppCompatCheckBox).isChecked
                 onAdapterPositionClicked(item)
             }
@@ -146,10 +145,10 @@ class GifListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.loadmoreErrorlayout.setOnClickListener {
-                onRetry(adapterPosition)
+                onRetry(absoluteAdapterPosition)
             }
             binding.loadmoreRetry.setOnClickListener {
-                onRetry(adapterPosition)
+                onRetry(absoluteAdapterPosition)
             }
             binding.loadmoreErrortxt.text = "$errorMsg"
         }

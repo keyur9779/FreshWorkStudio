@@ -85,7 +85,6 @@ object RecyclerViewBinding {
                     val ioTask = viewModel.gifList
                     if (ioTask is IOTaskResult.OnSuccess<*>) {
                         if (ioTask.data is GiphyResponseModel) {
-                            Log.d("keyur", "new page available now")
                             if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
                                 viewModel.lastPageNumber += loading
                                 viewModel.loadGifPage(viewModel.lastPageNumber)
@@ -95,7 +94,6 @@ object RecyclerViewBinding {
                         }
                     } else {
                         if (FreshWorkApp.isInternetAvailable()) {
-                            Log.d("keyur", "try loading previous page")
                             viewModel.loadGifPage(viewModel.lastPageNumber.minus(loading))
                         }
                     }
