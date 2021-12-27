@@ -32,7 +32,7 @@
         <item name="android:textColorSecondary">@color/background800</item>
         <item name="queryBackground">@color/background800</item>
         <item name="android:editTextColor">@color/colorLightRed</item>
-        <item name="android:textColorHint">@color/background800</item>
+        <item name="android:textColorHint">@color/preview</item>
     </style>
 
 </resources>
