@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="media"
+            type="com.app.freshworkstudio.model.Media" />
+
+        <variable
+            name="viewModel"
+            type="com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/item_poster_post"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_300sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:scaleType="fitXY"
+            app:loadGif="@{media.url}"
+            app:progressGif="@{progressBar}" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="@dimen/fab_margin"
+            android:layout_height="@dimen/fab_margin"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:theme="@style/CircularProgress" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/square"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_poster_post"
+            android:layout_centerHorizontal="true"
+            android:button="@drawable/square_checkbox"
+            android:padding="@dimen/_8sdp"
+            app:isFav="@{viewModel.gifFav}" />
+
+
+    </RelativeLayout>
+
+</layout>

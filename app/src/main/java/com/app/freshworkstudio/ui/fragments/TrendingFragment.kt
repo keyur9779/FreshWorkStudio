@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import com.app.freshworkstudio.R
+import com.app.freshworkstudio.databinding.FavDialogBinding
 import com.app.freshworkstudio.databinding.FragmentMainBinding
 import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.model.entity.GifFavourite
@@ -16,6 +18,8 @@ import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.random.Random
+
 
 /**
  * A trending fragment containing a recyclerview to load all gif.
@@ -43,14 +47,38 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
         }.root
     }
 
+
     /*
     *  callback to save item in db for fav.
     * */
     private fun onAdapterPositionClicked(): (GifData) -> Unit {
-        return {
-            vm.insertItem(GifFavourite(gifID = it.id, url = it.images.fixed_width.url))
-        }
+        return { gifData ->
 
+            // show dialog of gif to mark fav and unfav
+
+            val alert: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            val dBinding = FavDialogBinding.inflate(LayoutInflater.from(context));
+
+            with(dBinding) {
+
+                alert.setView(root)
+                vm.gifFavID = gifData.id
+                viewModel = vm
+                media = gifData.images.fixed_width
+                alert.show()
+                val radim = gifData.id.substring(Random.nextInt(gifData.id.length))
+                vm.fetchGifFavMarket(radim)
+                square.setOnClickListener {
+                    square.text = if (square.isChecked) "Undo Favourite" else "Mark Favourite"
+                    vm.insertItem(
+                        GifFavourite(
+                            gifID = gifData.id,
+                            url = gifData.images.fixed_width.url
+                        )
+                    )
+                }
+            }
+        }
     }
 
     /*
@@ -85,17 +113,17 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
         })
 
 
-        val closeButton: View? =
-            binding.searchView.findViewById(androidx.appcompat.R.id.search_close_btn)
-        closeButton?.setOnClickListener {
-            vm.searchQuery = ""
-            with(binding.searchView) {
-                setQuery(vm.searchQuery, false)
-                clearFocus()
+        binding.searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn).apply {
+            setOnClickListener {
+                vm.searchQuery = ""
+                with(binding.searchView) {
+                    setQuery(vm.searchQuery, false)
+                    clearFocus()
+                }
+                val cacheCount = vm.lastPageNumber
+                vm.lastPageNumber = item
+                vm.loadGifPage(cacheCount.plus(loading))
             }
-            val cacheCount = vm.lastPageNumber
-            vm.lastPageNumber = item
-            vm.loadGifPage(cacheCount.plus(loading))
         }
 
     }

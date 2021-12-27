@@ -132,8 +132,8 @@ class GifListAdapter(
         init {
             binding.square.setOnClickListener() {
                 val item = items[adapterPosition]
-                item.images.fixed_width.isFav = (it as AppCompatCheckBox).isChecked
-                onAdapterPositionClicked(items[adapterPosition])
+                //item.images.fixed_width.isFav = (it as AppCompatCheckBox).isChecked
+                onAdapterPositionClicked(item)
             }
         }
     }

@@ -29,7 +29,6 @@
                 android:id="@+id/item_poster_post"
                 android:layout_width="@dimen/_125dp"
                 android:layout_height="@dimen/_150dp"
-
                 android:scaleType="fitXY"
                 app:loadGif="@{gifData.images.fixed_width.url}"
                 app:progressGif="@{progressBar}" />
@@ -45,12 +44,15 @@
         </androidx.cardview.widget.CardView>
 
 
-        <androidx.appcompat.widget.AppCompatCheckBox
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/square"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="@{gifData.images.fixed_width.isFav}"
-            android:button="@drawable/square_checkbox"
+            android:backgroundTint="@color/placeholder_grey"
+            android:padding="@dimen/_8sdp"
+            android:text="Favourite me"
+            android:textColor="@color/colorLightRed"
+            android:textSize="@dimen/_12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

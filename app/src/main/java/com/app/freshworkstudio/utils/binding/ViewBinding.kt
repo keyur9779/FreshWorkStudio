@@ -2,8 +2,11 @@ package com.app.freshworkstudio.utils.binding
 
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
+import com.app.freshworkstudio.model.entity.GifFavourite
+import com.app.freshworkstudio.utils.DataUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -90,5 +93,18 @@ object ViewBinding {
                     .crossfade(true)
             )
             .into(view)
+    }
+
+
+    @JvmStatic
+    @BindingAdapter("isFav")
+    fun bindCheckBox(view: AppCompatCheckBox, list: List<GifFavourite>) {
+        view.isChecked = list[DataUtils.item] != null
+
+        view.text = if(view.isChecked){
+              "Undo Favourite"
+        }else{
+            "Mark Favourite"
+        }
     }
 }

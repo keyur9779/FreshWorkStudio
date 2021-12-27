@@ -13,4 +13,6 @@
     <dimen name="_1dp">1dp</dimen>
     <dimen name="_12sp">12sp</dimen>
     <dimen name="_0dp">0dp</dimen>
+    <dimen name="_300sdp">300dp</dimen>
+    <dimen name="_250sdp">250dp</dimen>
 </resources>

@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.ui.viewDataModels
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
@@ -26,6 +27,10 @@ import javax.inject.Inject
 @HiltViewModel
 class TrendingViewModel @Inject constructor(private val giphyTrendingRepository: GiphyTrendingRepository) :
     BindingViewModel() {
+
+    // bindable property to save possible total page of current GIF category
+    @get:Bindable
+    var gifFavID: String by bindingProperty("")
 
 
     // bindable property to save possible total page of current GIF category
@@ -76,4 +81,20 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
             giphyTrendingRepository.insertFav(fav)
         }
     }
+
+    //fetch gif is marked as favourite or not
+
+    private val gifFavouriteStateFlow: MutableStateFlow<String> = MutableStateFlow("")
+    private val gifFavFlow = gifFavouriteStateFlow.flatMapLatest {
+        Log.d("keyur", "yes we are getting viewmodel $gifFavID")
+        giphyTrendingRepository.getGifByID(gifFavID)
+    }
+
+    @get:Bindable
+    val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
+        viewModelScope, emptyList<GifFavourite>()
+    )
+
+    fun fetchGifFavMarket(id: String) = gifFavouriteStateFlow.tryEmit(id)
+
 }

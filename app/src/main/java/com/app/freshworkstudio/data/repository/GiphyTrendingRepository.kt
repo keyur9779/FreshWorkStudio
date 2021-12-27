@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.data.repository
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.data.api.service.GiphyApiService
@@ -38,12 +39,22 @@ class GiphyTrendingRepository constructor(
         // gif are getting different all time, so sometimes room is not able to resolve conflicts replace
         val item = gFavouriteDao.getGifById(data.gifID)
 
-        if (item == null) {
-            gFavouriteDao.insertGenre(data)
-        } else {
+        if (item != null) {
             gFavouriteDao.deleteByGif(item)
+        } else {
+            gFavouriteDao.insertGenre(data)
         }
     }
+
+    @WorkerThread
+    suspend fun getGifByID(gifID: String) = flow {
+
+        Log.d("keyur", "yes we are getting $gifID")
+
+        val item = gFavouriteDao.getGifById(gifID)
+        Log.d("keyur", "yes we are gettin ${item == null}")
+        emit(arrayListOf(item))
+    }.flowOn(Dispatchers.IO)
 
     /*
     * This method is used to fetch both trending and searched gif data, I have optimized it bit with QueryMap to
