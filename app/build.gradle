@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion rootProject.compileSdkVersion
 
     defaultConfig {
         applicationId "com.app.freshworkstudio"
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.compileSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -22,10 +22,20 @@ android {
 
     }
 
+    signingConfigs {
+        release {
+            storeFile file("release.jks")
+            storePassword 'release'
+            keyAlias 'release'
+            keyPassword 'release'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {

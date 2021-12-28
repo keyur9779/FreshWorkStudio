@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/square_checkbox"
+            android:layout_margin="@dimen/fab_margin"
             android:checked="@{media.isFav}" />
 
         <androidx.appcompat.widget.AppCompatTextView

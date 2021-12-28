@@ -128,7 +128,7 @@ class GifListAdapter(
         private val onAdapterPositionClicked: (GifData) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.square.setOnClickListener() {
+            binding.root.setOnClickListener() {
                 val item = items[absoluteAdapterPosition]
                 //item.images.fixed_width.isFav = (it as AppCompatCheckBox).isChecked
                 onAdapterPositionClicked(item)
