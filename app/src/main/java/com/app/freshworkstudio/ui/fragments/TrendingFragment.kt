@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.ui.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.FavDialogBinding
 import com.app.freshworkstudio.databinding.FragmentMainBinding
@@ -15,6 +17,7 @@ import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
+import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.skydoves.bindables.BindingFragment
@@ -47,7 +50,19 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
             viewModel = vm
         }.root
     }
-
+    /*
+       * when configuration chagnes we should not re create the fragment , just handle the ui changes
+       * */
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        val layoutManager = binding.recyclerView.layoutManager as GridLayoutManager
+        layoutManager.spanCount =
+            if (newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
+                DataUtils.landScapSpanCount
+            } else {
+                DataUtils.portraitSpanCount
+            }
+        super.onConfigurationChanged(newConfig)
+    }
 
     /*
     *  callback to save item in db for fav.
@@ -75,7 +90,8 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                     vm.insertItem(
                         GifFavourite(
                             gifID = gifData.id,
-                            url = gifData.images.fixed_width.url
+                            url = gifData.images.fixed_width.url,
+                            title = gifData.title
                         )
                     )
                 }
@@ -115,7 +131,6 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                     if (it.isEmpty()) {
                         val dataPage = vm.getCurrentPage()
                         vm.lastPageNumber = item
-                        Log.d("keyur", "empty value came now of new page is $dataPage")
                         vm.loadGifPage(dataPage.plus(loading))
                     }
                 }

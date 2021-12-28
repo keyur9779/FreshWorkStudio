@@ -10,5 +10,6 @@ import kotlinx.parcelize.Parcelize
 data class GifFavourite(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val gifID: String,
+    val title: String,
     val url: String
 ) : Parcelable

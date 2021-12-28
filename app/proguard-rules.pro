@@ -19,3 +19,22 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+-keep class com.app.freshworkstudio.model**{*;}
+-keepclassmembers class com.app.freshworkstudio.model**{*;}
+
+-keep class com.skydoves**{*;}
+-keepclassmembers class com.skydoves**{*;}
+
+-assumenosideeffects class android.util.Log {
+  public static *** v(...);
+  public static *** d(...);
+  public static *** i(...);
+  public static *** w(...);
+  public static *** e(...);
+}
+
+-keepclassmembers class com.infoblox.bloxone.model**{*;}
+-keep class kotlin.reflect.**{*;}
+-keepclassmembers class kotlin.reflect.**{*;}

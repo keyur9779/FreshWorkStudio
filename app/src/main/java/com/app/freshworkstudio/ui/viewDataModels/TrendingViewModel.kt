@@ -65,6 +65,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
 
 
     // bindable list property to bind fetched list to recycler view using binding-adapter property
+
     @get:Bindable
     val gifList: IOTaskResult<Any> by gifListFlow.asBindingProperty(
         viewModelScope,
@@ -91,7 +92,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     }
 
     @get:Bindable
-    val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
+     val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
         viewModelScope, emptyList<GifFavourite>()
     )
 

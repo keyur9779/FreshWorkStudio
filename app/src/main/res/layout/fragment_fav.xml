@@ -28,7 +28,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/item_gif" />
+            tools:listitem="@layout/item_gif_fav" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/errorText"

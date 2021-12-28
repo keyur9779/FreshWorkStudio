@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
@@ -101,10 +102,18 @@ object ViewBinding {
     fun bindCheckBox(view: AppCompatCheckBox, list: List<GifFavourite>) {
         view.isChecked = list[DataUtils.item] != null
 
-        view.text = if(view.isChecked){
-              "Undo Favourite"
-        }else{
+        view.text = if (view.isChecked) {
+            "Undo Favourite"
+        } else {
             "Mark Favourite"
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("textTitle")
+    fun bindTextTitle(view: AppCompatTextView, title: String) {
+        view.text = "$title"
+        view.isSelected = true
+        view.marqueeRepeatLimit
     }
 }

@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.utils.binding
 
-import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -71,14 +70,12 @@ object RecyclerViewBinding {
     @BindingAdapter("paginationGifList")
     fun paginationGifList(view: RecyclerView, viewModel: TrendingViewModel) {
 
-        Log.d("keyur", "paginationMovieList")
 
         view.addOnScrollListener(object :
             PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
             override fun loadMoreItems() {
 
                 // apply load more logic over here
-                Log.d("keyur", "load more")
                 val itemCount = view.adapter?.itemCount!!
                 if (itemCount > loading) {
 
@@ -128,7 +125,6 @@ object RecyclerViewBinding {
                 viewModel.isLoading
             },
             loadMore = {
-                Log.d("keyur", "load more")
                 val itemCount = view.adapter?.itemCount!!
                 if (itemCount > loading) {
 
@@ -136,7 +132,6 @@ object RecyclerViewBinding {
                     if (ioTask is IOTaskResult.OnSuccess<*>) {
                         if (ioTask.data is GiphyResponseModel) {
                             //val modelData = ioTask.data as GiphyResponseModel
-                            Log.d("keyur", "new page available now")
                             if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
                                 viewModel.lastPageNumber += loading
                                 viewModel.loadGifPage(viewModel.lastPageNumber)
@@ -146,7 +141,6 @@ object RecyclerViewBinding {
                         }
                     } else {
                         if (FreshWorkApp.isInternetAvailable()) {
-                            Log.d("keyur", "try loading previous page")
                             viewModel.loadGifPage(viewModel.lastPageNumber.minus(loading))
                         }
                     }

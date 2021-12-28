@@ -32,25 +32,26 @@
             android:layout_gravity="center"
             android:theme="@style/CircularProgress" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/square"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_baseline_favorite" />
+            android:button="@drawable/square_checkbox"
+            android:checked="@{media.isFav}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/_8sdp"
             android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
+            app:textTitle="@{media.title}"
             android:textColor="@color/colorLightRed"
-            android:textSize="@dimen/_12sp"
-            app:textTitle="@{media.title}" />
+            android:marqueeRepeatLimit="marquee_forever"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_8sdp"
+            android:textSize="@dimen/_12sp" />
 
 
     </RelativeLayout>

@@ -19,7 +19,7 @@ package com.app.freshworkstudio.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
-import com.app.freshworkstudio.databinding.ItemGifBinding
+import com.app.freshworkstudio.databinding.ItemGifFavBinding
 import com.app.freshworkstudio.model.Media
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils.item
@@ -40,14 +40,15 @@ class GifFavListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifFavListViewHolder {
 
-        val binding = parent.binding<ItemGifBinding>(R.layout.item_gif)
+        val binding = parent.binding<ItemGifFavBinding>(R.layout.item_gif_fav)
         return GifFavListViewHolder(binding, onAdapterPositionClicked)
     }
 
     override fun onBindViewHolder(holder: GifFavListViewHolder, position: Int) {
         with(holder.binding) {
 
-            media = Media(items[position].url, true)
+            val item = items[position]
+            media = Media(item.url, true, item.title)
         }
     }
 
@@ -75,7 +76,7 @@ class GifFavListAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class GifFavListViewHolder(
-        val binding: ItemGifBinding,
+        val binding: ItemGifFavBinding,
         private val onAdapterPositionClicked: (GifFavourite) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {

@@ -38,23 +38,11 @@
             app:adapter="@{adapter}"
             app:adapterGifList="@{viewModel.gifList}"
             app:adapterGifModel="@{viewModel}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:paginationGifList="@{viewModel}"
-            tools:listitem="@layout/item_gif_details"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-        <!--<androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/searchView"
-            app:adapter="@{adapter}"
-            app:adapterGifList="@{viewModel.gifList}"
-            app:adapterSearchedGifList="@{viewModel.searchedGifList}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:paginationMovieList="@{viewModel}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:paginationGifList="@{viewModel}"
             app:spanCount="2"
-            tools:listitem="@layout/item_gif" />-->
+            tools:listitem="@layout/item_gif" />
 
         <ProgressBar
             android:layout_width="wrap_content"

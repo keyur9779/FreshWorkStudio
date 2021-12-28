@@ -44,17 +44,15 @@
         </androidx.cardview.widget.CardView>
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/square"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/placeholder_grey"
             android:padding="@dimen/_8sdp"
-            android:text="Favourite me"
-            android:textColor="@color/colorLightRed"
             android:textSize="@dimen/_12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_favorite" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"

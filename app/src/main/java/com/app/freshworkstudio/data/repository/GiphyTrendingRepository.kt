@@ -2,6 +2,8 @@ package com.app.freshworkstudio.data.repository
 
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.BuildConfig.API_KEY
+import com.app.freshworkstudio.FreshWorkApp
+import com.app.freshworkstudio.R
 import com.app.freshworkstudio.data.api.service.GiphyApiService
 import com.app.freshworkstudio.data.room.GFavouriteDao
 import com.app.freshworkstudio.model.IOTaskResult
@@ -37,11 +39,10 @@ class GiphyTrendingRepository constructor(
         // Just making sure we are not duplicating by any means, as url of
         // gif are getting different all time, so sometimes room is not able to resolve conflicts replace
         val item = gFavouriteDao.getGifById(data.gifID)
-
         if (item != null) {
             gFavouriteDao.deleteByGif(item)
         } else {
-            gFavouriteDao.insertGenre(data)
+            gFavouriteDao.insertGif(data)
         }
     }
 
@@ -85,18 +86,18 @@ class GiphyTrendingRepository constructor(
                 if (it.data.isNotEmpty()) {
                     emit(IOTaskResult.OnSuccess(it))
                 } else {
-                    emit(IOTaskResult.OnFailed("No Result for your searched query."))
+                    emit(IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result)))
                 }
             } ?: kotlin.run {
-                emit(IOTaskResult.OnFailed("No Result for your searched query."))
+                emit(IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result)))
             }
         } else {
             // can be improve error handling by adding error code based message - I'M just passing all error as message
-            emit(IOTaskResult.OnFailed("Retry with error ${response.errorBody()?.string()}"))
+            emit(IOTaskResult.OnFailed("${FreshWorkApp.context.getString(R.string.error)} ${response.errorBody()?.string()}"))
         }
     }.catch { e ->
         // can be improve error handling based on type of exception - I'M just passing all error as message
-        emit(IOTaskResult.OnFailed("Retry with error ${e.message}"))
+        emit(IOTaskResult.OnFailed("${FreshWorkApp.context.getString(R.string.error)} ${e.message}"))
         return@catch
     }.onCompletion {
         // higher order function to send callback

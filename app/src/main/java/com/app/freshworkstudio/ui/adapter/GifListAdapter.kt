@@ -16,12 +16,10 @@
 
 package com.app.freshworkstudio.ui.adapter
 
-import android.util.Log
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
-import com.app.freshworkstudio.databinding.ItemGifDetailsBinding
+import com.app.freshworkstudio.databinding.ItemGifBinding
 import com.app.freshworkstudio.databinding.ItemLoadingBinding
 import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.utils.DataUtils.item
@@ -48,7 +46,7 @@ class GifListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return if (viewType == item) {
-            val binding = parent.binding<ItemGifDetailsBinding>(R.layout.item_gif_details)
+            val binding = parent.binding<ItemGifBinding>(R.layout.item_gif)
             GifListViewHolder(binding, onAdapterPositionClicked)
         } else {
             val binding = parent.binding<ItemLoadingBinding>(R.layout.item_loading)
@@ -59,7 +57,8 @@ class GifListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == item) {
             with((holder as GifListViewHolder).binding) {
-                gifData = items[position]
+                val item = items[position]
+                media = item.images.fixed_width.apply { title = item.title }
             }
         }
     }
@@ -125,7 +124,7 @@ class GifListAdapter(
     }
 
     inner class GifListViewHolder(
-        val binding: ItemGifDetailsBinding,
+        val binding: ItemGifBinding,
         private val onAdapterPositionClicked: (GifData) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
