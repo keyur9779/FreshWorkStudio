@@ -1,4 +1,4 @@
-package com.app.freshworkstudio.utils.dependencyInjections
+package com.app.freshworkstudio.dependencyInjections
 
 import com.app.freshworkstudio.data.api.service.GiphyApiService
 import com.app.freshworkstudio.utils.DataUtils

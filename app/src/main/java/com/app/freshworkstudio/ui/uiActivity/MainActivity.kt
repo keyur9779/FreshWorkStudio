@@ -22,6 +22,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         super.onCreate(savedInstanceState)
         with(binding) {
 
+            setSupportActionBar(toolbar)
             viewPager.adapter = SectionsPagerAdapter(supportFragmentManager, lifecycle)
             TabLayoutMediator(tabs, viewPager) { tab, position ->
                 tab.text = pagerTitleList[position]

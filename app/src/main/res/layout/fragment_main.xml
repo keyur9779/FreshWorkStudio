@@ -40,7 +40,8 @@
             app:adapterGifModel="@{viewModel}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:paginationGifList="@{viewModel}"
-            tools:listitem="@layout/item_gif_details" />
+            tools:listitem="@layout/item_gif_details"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <!--<androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

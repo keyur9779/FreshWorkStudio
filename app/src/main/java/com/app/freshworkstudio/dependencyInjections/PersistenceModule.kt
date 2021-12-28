@@ -1,4 +1,4 @@
-package com.app.freshworkstudio.utils.dependencyInjections
+package com.app.freshworkstudio.dependencyInjections
 
 import android.content.Context
 import androidx.room.Room

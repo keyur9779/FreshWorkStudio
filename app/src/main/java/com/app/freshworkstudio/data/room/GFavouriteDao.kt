@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GFavouriteDao {
     @Insert()
-    suspend fun insertGenre(gif: GifFavourite)
+    suspend fun insertGif(gif: GifFavourite)
 
     @Query("SELECT * FROM GifFavourite")
     fun getGifList(): Flow<List<GifFavourite>>
