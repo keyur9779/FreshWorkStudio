@@ -16,6 +16,9 @@
 
 package com.app.freshworkstudio.ui.adapter
 
+import android.util.Log
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
@@ -108,7 +111,6 @@ class GifListAdapter(
     }
 
     fun showErrorPage(s: String) {
-
         retryPageLoad = true
         val itemSize = items.size
         this.errorMsg = s
@@ -130,7 +132,6 @@ class GifListAdapter(
         init {
             binding.root.setOnClickListener() {
                 val item = items[absoluteAdapterPosition]
-                //item.images.fixed_width.isFav = (it as AppCompatCheckBox).isChecked
                 onAdapterPositionClicked(item)
             }
         }
@@ -143,13 +144,27 @@ class GifListAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.loadmoreErrorlayout.setOnClickListener {
-                onRetry(absoluteAdapterPosition)
-            }
+
             binding.loadmoreRetry.setOnClickListener {
                 onRetry(absoluteAdapterPosition)
             }
+            binding.loadmoreErrortxt.setOnClickListener {
+                binding.progressBar.visibility = VISIBLE
+                onRetry(absoluteAdapterPosition)
+            }
+
             binding.loadmoreErrortxt.text = "$errorMsg"
+            if (binding.loadmoreErrortxt.text.isNullOrEmpty()) {
+                binding.loadmoreRetry.visibility = GONE
+                binding.tap.visibility = GONE
+                binding.loadmoreErrortxt.visibility = GONE
+                binding.progressBar.visibility = VISIBLE
+            } else {
+                binding.loadmoreRetry.visibility = VISIBLE
+                binding.tap.visibility = VISIBLE
+                binding.loadmoreErrortxt.visibility = VISIBLE
+                binding.progressBar.visibility = GONE
+            }
         }
     }
 }

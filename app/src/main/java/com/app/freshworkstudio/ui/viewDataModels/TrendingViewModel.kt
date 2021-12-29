@@ -92,12 +92,12 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     }
 
     @get:Bindable
-     val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
+    val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
         viewModelScope, emptyList<GifFavourite>()
     )
 
     fun fetchGifFavMarket(id: String) = gifFavouriteStateFlow.tryEmit(id)
 
-    fun getCurrentPage() :Int = gifPageStateFlow.value
+    fun getCurrentPage(): Int = gifPageStateFlow.value
 
 }

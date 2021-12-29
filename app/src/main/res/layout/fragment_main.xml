@@ -44,13 +44,13 @@
             app:spanCount="2"
             tools:listitem="@layout/item_gif" />
 
-        <ProgressBar
+        <!--<ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/searchView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/appbar_padding"
-            app:visible="@{viewModel.loading}" />
+            app:visible="@{viewModel.loading}" />-->
 
     </RelativeLayout>
 </layout>

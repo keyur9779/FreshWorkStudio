@@ -30,7 +30,7 @@ object RecyclerViewBinding {
     @BindingAdapter("adapterGifList", "adapterGifModel")
     fun bindAdapterGifList(view: RecyclerView, gif: IOTaskResult<*>, viewModel: TrendingViewModel) {
 
-        val adapter = (view.adapter as? GifListAdapter)
+        val adapter = view.adapter as? GifListAdapter
         gif.whatIfNotNull {
 
             val ioTask = gif as IOTaskResult<Any>
@@ -50,6 +50,9 @@ object RecyclerViewBinding {
                         adapter?.clear()
                     }
                     adapter?.addGif(modelData.data)
+                }else{
+                    adapter?.showErrorPage("")
+
                 }
                 return@whatIfNotNull
             }
@@ -57,12 +60,9 @@ object RecyclerViewBinding {
             if (ioTask is IOTaskResult.OnFailed<*>) {
                 if (ioTask.message is String) {
                     val modelData = ioTask.message
-                    adapter?.showErrorPage("Retry $modelData")
+                    adapter?.showErrorPage("$modelData")
                 }
             }
-
-        } ?: kotlin.run {
-            adapter?.showErrorPage("Something went Wrong")
         }
     }
 
@@ -75,8 +75,9 @@ object RecyclerViewBinding {
             PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
             override fun loadMoreItems() {
 
+                val adapter = view.adapter as? GifListAdapter
                 // apply load more logic over here
-                val itemCount = view.adapter?.itemCount!!
+                val itemCount = adapter?.itemCount!!
                 if (itemCount > loading) {
 
                     val ioTask = viewModel.gifList
@@ -84,6 +85,7 @@ object RecyclerViewBinding {
                         if (ioTask.data is GiphyResponseModel) {
                             if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
                                 viewModel.lastPageNumber += loading
+                                adapter.showErrorPage("")
                                 viewModel.loadGifPage(viewModel.lastPageNumber)
                             } else {
                                 viewModel.isLastPage = true
@@ -91,6 +93,7 @@ object RecyclerViewBinding {
                         }
                     } else {
                         if (FreshWorkApp.isInternetAvailable()) {
+                            adapter.showErrorPage("")
                             viewModel.loadGifPage(viewModel.lastPageNumber.minus(loading))
                         }
                     }
@@ -117,40 +120,6 @@ object RecyclerViewBinding {
             )
         )
 
-
-        /*//TODO replace this pagination with our custom one
-        RecyclerViewPaginator(
-            recyclerView = view,
-            isLoading = {
-                viewModel.isLoading
-            },
-            loadMore = {
-                val itemCount = view.adapter?.itemCount!!
-                if (itemCount > loading) {
-
-                    val ioTask = viewModel.gifList
-                    if (ioTask is IOTaskResult.OnSuccess<*>) {
-                        if (ioTask.data is GiphyResponseModel) {
-                            //val modelData = ioTask.data as GiphyResponseModel
-                            if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
-                                viewModel.lastPageNumber += loading
-                                viewModel.loadGifPage(viewModel.lastPageNumber)
-                            } else {
-                                viewModel.isLastPage = true
-                            }
-                        }
-                    } else {
-                        if (FreshWorkApp.isInternetAvailable()) {
-                            viewModel.loadGifPage(viewModel.lastPageNumber.minus(loading))
-                        }
-                    }
-                }
-            },
-            onLast = { viewModel.isLastPage }
-        ).run {
-            threshold = 1
-            currentPage = 1
-        }*/
     }
 
 

@@ -2,7 +2,6 @@ package com.app.freshworkstudio.ui.fragments
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.FavDialogBinding
 import com.app.freshworkstudio.databinding.FragmentMainBinding
@@ -20,6 +20,7 @@ import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
+import com.google.android.material.snackbar.Snackbar
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
@@ -50,6 +51,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
             viewModel = vm
         }.root
     }
+
     /*
        * when configuration chagnes we should not re create the fragment , just handle the ui changes
        * */
@@ -107,8 +109,17 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
     * */
     private fun onRetry(): (Int) -> Unit {
         return {
-            vm.loadGifPage(vm.lastPageNumber.plus(loading))
+            if (FreshWorkApp.isInternetAvailable()) {
+                vm.loadGifPage(vm.getCurrentPage().plus(loading))
+            } else {
+                showError(getString(R.string.error_msg_no_internet))
+                gifListAdapter.showErrorPage(getString(R.string.error_msg_no_internet))
+            }
         }
+    }
+
+    private fun showError(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
