@@ -101,7 +101,7 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("isFav")
     fun bindCheckBox(view: AppCompatCheckBox, list: List<GifFavourite>) {
-        view.isChecked = list[DataUtils.item] != null
+        view.isChecked = list[DataUtils.item] == null
 
         view.text = if (view.isChecked) {
             view.context.getString(R.string.unFav)

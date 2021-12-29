@@ -21,41 +21,20 @@
 #-renamesourcefileattribute SourceFile
 
 
+-dontwarn com.app.freshworkstudio.model.**
 -keep class com.app.freshworkstudio.model**{*;}
 -keepclassmembers class com.app.freshworkstudio.model**{*;}
 
--keep class com.skydoves**{*;}
--keepclassmembers class com.skydoves**{*;}
+-dontwarn com.app.freshworkstudio.ui.viewDataModels.**
+-keep class com.app.freshworkstudio.ui.viewDataModels**{*;}
+-keepclassmembers class com.app.freshworkstudio.ui.viewDataModels**{*;}
 
--assumenosideeffects class android.util.Log {
-  public static *** v(...);
-  public static *** d(...);
-  public static *** i(...);
-  public static *** w(...);
-  public static *** e(...);
-}
-
--keepclassmembers class com.infoblox.bloxone.model**{*;}
 -keep class kotlin.reflect.**{*;}
 -keepclassmembers class kotlin.reflect.**{*;}
 
 -dontwarn kotlin.reflect.jvm.internal.**
 -keep class kotlin.reflect.jvm.internal.** { *; }
 -keepclassmembers class kotlin.reflect.jvm.internal.** { *; }
-
-
-
-
--keep class kotlin.Metadata { *; }
--keepclassmembers class kotlin.Metadata {
-    public <methods>;
-}
-
-
-
--keepnames @kotlin.Metadata class com.yourpackage.model.**
--keep class com.yourpackage.model.** { *; }
--keepclassmembers class com.yourpackage.model.** { *; }
 
 # data binding
 -dontwarn androidx.databinding.**

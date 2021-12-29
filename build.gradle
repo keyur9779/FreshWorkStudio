@@ -12,7 +12,7 @@ buildscript {
 
         // build tool
         splashVersion = '1.0.0-alpha01'
-        gradleBuildTool = '7.0.0'
+        gradleBuildTool = '7.0.2'
         readMore = '1.0.0'
 
         // support library
@@ -23,7 +23,7 @@ buildscript {
         appcompat = '1.4.0'
 
         // kotlin
-        kotlinVersion = '1.6.10'
+        kotlinVersion = '1.5.32'
 
         constraintlayout = '2.1.2'
         // architecture components
