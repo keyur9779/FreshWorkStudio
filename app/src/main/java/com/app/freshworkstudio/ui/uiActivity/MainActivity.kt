@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Main class where user will interact with application
  * */
 @AndroidEntryPoint
-class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

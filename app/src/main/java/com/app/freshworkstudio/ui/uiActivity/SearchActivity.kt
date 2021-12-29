@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.transition.Slide
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivitySearchBinding
@@ -22,14 +19,11 @@ import com.app.freshworkstudio.ui.adapter.GifSearchListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.item
-import com.app.freshworkstudio.utils.ErrorUtil
-import com.skydoves.bindables.BindingActivity
-import com.skydoves.whatif.whatIfNotNull
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_search) {
+class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search) {
 
     // initialized view model same as trending as functionality is very much same except search
     private val vm: TrendingViewModel by viewModels()
@@ -41,35 +35,25 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        with(window) {
-            requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-            // set an exit transition
-            enterTransition = Slide(Gravity.RIGHT)
-            exitTransition = Slide(Gravity.LEFT)
-        }
         super.onCreate(savedInstanceState)
         with(binding) {
             adapter = gifSearchListAdapter
             viewModel = vm
             searchBar.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    // beforeTextChanged
+                //This method is called to notify you that, within s, the count characters beginning at start are about to be
+                // replaced by new text with length after.
+                override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
                 }
 
-                override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                override fun onTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
                     vm.lastPageNumber = item
                     vm.searchQuery = text.toString()
                     vm.query.value = text.toString()
                 }
 
-                override fun afterTextChanged(text: Editable?) {
-
-                    text.whatIfNotNull {
-                        if (it.isEmpty()) {
-                            gifSearchListAdapter.clear()
-                        }
-                    }
+                override fun afterTextChanged(text: Editable) {
+                    if (text.isEmpty())
+                        gifSearchListAdapter.clear()
 
                 }
             })
@@ -78,7 +62,6 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
             cancelButton.setOnClickListener {
                 searchBar.setText("")
             }
-
         }
     }
 
@@ -105,9 +88,7 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
                 square.setOnClickListener {
                     square.text =
                         if (square.isChecked) getString(R.string.unFav) else getString(R.string.fav)
-                    vm.insertItem(
-                        GifFavourite(
-                            gifID = gifData.id,
+                    vm.insertItem( GifFavourite( gifID = gifData.id,
                             url = gifData.images.fixed_width.url,
                             title = gifData.title
                         )
@@ -128,19 +109,10 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
             if (FreshWorkApp.isInternetAvailable()) {
                 vm.loadGifPage(vm.lastPageNumber.plus(DataUtils.loading))
             } else {
-                ErrorUtil.showError(getString(R.string.error_msg_no_internet), binding.root)
+                showError(getString(R.string.error_msg_no_internet))
                 gifSearchListAdapter.showErrorPage(getString(R.string.error_msg_no_internet))
             }
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        DataUtils.condition = ""
     }
 
 }

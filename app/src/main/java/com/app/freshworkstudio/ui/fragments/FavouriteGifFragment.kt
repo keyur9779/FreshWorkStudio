@@ -14,15 +14,13 @@ import com.app.freshworkstudio.databinding.FragmentFavBinding
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifFavListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.FavouriteGifViewModel
-import com.app.freshworkstudio.utils.DataUtils
-import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
  *  fragment containing a recyclerview to load all gif from local room.
  */
 @AndroidEntryPoint
-class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragment_fav) {
+class FavouriteGifFragment : BaseFragment<FragmentFavBinding>(R.layout.fragment_fav) {
 
 
     // initialized view model
@@ -33,31 +31,27 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
         GifFavListAdapter(onAdapterPositionClicked())
     }
 
-    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle? ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        return binding {adapter = gifListAdapter
-            viewModel = vm}.root
+        return binding {
+            adapter = gifListAdapter
+            viewModel = vm
+        }.root
     }
 
     /*
     * when configuration chagnes we should not re create the fragment , just handle the ui changes
     * */
     override fun onConfigurationChanged(newConfig: Configuration) {
-        val layoutManager = binding.recyclerView.layoutManager as GridLayoutManager
-        layoutManager.spanCount =
-            if (newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
-                DataUtils.landScapSpanCount
-            } else {
-                DataUtils.portraitSpanCount
-            }
+        onConfigurationChanged(newConfig, binding.recyclerView.layoutManager as GridLayoutManager)
         super.onConfigurationChanged(newConfig)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.localGifList.observe(viewLifecycleOwner) {
-            binding.errorText.visibility = if (it.isEmpty()) VISIBLE else  GONE
+            binding.errorText.visibility = if (it.isEmpty()) VISIBLE else GONE
             gifListAdapter.addGif(it)
         }
     }
@@ -68,7 +62,6 @@ class FavouriteGifFragment : BindingFragment<FragmentFavBinding>(R.layout.fragme
     private fun onAdapterPositionClicked(): (GifFavourite) -> Unit {
         return { vm.deleteItem(it) }
     }
-
 
     companion object {
         /**

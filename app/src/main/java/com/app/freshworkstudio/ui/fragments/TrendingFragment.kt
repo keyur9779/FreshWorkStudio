@@ -16,11 +16,7 @@ import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
-import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.loading
-import com.app.freshworkstudio.utils.ErrorUtil.showError
-import com.google.android.material.snackbar.Snackbar
-import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
 
@@ -29,7 +25,7 @@ import kotlin.random.Random
  * A trending fragment containing a recyclerview to load all gif.
  */
 @AndroidEntryPoint
-class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_main) {
+class TrendingFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
 
     // initialized view model
@@ -55,13 +51,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
        * when configuration chagnes we should not re create the fragment , just handle the ui changes
        * */
     override fun onConfigurationChanged(newConfig: Configuration) {
-        val layoutManager = binding.recyclerView.layoutManager as GridLayoutManager
-        layoutManager.spanCount =
-            if (newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
-                DataUtils.landScapSpanCount
-            } else {
-                DataUtils.portraitSpanCount
-            }
+        onConfigurationChanged(newConfig, binding.recyclerView.layoutManager as GridLayoutManager)
         super.onConfigurationChanged(newConfig)
     }
 
@@ -79,6 +69,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
             with(dBinding) {
 
                 alert.setView(root)
+
                 vm.gifFavID = gifData.id
                 viewModel = vm
                 media = gifData.images.fixed_width
@@ -87,13 +78,9 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                 vm.fetchGifFavMarket(radim)
                 square.setOnClickListener {
                     square.text = if (square.isChecked) getString(R.string.unFav) else getString(R.string.fav)
-                    vm.insertItem(
-                        GifFavourite(
-                            gifID = gifData.id,
+                    vm.insertItem(GifFavourite(gifID = gifData.id,
                             url = gifData.images.fixed_width.url,
-                            title = gifData.title
-                        )
-                    )
+                            title = gifData.title))
                 }
                 cancelAction.setOnClickListener {
                     alertView.dismiss()
@@ -110,7 +97,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
             if (FreshWorkApp.isInternetAvailable()) {
                 vm.loadGifPage(vm.getCurrentPage().plus(loading))
             } else {
-                showError(getString(R.string.error_msg_no_internet),binding.root)
+                showError(getString(R.string.error_msg_no_internet))
                 gifListAdapter.showErrorPage(getString(R.string.error_msg_no_internet))
             }
         }
@@ -126,6 +113,4 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
             return TrendingFragment()
         }
     }
-
-
 }

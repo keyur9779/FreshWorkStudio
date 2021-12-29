@@ -31,8 +31,10 @@ import org.junit.rules.TestRule
 import java.io.IOException
 
 class GiphyServiceTest : ApiAbstract<GiphyApiService>() {
+
     @get:Rule
     val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
+
     private val requestHeader = HashMap<String, String>()
 
     private lateinit var service: GiphyApiService
