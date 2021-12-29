@@ -16,13 +16,12 @@
 
 package com.app.freshworkstudio.ui.adapter
 
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
-import com.app.freshworkstudio.databinding.ItemGifBinding
+import com.app.freshworkstudio.databinding.ItemGifDetailsBinding
 import com.app.freshworkstudio.databinding.ItemLoadingBinding
 import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.utils.DataUtils.item
@@ -36,10 +35,11 @@ import com.skydoves.bindables.binding
  * @param onAdapterPositionClicked = higher order function return clicked item model to save it in local db
  * @param onRetry = retry download same page on error
  * */
-class GifListAdapter(
+class GifSearchListAdapter(
     private val onAdapterPositionClicked: (GifData) -> Unit,
     private val onRetry: (Int) -> Unit
-):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val items: MutableList<GifData> = arrayListOf()
     private var retryPageLoad: Boolean = false
@@ -48,7 +48,7 @@ class GifListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return if (viewType == item) {
-            val binding = parent.binding<ItemGifBinding>(R.layout.item_gif)
+            val binding = parent.binding<ItemGifDetailsBinding>(R.layout.item_gif_details)
             GifListViewHolder(binding, onAdapterPositionClicked)
         } else {
             val binding = parent.binding<ItemLoadingBinding>(R.layout.item_loading)
@@ -59,8 +59,7 @@ class GifListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == item) {
             with((holder as GifListViewHolder).binding) {
-                val item = items[position]
-                media = item.images.fixed_width.apply { title = item.title }
+                gifData = items[position]
             }
         }
     }
@@ -80,9 +79,11 @@ class GifListAdapter(
         /*if (newSize == pageCount) {
             notifyDataSetChanged()
         } else {*/
+
         notifyItemRangeInserted(previousItemSize, newSize)
         //}
     }
+
 
     override fun getItemViewType(position: Int): Int {
         val itemSize = items.size
@@ -119,12 +120,10 @@ class GifListAdapter(
     fun clear() {
         items.clear()
         notifyDataSetChanged()
-
-
     }
 
     inner class GifListViewHolder(
-        val binding: ItemGifBinding,
+        val binding: ItemGifDetailsBinding,
         private val onAdapterPositionClicked: (GifData) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {

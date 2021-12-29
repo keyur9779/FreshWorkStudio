@@ -14,43 +14,20 @@
             type="com.app.freshworkstudio.ui.adapter.GifListAdapter" />
     </data>
 
-    <RelativeLayout
-        android:id="@+id/constraintLayout"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragments.TrendingFragment">
+        android:layout_height="wrap_content"
+        app:adapter="@{adapter}"
+        app:adapterGifList="@{viewModel.gifList}"
+        app:adapterGifModel="@{viewModel}"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintStart_toStartOf="parent"
+        app:paginationGifList="@{viewModel}"
+        app:spanCount="2"
+        tools:listitem="@layout/item_gif" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/appbar_padding"
-            app:iconifiedByDefault="false"
-            app:queryHint="@string/user_name"
-            app:theme="@style/SearchView" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/searchView"
-            app:adapter="@{adapter}"
-            app:adapterGifList="@{viewModel.gifList}"
-            app:adapterGifModel="@{viewModel}"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:paginationGifList="@{viewModel}"
-            app:spanCount="2"
-            tools:listitem="@layout/item_gif" />
-
-        <!--<ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/searchView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/appbar_padding"
-            app:visible="@{viewModel.loading}" />-->
-
-    </RelativeLayout>
 </layout>

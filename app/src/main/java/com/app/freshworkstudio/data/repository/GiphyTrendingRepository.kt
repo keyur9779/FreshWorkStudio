@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.data.repository
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.FreshWorkApp
@@ -9,7 +10,6 @@ import com.app.freshworkstudio.data.room.GFavouriteDao
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils.api_key
-import com.app.freshworkstudio.utils.DataUtils.delay
 import com.app.freshworkstudio.utils.DataUtils.limit
 import com.app.freshworkstudio.utils.DataUtils.offset
 import com.app.freshworkstudio.utils.DataUtils.pageCount
@@ -60,7 +60,9 @@ class GiphyTrendingRepository constructor(
     fun loadTrendingGif(page: Int, q: String, success: () -> Unit) = flow {
 
         //TODO : Please remove this delay when releasing to production as added to slow down downloading process bit
-        kotlinx.coroutines.delay(delay.toLong())
+        // kotlinx.coroutines.delay(delay.toLong())
+
+        Log.d("Test", "page is with search $q")
 
 
         val map = mutableMapOf<String, String>()
@@ -93,7 +95,13 @@ class GiphyTrendingRepository constructor(
             }
         } else {
             // can be improve error handling by adding error code based message - I'M just passing all error as message
-            emit(IOTaskResult.OnFailed("${FreshWorkApp.context.getString(R.string.error)} ${response.errorBody()?.string()}"))
+            emit(
+                IOTaskResult.OnFailed(
+                    "${FreshWorkApp.context.getString(R.string.error)} ${
+                        response.errorBody()?.string()
+                    }"
+                )
+            )
         }
     }.catch { e ->
         // can be improve error handling based on type of exception - I'M just passing all error as message

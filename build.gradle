@@ -6,9 +6,9 @@ buildscript {
     }
     ext {
         // sdk and tools
-        compileSdkVersion = 32
+        compileSdkVersion = 31
         minSdkVersion = 23
-        targetSdkVersion = 32
+        targetSdkVersion = 31
 
         // build tool
         splashVersion = '1.0.0-alpha01'
@@ -34,7 +34,7 @@ buildscript {
         bindablesVersion = '1.0.9'
 
         // di
-        hiltCoreVersion = '2.38.1'
+        hiltCoreVersion = '2.40.5'
         hiltVersion = '1.0.0'
 
         // coroutines

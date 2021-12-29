@@ -69,20 +69,5 @@
             app:layout_constraintStart_toEndOf="@+id/imageCard"
             app:layout_constraintTop_toBottomOf="@+id/square"></androidx.appcompat.widget.AppCompatTextView>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/source"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/appbar_padding"
-            android:layout_marginEnd="@dimen/appbar_padding"
-            android:gravity="left"
-            android:maxLines="1"
-            android:text="@{gifData.import_datetime}"
-            android:textColor="@color/background800"
-            android:textSize="@dimen/_12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageCard"
-            app:layout_constraintTop_toBottomOf="@+id/title"></androidx.appcompat.widget.AppCompatTextView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

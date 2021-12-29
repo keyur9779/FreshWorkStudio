@@ -2,16 +2,15 @@ package com.app.freshworkstudio.utils
 
 object DataUtils {
 
+    var condition = ""
     const val landScapSpanCount = 3
     const val portraitSpanCount = 2
     const val HOST = "https://api.giphy.com/"
 
-    /*const val apiKEY = "5RpODkIcun4RcVqdKz0eOaP8ACHT8R8M"*/
-
-    val pagerTitleList = arrayListOf<String>("Trending", "Favourite")
+    val pagerTitleList = arrayListOf("Trending", "Favourite")
 
     const val pageCount = 20
-    const val delay = 1000
+    const val delay = 500
 
 
     const val item: Int = 0
@@ -23,6 +22,7 @@ object DataUtils {
     const val limit = "limit"
     const val offset = "offset"
     const val query = "q"
+    const val randomQuery = "AnAn"
     const val urlPath = "urlPath"
 
 

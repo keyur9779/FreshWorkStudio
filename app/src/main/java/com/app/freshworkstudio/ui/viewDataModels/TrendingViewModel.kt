@@ -6,13 +6,14 @@ import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.utils.DataUtils.delay
+import com.app.freshworkstudio.utils.DataUtils.loading
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
 
     // bindable property to store query text
     @get:Bindable
-    var searchQuery: String by bindingProperty("")
+    var searchQuery: String by bindingProperty(DataUtils.condition)
 
     // bindable property to get info last fetched page from network
     @get:Bindable
@@ -53,15 +54,18 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     @get:Bindable
     var isLastPage: Boolean by bindingProperty(false)
 
-
     // gif mutable state flow to fetch data in pagination
     private val gifPageStateFlow: MutableStateFlow<Int> = MutableStateFlow(DataUtils.item)
-    private val gifListFlow = gifPageStateFlow.flatMapLatest {
-        isLoading = true
-        giphyTrendingRepository.loadTrendingGif(lastPageNumber, searchQuery) {
-            isLoading = false
+    private val gifListFlow =
+        gifPageStateFlow.filter {
+            return@filter searchQuery.isEmpty()
+        }.flatMapLatest {
+            isLoading = true
+
+            giphyTrendingRepository.loadTrendingGif(lastPageNumber, searchQuery) {
+                isLoading = false
+            }
         }
-    }
 
 
     // bindable list property to bind fetched list to recycler view using binding-adapter property
@@ -99,5 +103,29 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     fun fetchGifFavMarket(id: String) = gifFavouriteStateFlow.tryEmit(id)
 
     fun getCurrentPage(): Int = gifPageStateFlow.value
+
+
+    val query = MutableStateFlow("")
+
+    // search gif with delay in typing to avoid multiple query to server
+    private val queryFlow =
+        query.debounce(delay.toLong()).filter {
+            return@filter it.isNotEmpty()
+        }.distinctUntilChanged().flatMapLatest {
+            isLoading = true
+            giphyTrendingRepository.loadTrendingGif(lastPageNumber.minus(loading), searchQuery) {
+                isLoading = false
+            }
+        }
+
+    // download searched gif pages in pagination
+    fun searchPages(id: String) = query.tryEmit(id)
+
+    // bind searched Gif list
+    @get:Bindable
+    val gifSearched: IOTaskResult<Any> by queryFlow.asBindingProperty(
+        viewModelScope,
+        IOTaskResult.OnSuccess(Any())
+    )
 
 }

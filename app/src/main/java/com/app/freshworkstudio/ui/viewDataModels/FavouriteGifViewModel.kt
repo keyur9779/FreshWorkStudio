@@ -39,7 +39,7 @@ class FavouriteGifViewModel @Inject constructor(private val giFavouriteRepositor
         }
     }
 
-    // we used to to make sure we fetch latest changes from room db
+    // we used to to make sure we fetch latest changes from room db and notify when data is changed
     val localGifList = localGifListFlow.asLiveData()
 
     //delete fav to database
@@ -47,5 +47,6 @@ class FavouriteGifViewModel @Inject constructor(private val giFavouriteRepositor
         viewModelScope.launch(Dispatchers.IO) {
             giFavouriteRepository.delete(fav)
         }
+
     }
 }

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
+import com.app.freshworkstudio.R
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
 import com.bumptech.glide.Glide
@@ -103,9 +104,9 @@ object ViewBinding {
         view.isChecked = list[DataUtils.item] != null
 
         view.text = if (view.isChecked) {
-            "Undo Favourite"
+            view.context.getString(R.string.unFav)
         } else {
-            "Mark Favourite"
+            view.context.getString(R.string.fav)
         }
     }
 

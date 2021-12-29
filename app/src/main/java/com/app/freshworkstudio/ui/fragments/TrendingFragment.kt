@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.app.freshworkstudio.FreshWorkApp
@@ -18,8 +17,8 @@ import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils
-import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
+import com.app.freshworkstudio.utils.ErrorUtil.showError
 import com.google.android.material.snackbar.Snackbar
 import com.skydoves.bindables.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -79,7 +78,6 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
 
             with(dBinding) {
 
-
                 alert.setView(root)
                 vm.gifFavID = gifData.id
                 viewModel = vm
@@ -88,7 +86,7 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
                 val radim = gifData.id.substring(Random.nextInt(gifData.id.length))
                 vm.fetchGifFavMarket(radim)
                 square.setOnClickListener {
-                    square.text = if (square.isChecked) "Undo Favourite" else "Mark Favourite"
+                    square.text = if (square.isChecked) getString(R.string.unFav) else getString(R.string.fav)
                     vm.insertItem(
                         GifFavourite(
                             gifID = gifData.id,
@@ -112,55 +110,10 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
             if (FreshWorkApp.isInternetAvailable()) {
                 vm.loadGifPage(vm.getCurrentPage().plus(loading))
             } else {
-                showError(getString(R.string.error_msg_no_internet))
+                showError(getString(R.string.error_msg_no_internet),binding.root)
                 gifListAdapter.showErrorPage(getString(R.string.error_msg_no_internet))
             }
         }
-    }
-
-    private fun showError(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query.isNullOrEmpty()) {
-                    return false
-                }
-                vm.lastPageNumber = item
-                vm.loadGifPage(vm.getCurrentPage().plus(loading))
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    vm.searchQuery = it
-                    if (it.isEmpty()) {
-                        val dataPage = vm.getCurrentPage()
-                        vm.lastPageNumber = item
-                        vm.loadGifPage(dataPage.plus(loading))
-                    }
-                }
-                return false
-            }
-        })
-
-
-        binding.searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn).apply {
-            setOnClickListener {
-                vm.searchQuery = ""
-                with(binding.searchView) {
-                    setQuery(vm.searchQuery, false)
-                    clearFocus()
-                }
-
-            }
-        }
-
     }
 
     companion object {
@@ -169,7 +122,6 @@ class TrendingFragment : BindingFragment<FragmentMainBinding>(R.layout.fragment_
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        @JvmStatic
         fun newInstance(): TrendingFragment {
             return TrendingFragment()
         }
