@@ -8,8 +8,10 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivitySearchBinding

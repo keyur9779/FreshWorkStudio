@@ -118,6 +118,7 @@ class GifSearchListAdapter(
     }
 
     fun clear() {
+        retryPageLoad = false
         items.clear()
         notifyDataSetChanged()
     }

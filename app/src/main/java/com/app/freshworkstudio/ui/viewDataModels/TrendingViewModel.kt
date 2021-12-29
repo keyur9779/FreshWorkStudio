@@ -7,7 +7,6 @@ import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.delay
-import com.app.freshworkstudio.utils.DataUtils.loading
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
@@ -113,7 +112,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
             return@filter it.isNotEmpty()
         }.distinctUntilChanged().flatMapLatest {
             isLoading = true
-            giphyTrendingRepository.loadTrendingGif(lastPageNumber.minus(loading), searchQuery) {
+            giphyTrendingRepository.loadTrendingGif(lastPageNumber, searchQuery) {
                 isLoading = false
             }
         }
