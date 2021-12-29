@@ -22,6 +22,7 @@ import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ItemGifFavBinding
 import com.app.freshworkstudio.model.Media
 import com.app.freshworkstudio.model.entity.GifFavourite
+import com.app.freshworkstudio.ui.adapter.GifFavListAdapter.GifFavListViewHolder
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.skydoves.bindables.binding
 
@@ -31,10 +32,8 @@ import com.skydoves.bindables.binding
  *
  * @param onAdapterPositionClicked = higher order function return clicked item model to remove it in local db
  * */
-class GifFavListAdapter(
-    private val onAdapterPositionClicked: (GifFavourite) -> Unit
-) :
-    RecyclerView.Adapter<GifFavListAdapter.GifFavListViewHolder>() {
+class GifFavListAdapter(private val onAdapterPositionClicked: (GifFavourite) -> Unit) :
+    BaseGifAdapter<GifFavListViewHolder>() {
 
     val items: MutableList<GifFavourite> = arrayListOf()
 
@@ -52,25 +51,22 @@ class GifFavListAdapter(
         }
     }
 
-    fun addGif(gifs: List<GifFavourite>) {
+    override fun addGif(gifs: Any) {
 
+        val list = gifs as List<GifFavourite>
         val oItemSize = items.size
 
-        if (oItemSize == gifs.size) {
+        if (oItemSize == list.size) {
             return
         }
-
         items.clear()
-        items.addAll(gifs)
-
+        items.addAll(list)
         val nItemSize = items.size
         if (oItemSize == item) {
             notifyDataSetChanged()
         } else {
             notifyItemRangeInserted(oItemSize, nItemSize)
-
         }
-
     }
 
     override fun getItemCount(): Int = items.size
@@ -90,5 +86,13 @@ class GifFavListAdapter(
                 }
             }
         }
+    }
+
+    override fun showErrorPage(error: String) {
+        // no implementation as we don't have error page for fav gif list
+    }
+
+    override fun clear() {
+        items.clear()
     }
 }

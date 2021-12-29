@@ -62,9 +62,6 @@ class GiphyTrendingRepository constructor(
         //TODO : Please remove this delay when releasing to production as added to slow down downloading process bit
         // kotlinx.coroutines.delay(delay.toLong())
 
-        Log.d("Test", "page is with search $q")
-
-
         val map = mutableMapOf<String, String>()
         map[api_key] = API_KEY
         map[limit] = pageCount.toString()

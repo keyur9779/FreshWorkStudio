@@ -48,8 +48,6 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
             exitTransition = Slide(Gravity.LEFT)
         }
         super.onCreate(savedInstanceState)
-
-        Log.d("test", "updateinf ser ${vm.searchQuery}")
         with(binding) {
             adapter = gifSearchListAdapter
             viewModel = vm
@@ -60,14 +58,12 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
 
                 override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                    Log.d("test", "onasdasdsad")
                     vm.lastPageNumber = item
                     vm.searchQuery = text.toString()
                     vm.query.value = text.toString()
                 }
 
                 override fun afterTextChanged(text: Editable?) {
-                    Log.d("test", "afterTextChanged $text")
 
                     text.whatIfNotNull {
                         if (it.isEmpty()) {

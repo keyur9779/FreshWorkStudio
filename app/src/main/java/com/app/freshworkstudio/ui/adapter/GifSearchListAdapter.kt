@@ -37,9 +37,8 @@ import com.skydoves.bindables.binding
  * */
 class GifSearchListAdapter(
     private val onAdapterPositionClicked: (GifData) -> Unit,
-    private val onRetry: (Int) -> Unit
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val onRetry: (Int) -> Unit) :
+    BaseGifAdapter<RecyclerView.ViewHolder>() {
 
     val items: MutableList<GifData> = arrayListOf()
     private var retryPageLoad: Boolean = false
@@ -68,7 +67,8 @@ class GifSearchListAdapter(
         notifyItemRemoved(itemCount - item)
     }
 
-    fun addGif(gifs: List<GifData>) {
+    override fun addGif(list: Any) {
+        val gifs = list as List<GifData>
         if (retryPageLoad) {
             retryPageLoad = false
             removeLoadingFooter()
@@ -109,7 +109,7 @@ class GifSearchListAdapter(
         }
     }
 
-    fun showErrorPage(s: String) {
+    override fun showErrorPage(s: String) {
         retryPageLoad = true
         val itemSize = items.size
         this.errorMsg = s
@@ -117,7 +117,7 @@ class GifSearchListAdapter(
         notifyItemChanged(size)
     }
 
-    fun clear() {
+    override fun clear() {
         retryPageLoad = false
         items.clear()
         notifyDataSetChanged()

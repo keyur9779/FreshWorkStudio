@@ -16,7 +16,6 @@
 
 package com.app.freshworkstudio.ui.adapter
 
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -32,14 +31,13 @@ import com.skydoves.bindables.binding
 
 /**
  * gif list adapter for searched and trending gifs
- *
  * @param onAdapterPositionClicked = higher order function return clicked item model to save it in local db
  * @param onRetry = retry download same page on error
  * */
 class GifListAdapter(
     private val onAdapterPositionClicked: (GifData) -> Unit,
     private val onRetry: (Int) -> Unit
-):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : BaseGifAdapter<RecyclerView.ViewHolder>() {
 
     val items: MutableList<GifData> = arrayListOf()
     private var retryPageLoad: Boolean = false
@@ -69,7 +67,8 @@ class GifListAdapter(
         notifyItemRemoved(itemCount - item)
     }
 
-    fun addGif(gifs: List<GifData>) {
+    override fun addGif(list: Any) {
+        val gifs = list as List<GifData>
         if (retryPageLoad) {
             retryPageLoad = false
             removeLoadingFooter()
@@ -77,11 +76,7 @@ class GifListAdapter(
         val previousItemSize = items.size
         items.addAll(gifs)
         val newSize = items.size
-        /*if (newSize == pageCount) {
-            notifyDataSetChanged()
-        } else {*/
         notifyItemRangeInserted(previousItemSize, newSize)
-        //}
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -93,7 +88,6 @@ class GifListAdapter(
             item
         }
     }
-
 
     override fun getItemCount(): Int {
         val itemSize = items.size
@@ -108,7 +102,7 @@ class GifListAdapter(
         }
     }
 
-    fun showErrorPage(s: String) {
+    override fun showErrorPage(s: String) {
         retryPageLoad = true
         val itemSize = items.size
         this.errorMsg = s
@@ -116,11 +110,9 @@ class GifListAdapter(
         notifyItemChanged(size)
     }
 
-    fun clear() {
+    override fun clear() {
         items.clear()
         notifyDataSetChanged()
-
-
     }
 
     inner class GifListViewHolder(

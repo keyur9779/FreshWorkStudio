@@ -6,12 +6,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.FreshWorkApp
+import com.app.freshworkstudio.R
 import com.app.freshworkstudio.model.GiphyResponseModel
 import com.app.freshworkstudio.model.IOTaskResult
-import com.app.freshworkstudio.ui.adapter.GifListAdapter
-import com.app.freshworkstudio.ui.adapter.GifSearchListAdapter
+import com.app.freshworkstudio.ui.adapter.BaseGifAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
-import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
@@ -31,8 +30,7 @@ object RecyclerViewBinding {
     @JvmStatic
     @BindingAdapter("adapterGifList", "adapterGifModel")
     fun bindAdapterGifList(view: RecyclerView, gif: IOTaskResult<*>, viewModel: TrendingViewModel) {
-
-        val adapter = view.adapter as? GifListAdapter
+        val adapter = view.adapter as? BaseGifAdapter
         gif.whatIfNotNull {
 
             val ioTask = gif as IOTaskResult<Any>
@@ -43,17 +41,22 @@ object RecyclerViewBinding {
 
                     viewModel.possibleTotalPage = modelData.pagination!!.total_count / pageCount
 
-                    // make clear when search is done
-                    if (viewModel.searchQuery.isNotEmpty() && (viewModel.lastPageNumber == item /*|| viewModel.lastPageNumber == loading*/)) {
+                    /*// make clear when search is done
+                    if (viewModel.searchQuery.isNotEmpty() && (viewModel.lastPageNumber == item *//*|| viewModel.lastPageNumber == loading*//*)) {
                         adapter?.clear()
                     }
                     // make clear when search is removed
-                    if (viewModel.searchQuery.isEmpty() && (viewModel.lastPageNumber == item /*|| viewModel.lastPageNumber == loading*/)) {
+                    if (viewModel.searchQuery.isEmpty() && (viewModel.lastPageNumber == item *//*|| viewModel.lastPageNumber == loading*//*)) {
                         adapter?.clear()
+                    }*/
+                    if (modelData.data.isEmpty()) {
+                        adapter?.showErrorPage(view.context.getString(R.string.no_result))
+                    } else {
+                        adapter?.addGif(modelData.data)
                     }
-                    adapter?.addGif(modelData.data)
                 } else {
-                    adapter?.showErrorPage("")
+                    if (viewModel.searchQuery.isEmpty())
+                        adapter?.showErrorPage("")
 
                 }
                 return@whatIfNotNull
@@ -65,6 +68,9 @@ object RecyclerViewBinding {
                     adapter?.showErrorPage("$modelData")
                 }
             }
+        } ?: kotlin.run {
+            if (viewModel.searchQuery.isEmpty())
+                adapter?.showErrorPage("")
         }
     }
 
@@ -77,18 +83,24 @@ object RecyclerViewBinding {
             PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
             override fun loadMoreItems() {
 
-                val adapter = view.adapter as? GifListAdapter
+                val adapter = view.adapter as? BaseGifAdapter
                 // apply load more logic over here
                 val itemCount = adapter?.itemCount!!
                 if (itemCount > loading) {
 
-                    val ioTask = viewModel.gifList
+                    val ioTask =
+                        if (viewModel.searchQuery.isEmpty()) viewModel.gifList else viewModel.gifSearched
                     if (ioTask is IOTaskResult.OnSuccess<*>) {
                         if (ioTask.data is GiphyResponseModel) {
+                            viewModel.isLoading = true
                             if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
                                 viewModel.lastPageNumber += loading
+                                if (viewModel.searchQuery.isEmpty()) {
+                                    viewModel.loadGifPage(viewModel.lastPageNumber)
+                                } else {
+                                    viewModel.loadSearchPages("${viewModel.lastPageNumber}")
+                                }
                                 adapter.showErrorPage("")
-                                viewModel.loadGifPage(viewModel.lastPageNumber)
                             } else {
                                 viewModel.isLastPage = true
                             }
@@ -124,10 +136,9 @@ object RecyclerViewBinding {
 
     }
 
-    @JvmStatic
+    /*//@JvmStatic
     @BindingAdapter("paginationSearchGifList")
     fun paginationSearchGifList(view: RecyclerView, viewModel: TrendingViewModel) {
-        Log.d("test", "keyur adapter is paginifan")
 
         view.addOnScrollListener(object :
             PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
@@ -178,49 +189,5 @@ object RecyclerViewBinding {
             )
         )
 
-    }
-
-    @JvmStatic
-    @BindingAdapter("adapterGifList1", "adapterGifModel1")
-    fun bindAdapterGifList1(
-        view: RecyclerView,
-        gif: IOTaskResult<*>,
-        viewModel: TrendingViewModel
-    ) {
-
-        Log.d("test", "keyur adapter is bibfi")
-        val adapter = view.adapter as? GifSearchListAdapter
-        gif.whatIfNotNull {
-
-            val ioTask = gif as IOTaskResult<Any>
-
-            if (ioTask is IOTaskResult.OnSuccess<*>) {
-                if (ioTask.data is GiphyResponseModel) {
-                    val modelData = ioTask.data
-
-                    viewModel.possibleTotalPage = modelData.pagination!!.total_count / pageCount
-
-                    // make clear when search is done
-                    if (viewModel.searchQuery.isNotEmpty() && (viewModel.lastPageNumber == item /*|| viewModel.lastPageNumber == loading*/)) {
-                        adapter?.clear()
-                    }
-                    // make clear when search is removed
-                    if (viewModel.searchQuery.isEmpty() && (viewModel.lastPageNumber == item /*|| viewModel.lastPageNumber == loading*/)) {
-                        adapter?.clear()
-                    }
-                    adapter?.addGif(modelData.data)
-                }
-                return@whatIfNotNull
-            }
-
-            if (ioTask is IOTaskResult.OnFailed<*>) {
-                if (ioTask.message is String) {
-                    val modelData = ioTask.message
-                    adapter?.showErrorPage("$modelData")
-                }
-            }
-        }
-    }
-
-
+    }*/
 }

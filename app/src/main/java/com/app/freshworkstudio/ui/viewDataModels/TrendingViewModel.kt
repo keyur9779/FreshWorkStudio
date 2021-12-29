@@ -47,7 +47,6 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     // bindable property for loading while fetching data
     @get:Bindable
     var isLoading: Boolean by bindingProperty(false)
-        private set
 
     // bindable property to stop endless gif adapter
     @get:Bindable
@@ -118,7 +117,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
         }
 
     // download searched gif pages in pagination
-    fun searchPages(id: String) = query.tryEmit(id)
+    fun loadSearchPages(id: String) = query.tryEmit(id)
 
     // bind searched Gif list
     @get:Bindable

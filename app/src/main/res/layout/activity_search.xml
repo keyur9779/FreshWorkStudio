@@ -71,28 +71,14 @@
             android:layout_height="@dimen/_0dp"
             android:background="@color/white"
             app:adapter="@{adapter}"
-            app:adapterGifList1="@{viewModel.gifSearched}"
-            app:adapterGifModel1="@{viewModel}"
+            app:adapterGifList="@{viewModel.gifSearched}"
+            app:adapterGifModel="@{viewModel}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_bar"
-            app:paginationSearchGifList="@{viewModel}"
-            tools:listitem="@layout/item_gif_details" />
-        <!--<androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/searchImage"
-            app:adapter="@{adapter}"
-            app:adapterGifList="@{viewModel.gifList}"
-            app:adapterGifModel="@{viewModel}"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchImage"
             app:paginationGifList="@{viewModel}"
-            app:spanCount="2"
-            tools:listitem="@layout/item_gif" />-->
+            tools:listitem="@layout/item_gif_details" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
