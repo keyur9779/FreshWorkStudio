@@ -74,6 +74,7 @@
             android:layout_height="@dimen/_0dp"
             android:background="@color/white"
             app:adapter="@{adapter}"
+            android:layoutAnimation="@anim/layout_animation_from_right"
             app:adapterGifList="@{viewModel.gifSearched}"
             app:adapterGifModel="@{viewModel}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

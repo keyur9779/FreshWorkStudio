@@ -17,10 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FreshWorkStudio">
         <activity
-            android:name=".ui.uiActivity.MainActivity"
+            android:name=".ui.uiActivity.SplashScreen"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.FreshWorkStudio">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +30,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.uiActivity.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.FreshWorkStudio">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".ui.uiActivity.SearchActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.FreshWorkStudio"></activity>
     </application>
 </manifest>

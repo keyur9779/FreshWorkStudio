@@ -28,7 +28,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         GifSearchListAdapter(onAdapterPositionClicked(), onRetry())
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(binding) {
@@ -38,13 +37,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             searchBar.addTextChangedListener(object : TextWatcher {
                 //This method is called to notify you that, within s, the count characters beginning at start are about to be
                 // replaced by new text with length after.
-                override fun beforeTextChanged(
-                    text: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
+                override fun beforeTextChanged( text: CharSequence, start: Int, count: Int, after: Int) {}
 
                 override fun onTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
                     vm.lastPageNumber = item

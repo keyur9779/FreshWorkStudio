@@ -50,10 +50,10 @@ class GifSearchListAdapter(
         return if (viewType == item) {
             val binding = parent.binding<ItemGifDetailsBinding>(R.layout.item_gif_details)
             GifListViewHolder(binding, onAdapterPositionClicked).apply {
-                    binding.root.setOnClickListener() {
-                        val item = items[absoluteAdapterPosition]
-                        onAdapterPositionClicked(item)
-                    }
+                binding.root.setOnClickListener() {
+                    val item = items[absoluteAdapterPosition]
+                    onAdapterPositionClicked(item)
+                }
             }
         } else {
             val binding = parent.binding<ItemLoadingBinding>(R.layout.item_loading)
@@ -119,9 +119,6 @@ class GifSearchListAdapter(
     }
 
     override fun showErrorPage(s: String) {
-        if (retryPageLoad) {
-            return
-        }
         retryPageLoad = true
         val itemSize = items.size
         this.errorMsg = s

@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.utils.binding
 
+import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
+import com.skydoves.baserecyclerviewadapter.RecyclerViewPaginator
 import com.skydoves.whatif.whatIfNotNull
 
 
@@ -48,6 +50,8 @@ object RecyclerViewBinding {
                             adapter?.clear()
                         }
                         adapter?.addGif(modelData.data)
+                        view.scheduleLayoutAnimation()
+
                     }
                 } /*else {
                     if (viewModel.searchQuery.isEmpty())
@@ -72,8 +76,50 @@ object RecyclerViewBinding {
     @JvmStatic
     @BindingAdapter("paginationGifList")
     fun paginationGifList(view: RecyclerView, viewModel: BaseViewModel) {
-        view.addOnScrollListener(object :
-            PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
+
+
+        /*RecyclerViewPaginator(
+            recyclerView = view,
+            isLoading = {
+                viewModel.isLoading
+            },
+            loadMore = {
+
+
+                val adapter = view.adapter as? BaseGifAdapter
+                // apply load more logic over here
+                val itemCount = adapter?.itemCount!!
+                if (itemCount > loading) {
+
+                    val ioTask = viewModel.getGifItemList()
+                    if (ioTask is IOTaskResult.OnSuccess<*>) {
+                        if (ioTask.data is GiphyResponseModel) {
+                            viewModel.isLoading = true
+                            if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
+                                viewModel.lastPageNumber += loading
+                                view.post {
+                                    adapter.showErrorPage("")
+                                }
+                                viewModel.loadGifPage(viewModel.getCurrentPage().plus(loading))
+                            } else {
+                                viewModel.isLastPage = true
+                            }
+                        }
+                    } else {
+                        if (FreshWorkApp.isInternetAvailable()) {
+                            adapter.showErrorPage("")
+                            viewModel.loadGifPage(viewModel.lastPageNumber.minus(loading))
+                        }
+                    }
+                }
+            },
+            onLast = { viewModel.isLastPage }
+        ).run {
+            threshold = 4
+            currentPage = 1
+        }*/
+
+        view.addOnScrollListener(object : PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
             override fun loadMoreItems() {
 
                 val adapter = view.adapter as? BaseGifAdapter

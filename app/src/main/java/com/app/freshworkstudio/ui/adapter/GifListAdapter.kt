@@ -111,9 +111,6 @@ class GifListAdapter(
     }
 
     override fun showErrorPage(s: String) {
-        if (retryPageLoad) {
-            return
-        }
         retryPageLoad = true
         val itemSize = items.size
         this.errorMsg = s
