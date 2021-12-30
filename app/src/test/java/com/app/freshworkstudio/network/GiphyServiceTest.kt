@@ -97,4 +97,18 @@ class GiphyServiceTest : ApiAbstract<GiphyApiService>() {
         assertThat(response.body()?.data?.size, `is`(0))
     }
 
+    @Throws(IOException::class)
+    @Test
+    fun fetchSearchedGifWithNullQuery() = runBlocking {
+        requestHeader[DataUtils.api_key] = BuildConfig.API_KEY
+        requestHeader[DataUtils.limit] = DataUtils.pageCount.toString()
+        requestHeader[DataUtils.offset] = "-1"
+        requestHeader[DataUtils.query] = "null"
+
+        val response = service.fetchTrendingGif(DataUtils.trend, requestHeader)
+
+        assertThat(response.isSuccessful, `is`(true))
+        assertThat(response.body()?.data?.size, `is`(0))
+    }
+
 }

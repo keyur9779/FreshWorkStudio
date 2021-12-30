@@ -2,7 +2,6 @@ package com.app.freshworkstudio.ui.viewDataModels
 
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
@@ -10,17 +9,20 @@ import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel(private val giphyTrendingRepository: GiphyTrendingRepository) :
+/**
+ * Base view model class to simply the code usage
+ * */
+abstract class BaseViewModel() :
     BindingViewModel() {
 
     // bindable property to save possible total page of current GIF category
     @get:Bindable
     var gifFavID: String by bindingProperty("")
-
 
     // bindable property to save possible total page of current GIF category
     @get:Bindable
@@ -42,13 +44,11 @@ abstract class BaseViewModel(private val giphyTrendingRepository: GiphyTrendingR
     @get:Bindable
     var isLastPage: Boolean by bindingProperty(false)
 
-
     //fetch gif is marked as favourite or not
-
     protected val gifFavouriteStateFlow: MutableStateFlow<String> = MutableStateFlow("")
 
     private val gifFavFlow = gifFavouriteStateFlow.flatMapLatest {
-        giphyTrendingRepository.getGifByID(gifFavID)
+        getGifByID(gifFavID)
     }
 
     // get fav gif by id
@@ -59,7 +59,7 @@ abstract class BaseViewModel(private val giphyTrendingRepository: GiphyTrendingR
     // mark fav gif by id
     fun insertItem(fav: GifFavourite) {
         viewModelScope.launch(Dispatchers.IO) {
-            giphyTrendingRepository.insertFav(fav)
+            insertFav(fav)
         }
     }
 
@@ -72,8 +72,8 @@ abstract class BaseViewModel(private val giphyTrendingRepository: GiphyTrendingR
     abstract fun loadGifPage(data: Any)
     abstract fun getCurrentPage(): Int
     abstract fun getGifItemList(): IOTaskResult<Any>
-    //abstract suspend fun getFavGif(gifID: String): ArrayList<GifFavourite>
-    //abstract fun markGifFav()
+    abstract suspend fun insertFav(gifFavourite: GifFavourite)
+    abstract suspend fun getGifByID(id: String): Flow<ArrayList<GifFavourite>>
 
 
 }

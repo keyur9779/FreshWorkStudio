@@ -1,12 +1,10 @@
 package com.app.freshworkstudio.data.api.service
 
 import com.app.freshworkstudio.model.GiphyResponseModel
-import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.urlPath
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 /**
@@ -22,18 +20,4 @@ interface GiphyApiService {
         @Path(value = urlPath) path: String,
         @QueryMap(encoded = true) params: Map<String, String>
     ): Response<GiphyResponseModel>
-
-
-    /*
-    * generic method to only searched GIF
-    * */
-    @GET("/v1/gifs/search")
-    suspend fun fetchSearchGif(
-        @Query(DataUtils.api_key) key: String,
-        @Query(DataUtils.limit) pageLimit: Int,
-        @Query(DataUtils.offset) page: Int,
-        @Query(DataUtils.query) q: String
-    ): Response<GiphyResponseModel>
-
-
 }

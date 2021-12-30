@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.data.repository
 
-import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.FreshWorkApp
@@ -59,21 +58,15 @@ class GiphyTrendingRepository constructor(
     @WorkerThread
     fun loadTrendingGif(page: Int, q: String, success: () -> Unit) = flow {
 
-        //TODO : Please remove this delay when releasing to production as added to slow down downloading process bit
-        // kotlinx.coroutines.delay(delay.toLong())
-
         val map = mutableMapOf<String, String>()
         map[api_key] = API_KEY
         map[limit] = pageCount.toString()
         map[offset] = page.toString()
         val queryPath = if (q.isEmpty()) {
             trend
-//            "$trend?api_key=$apiKEY&limit=$pageCount&offset=$page"
         } else {
             map[query] = q
             search
-//            "$search?api_key=$apiKEY&limit=$pageCount&offset=$page&q=$query"
-
         }
 
         val response =

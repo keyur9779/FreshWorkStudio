@@ -4,6 +4,7 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
 import com.app.freshworkstudio.model.IOTaskResult
+import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
 import com.skydoves.bindables.asBindingProperty
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,7 @@ import javax.inject.Inject
  * */
 @HiltViewModel
 class TrendingViewModel @Inject constructor(private val giphyTrendingRepository: GiphyTrendingRepository) :
-    BaseViewModel(giphyTrendingRepository) {
+    BaseViewModel() {
 
 
     // gif mutable state flow to fetch data in pagination
@@ -33,9 +34,7 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
             }
         }
 
-
     // bindable list property to bind fetched list to recycler view using binding-adapter property
-
     @get:Bindable
     val gifList: IOTaskResult<Any> by gifListFlow.asBindingProperty(
         viewModelScope,
@@ -50,6 +49,12 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
     }
 
     override fun getCurrentPage(): Int = gifPageStateFlow.value
+
+    override suspend fun getGifByID(id: String) = giphyTrendingRepository.getGifByID(id)
+
+    override suspend fun insertFav(gifFavourite: GifFavourite) {
+        giphyTrendingRepository.insertFav(gifFavourite)
+    }
 
 
 }
