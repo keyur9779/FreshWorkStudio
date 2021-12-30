@@ -67,7 +67,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             }
 
             searchBar.postDelayed({
-
                 searchBar.requestFocus()
                 showKeyBoard(searchBar)
             }, DataUtils.delay.toLong())

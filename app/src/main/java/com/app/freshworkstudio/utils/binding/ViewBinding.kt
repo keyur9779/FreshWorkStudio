@@ -1,6 +1,8 @@
 package com.app.freshworkstudio.utils.binding
 
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
@@ -8,7 +10,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.model.entity.GifFavourite
+import com.app.freshworkstudio.ui.viewDataModels.BaseViewModel
+import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
 import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.utils.DataUtils.item
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -116,5 +121,15 @@ object ViewBinding {
         view.text = "$title"
         view.isSelected = true
         view.marqueeRepeatLimit
+    }
+
+    @JvmStatic
+    @BindingAdapter("loadLoader", "loaderViewModel")
+    fun bindLoader(view: ProgressBar,isLoading:Boolean, viewModel: SearchViewModel) {
+        view.visibility = if (viewModel.lastPageNumber == item) {
+            if (isLoading) VISIBLE else GONE
+        } else {
+            GONE
+        }
     }
 }
