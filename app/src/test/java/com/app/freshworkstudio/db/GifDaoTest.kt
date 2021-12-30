@@ -64,6 +64,33 @@ class GifDaoTest : RoomDatabase() {
         }
     }
 
+    /*
+    * validate favourite list fetching query
+    * */
+    @Test
+    fun loadValidation() {
+        runBlocking {
+            val gif = gifModel()
+            for(i in 0..1000) {
+                db.gifFavouriteDao().insertGif(gif)
+            }
+            // used to launch task concurrently to avoid blocking
+            val latch = CountDownLatch(1)
+            val job = launch(Dispatchers.IO) {
+
+                db.gifFavouriteDao().getGifList().collect { value ->
+
+                    assertTrue(value.size >= 1000)
+
+                    // remove lock so can execute in runBlocking
+                    latch.countDown()
+                }
+            }
+            latch.await()
+            job.cancel()
+        }
+    }
+
 
     /*
     * Validate un-favourite db operation
@@ -82,29 +109,5 @@ class GifDaoTest : RoomDatabase() {
         }
     }
 
-    @Test
-    fun loadTest() {
-        runBlocking {
 
-            val gif = gifModel()
-
-            for (i in 0..1000) {
-                db.gifFavouriteDao().insertGif(gif)
-            }
-            // used to launch task concurrently to avoid blocking
-            val latch = CountDownLatch(1)
-            val job = launch(Dispatchers.IO) {
-
-                db.gifFavouriteDao().getGifList().collect { value ->
-
-                    assertTrue(value.size == 1000)
-
-                    // remove lock so can execute in runBlocking
-                    latch.countDown()
-                }
-            }
-            latch.await()
-            job.cancel()
-        }
-    }
 }
