@@ -10,7 +10,6 @@ import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
@@ -52,23 +51,23 @@ abstract class BaseViewModel(private val giphyTrendingRepository: GiphyTrendingR
         giphyTrendingRepository.getGifByID(gifFavID)
     }
 
+    // get fav gif by id
     fun fetchGifFavMarket(id: String) {
         gifFavouriteStateFlow.tryEmit(id)
     }
 
+    // mark fav gif by id
     fun insertItem(fav: GifFavourite) {
-        //insert fav to database
         viewModelScope.launch(Dispatchers.IO) {
             giphyTrendingRepository.insertFav(fav)
         }
-
     }
 
+    // observe the gif changes
     @get:Bindable
     val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
         viewModelScope, emptyList<GifFavourite>()
     )
-
 
     abstract fun loadGifPage(data: Any)
     abstract fun getCurrentPage(): Int
