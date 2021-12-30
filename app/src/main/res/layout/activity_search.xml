@@ -46,6 +46,8 @@
             android:lines="1"
             android:maxLines="1"
             android:padding="@dimen/_8sdp"
+            android:focusable="true"
+            android:focusedByDefault="true"
             android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="@color/HintText"

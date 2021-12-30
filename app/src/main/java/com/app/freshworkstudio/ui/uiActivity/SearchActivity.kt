@@ -3,10 +3,7 @@ package com.app.freshworkstudio.ui.uiActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.transition.Slide
-import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.Window
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.app.freshworkstudio.FreshWorkApp
@@ -17,7 +14,6 @@ import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifSearchListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
-import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.item
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,12 +34,18 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(binding) {
+
             adapter = gifSearchListAdapter
             viewModel = vm
             searchBar.addTextChangedListener(object : TextWatcher {
                 //This method is called to notify you that, within s, the count characters beginning at start are about to be
                 // replaced by new text with length after.
-                override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
@@ -63,8 +65,16 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             cancelButton.setOnClickListener {
                 searchBar.setText("")
             }
+
+            searchBar.postDelayed({
+
+                searchBar.requestFocus()
+                showKeyBoard(searchBar)
+            }, DataUtils.delay.toLong())
+
         }
     }
+
 
     /*
     *  callback to save item in db for fav.
@@ -89,7 +99,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 square.setOnClickListener {
                     square.text =
                         if (square.isChecked) getString(R.string.unFav) else getString(R.string.fav)
-                    vm.insertItem( GifFavourite( gifID = gifData.id,
+                    vm.insertItem(
+                        GifFavourite(
+                            gifID = gifData.id,
                             url = gifData.images.fixed_width.url,
                             title = gifData.title
                         )

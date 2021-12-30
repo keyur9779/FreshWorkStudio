@@ -1,12 +1,15 @@
 package com.app.freshworkstudio.ui.uiActivity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.transition.Slide
 import android.view.Gravity
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.ViewDataBinding
-import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.utils.DataUtils.item
 import com.google.android.material.snackbar.Snackbar
 import com.skydoves.bindables.BindingActivity
 
@@ -42,10 +45,15 @@ open class BaseActivity<T : ViewDataBinding>(rLayout: Int) : BindingActivity<T>(
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
+    fun showKeyBoard(view: AppCompatEditText) {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(view, item)
+    }
+
     @SuppressLint("MissingSuperCall")
     override fun onDestroy() {
         super.onDestroy()
-        DataUtils.condition = ""
+
     }
 
 }
