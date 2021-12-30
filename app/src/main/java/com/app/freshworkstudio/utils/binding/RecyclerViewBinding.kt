@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.utils.binding
 
-import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,7 +9,8 @@ import com.app.freshworkstudio.R
 import com.app.freshworkstudio.model.GiphyResponseModel
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.ui.adapter.BaseGifAdapter
-import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
+import com.app.freshworkstudio.ui.viewDataModels.BaseViewModel
+import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
@@ -29,7 +29,7 @@ object RecyclerViewBinding {
 
     @JvmStatic
     @BindingAdapter("adapterGifList", "adapterGifModel")
-    fun bindAdapterGifList(view: RecyclerView, gif: IOTaskResult<*>, viewModel: TrendingViewModel) {
+    fun bindAdapterGifList(view: RecyclerView, gif: IOTaskResult<*>, viewModel: BaseViewModel) {
         val adapter = view.adapter as? BaseGifAdapter
         gif.whatIfNotNull {
 
@@ -41,17 +41,12 @@ object RecyclerViewBinding {
 
                     viewModel.possibleTotalPage = modelData.pagination!!.total_count / pageCount
 
-                    /*// make clear when search is done
-                    if (viewModel.searchQuery.isNotEmpty() && (viewModel.lastPageNumber == item *//*|| viewModel.lastPageNumber == loading*//*)) {
-                        adapter?.clear()
-                    }
-                    // make clear when search is removed
-                    if (viewModel.searchQuery.isEmpty() && (viewModel.lastPageNumber == item *//*|| viewModel.lastPageNumber == loading*//*)) {
-                        adapter?.clear()
-                    }*/
                     if (modelData.data.isEmpty()) {
                         adapter?.showErrorPage(view.context.getString(R.string.no_result))
                     } else {
+                        if (viewModel.lastPageNumber == item) {
+                            adapter?.clear()
+                        }
                         adapter?.addGif(modelData.data)
                     }
                 } else {
@@ -76,9 +71,7 @@ object RecyclerViewBinding {
 
     @JvmStatic
     @BindingAdapter("paginationGifList")
-    fun paginationGifList(view: RecyclerView, viewModel: TrendingViewModel) {
-
-
+    fun paginationGifList(view: RecyclerView, viewModel: BaseViewModel) {
         view.addOnScrollListener(object :
             PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
             override fun loadMoreItems() {
@@ -88,19 +81,16 @@ object RecyclerViewBinding {
                 val itemCount = adapter?.itemCount!!
                 if (itemCount > loading) {
 
-                    val ioTask =
-                        if (viewModel.searchQuery.isEmpty()) viewModel.gifList else viewModel.gifSearched
+                    val ioTask = viewModel.getGifItemList()
                     if (ioTask is IOTaskResult.OnSuccess<*>) {
                         if (ioTask.data is GiphyResponseModel) {
                             viewModel.isLoading = true
                             if (viewModel.lastPageNumber < viewModel.possibleTotalPage) {
                                 viewModel.lastPageNumber += loading
-                                if (viewModel.searchQuery.isEmpty()) {
-                                    viewModel.loadGifPage(viewModel.lastPageNumber)
-                                } else {
-                                    viewModel.loadSearchPages("${viewModel.lastPageNumber}")
+                                view.post {
+                                    adapter.showErrorPage("")
                                 }
-                                adapter.showErrorPage("")
+                                viewModel.loadGifPage(viewModel.lastPageNumber)
                             } else {
                                 viewModel.isLastPage = true
                             }

@@ -119,6 +119,9 @@ class GifSearchListAdapter(
 
     override fun clear() {
         retryPageLoad = false
+        if(items.isEmpty()){
+            return
+        }
         items.clear()
         notifyDataSetChanged()
     }

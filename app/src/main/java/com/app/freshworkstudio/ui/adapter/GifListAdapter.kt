@@ -111,6 +111,9 @@ class GifListAdapter(
     }
 
     override fun clear() {
+        if(items.isEmpty()){
+            return
+        }
         items.clear()
         notifyDataSetChanged()
     }

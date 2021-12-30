@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel" />
+            type="com.app.freshworkstudio.ui.viewDataModels.BaseViewModel" />
 
     </data>
 

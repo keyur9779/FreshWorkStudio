@@ -16,6 +16,7 @@ import com.app.freshworkstudio.databinding.FavDialogBinding
 import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifSearchListAdapter
+import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.item
@@ -26,7 +27,7 @@ import kotlin.random.Random
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search) {
 
     // initialized view model same as trending as functionality is very much same except search
-    private val vm: TrendingViewModel by viewModels()
+    private val vm: SearchViewModel by viewModels()
 
     // initialized adapter while getting used first time
     private val gifSearchListAdapter: GifSearchListAdapter by lazy {

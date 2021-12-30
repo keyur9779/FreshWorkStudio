@@ -1,31 +1,80 @@
 package com.app.freshworkstudio.ui.viewDataModels
 
+import androidx.databinding.Bindable
+import androidx.lifecycle.viewModelScope
+import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
+import com.app.freshworkstudio.model.IOTaskResult
+import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
 import com.skydoves.bindables.BindingViewModel
-import kotlinx.coroutines.flow.*
+import com.skydoves.bindables.asBindingProperty
+import com.skydoves.bindables.bindingProperty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 
-open class BaseViewModel(T: Any) : BindingViewModel() {
+abstract class BaseViewModel(private val giphyTrendingRepository: GiphyTrendingRepository) :
+    BindingViewModel() {
+
+    // bindable property to save possible total page of current GIF category
+    @get:Bindable
+    var gifFavID: String by bindingProperty("")
 
 
-    /*val data by lazy {
-        val mutableStateFlow = if (T is String) {
-            MutableStateFlow("")
-        } else {
-            MutableStateFlow(DataUtils.item)
+    // bindable property to save possible total page of current GIF category
+    @get:Bindable
+    var possibleTotalPage: Int by bindingProperty(DataUtils.item)
 
-        }
-        mutableStateFlow
+    // bindable property to store query text
+    @get:Bindable
+    var searchQuery: String by bindingProperty(DataUtils.condition)
+
+    // bindable property to get info last fetched page from network
+    @get:Bindable
+    var lastPageNumber: Int by bindingProperty(DataUtils.item)
+
+    // bindable property for loading while fetching data
+    @get:Bindable
+    var isLoading: Boolean by bindingProperty(false)
+
+    // bindable property to stop endless gif adapter
+    @get:Bindable
+    var isLastPage: Boolean by bindingProperty(false)
+
+
+    //fetch gif is marked as favourite or not
+
+    protected val gifFavouriteStateFlow: MutableStateFlow<String> = MutableStateFlow("")
+
+    private val gifFavFlow = gifFavouriteStateFlow.flatMapLatest {
+        giphyTrendingRepository.getGifByID(gifFavID)
     }
 
-    // search gif with delay in typing to avoid multiple query to server
-    private val queryFlow by lazy {
+    fun fetchGifFavMarket(id: String) {
+        gifFavouriteStateFlow.tryEmit(id)
+    }
 
-        data.debounce(DataUtils.delay.toLong()).flatMapLatest {
-            isLoading = true
-            giphyTrendingRepository.loadTrendingGif(lastPageNumber, searchQuery) {
-                isLoading = false
-            }
+    fun insertItem(fav: GifFavourite) {
+        //insert fav to database
+        viewModelScope.launch(Dispatchers.IO) {
+            giphyTrendingRepository.insertFav(fav)
         }
-    }*/
+
+    }
+
+    @get:Bindable
+    val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
+        viewModelScope, emptyList<GifFavourite>()
+    )
+
+
+    abstract fun loadGifPage(data: Any)
+    abstract fun getCurrentPage(): Int
+    abstract fun getGifItemList(): IOTaskResult<Any>
+    //abstract suspend fun getFavGif(gifID: String): ArrayList<GifFavourite>
+    //abstract fun markGifFav()
+
 
 }

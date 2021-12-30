@@ -4,11 +4,10 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
 import com.app.freshworkstudio.model.IOTaskResult
-import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.utils.DataUtils.delay
 import com.skydoves.bindables.asBindingProperty
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 /**
@@ -19,37 +18,35 @@ import javax.inject.Inject
  * @param giphyTrendingRepository = repository class of model, used to fetch data from network or room based on call stack
  * */
 @HiltViewModel
-class TrendingViewModel @Inject constructor(private val giphyTrendingRepository: GiphyTrendingRepository) :
+class SearchViewModel @Inject constructor(private val giphyTrendingRepository: GiphyTrendingRepository) :
     BaseViewModel(giphyTrendingRepository) {
 
+    val query = MutableStateFlow("")
 
-    // gif mutable state flow to fetch data in pagination
-    private val gifPageStateFlow: MutableStateFlow<Int> = MutableStateFlow(DataUtils.item)
-    private val gifListFlow =
-        gifPageStateFlow.flatMapLatest {
+    // search gif with delay in typing to avoid multiple query to server
+    private val queryFlow =
+        query.debounce(delay.toLong()).filter {
+            return@filter it.isNotEmpty()
+        }.distinctUntilChanged().flatMapLatest {
             isLoading = true
             giphyTrendingRepository.loadTrendingGif(lastPageNumber, searchQuery) {
                 isLoading = false
             }
         }
 
-
-    // bindable list property to bind fetched list to recycler view using binding-adapter property
-
+    // bind searched Gif list
     @get:Bindable
-    val gifList: IOTaskResult<Any> by gifListFlow.asBindingProperty(
+    val gifSearched: IOTaskResult<Any> by queryFlow.asBindingProperty(
         viewModelScope,
         IOTaskResult.OnSuccess(Any())
     )
 
-    override fun getGifItemList() = gifList
-
-
+    // load gif in pages
     override fun loadGifPage(data: Any) {
-        gifPageStateFlow.tryEmit(data as Int)
+        query.tryEmit(data.toString())
     }
 
-    override fun getCurrentPage(): Int = gifPageStateFlow.value
-
+    override fun getCurrentPage(): Int = lastPageNumber
+    override fun getGifItemList(): IOTaskResult<Any>  = gifSearched
 
 }

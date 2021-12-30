@@ -10,7 +10,7 @@ object DataUtils {
     val pagerTitleList = arrayListOf("Trending", "Favourite")
 
     const val pageCount = 20
-    const val delay = 1000
+    const val delay = 700
 
 
     const val item: Int = 0
