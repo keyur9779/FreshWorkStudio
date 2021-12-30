@@ -62,6 +62,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_8sdp"
             android:padding="@dimen/_8sdp"
+            android:visibility="invisible"
             android:src="@drawable/ic_baseline_cancel_24"
             app:layout_constraintBottom_toBottomOf="@id/search_bar"
             app:layout_constraintEnd_toEndOf="parent"

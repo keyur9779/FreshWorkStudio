@@ -11,6 +11,7 @@ import com.skydoves.bindables.bindingProperty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
@@ -47,7 +48,7 @@ abstract class BaseViewModel() :
     //fetch gif is marked as favourite or not
     protected val gifFavouriteStateFlow: MutableStateFlow<String> = MutableStateFlow("")
 
-    private val gifFavFlow = gifFavouriteStateFlow.flatMapLatest {
+    private val gifFavFlow = gifFavouriteStateFlow.filter { return@filter gifFavID.isNotEmpty() }.flatMapLatest {
         getGifByID(gifFavID)
     }
 

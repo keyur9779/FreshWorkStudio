@@ -17,6 +17,7 @@ import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import com.app.freshworkstudio.utils.DataUtils.loading
+import com.app.freshworkstudio.utils.binding.ViewUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
 
@@ -63,29 +64,7 @@ class TrendingFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_mai
 
             // show dialog of gif to mark fav and unfav
 
-            val alert: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val dBinding = FavDialogBinding.inflate(LayoutInflater.from(context));
-
-            with(dBinding) {
-
-                alert.setView(root)
-
-                vm.gifFavID = gifData.id
-                viewModel = vm
-                media = gifData.images.fixed_width
-                val alertView = alert.show()
-                val radim = gifData.id.substring(Random.nextInt(gifData.id.length))
-                vm.fetchGifFavMarket(radim)
-                square.setOnClickListener {
-                    square.text = if (square.isChecked) getString(R.string.unFav) else getString(R.string.fav)
-                    vm.insertItem(GifFavourite(gifID = gifData.id,
-                            url = gifData.images.fixed_width.url,
-                            title = gifData.title))
-                }
-                cancelAction.setOnClickListener {
-                    alertView.dismiss()
-                }
-            }
+            ViewUtils.showFavDialog(gifData,requireContext(),vm)
         }
     }
 

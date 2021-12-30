@@ -3,21 +3,19 @@ package com.app.freshworkstudio.ui.uiActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivitySearchBinding
-import com.app.freshworkstudio.databinding.FavDialogBinding
 import com.app.freshworkstudio.model.GifData
-import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.GifSearchListAdapter
 import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
 import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.item
+import com.app.freshworkstudio.utils.binding.ViewUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.random.Random
 
 @AndroidEntryPoint
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search) {
@@ -52,11 +50,16 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                     vm.lastPageNumber = item
                     vm.searchQuery = text.toString()
                     vm.query.value = text.toString()
+                    if (text.isNotEmpty() && cancelButton.visibility == INVISIBLE) {
+                        cancelButton.visibility = VISIBLE
+                    }
                 }
 
                 override fun afterTextChanged(text: Editable) {
-                    if (text.isEmpty())
+                    if (text.isEmpty()) {
                         gifSearchListAdapter.clear()
+                        cancelButton.visibility = INVISIBLE
+                    }
 
                 }
             })
@@ -82,34 +85,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         return { gifData ->
 
             // show dialog of gif to mark fav and unfav
-
-            val alert: AlertDialog.Builder = AlertDialog.Builder(this)
-            val dBinding = FavDialogBinding.inflate(LayoutInflater.from(this));
-
-            with(dBinding) {
-
-                alert.setView(root)
-                vm.gifFavID = gifData.id
-                viewModel = vm
-                media = gifData.images.fixed_width
-                val alertView = alert.show()
-                val radim = gifData.id.substring(Random.nextInt(gifData.id.length))
-                vm.fetchGifFavMarket(radim)
-                square.setOnClickListener {
-                    square.text =
-                        if (square.isChecked) getString(R.string.unFav) else getString(R.string.fav)
-                    vm.insertItem(
-                        GifFavourite(
-                            gifID = gifData.id,
-                            url = gifData.images.fixed_width.url,
-                            title = gifData.title
-                        )
-                    )
-                }
-                cancelAction.setOnClickListener {
-                    alertView.dismiss()
-                }
-            }
+            ViewUtils.showFavDialog(gifData, this, vm)
         }
     }
 
@@ -119,7 +95,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     private fun onRetry(): (Int) -> Unit {
         return {
             if (FreshWorkApp.isInternetAvailable()) {
-                vm.loadGifPage(vm.lastPageNumber.plus(DataUtils.loading))
+                vm.loadGifPage(vm.getCurrentPage().plus(DataUtils.loading))
             } else {
                 showError(getString(R.string.error_msg_no_internet))
                 gifSearchListAdapter.showErrorPage(getString(R.string.error_msg_no_internet))

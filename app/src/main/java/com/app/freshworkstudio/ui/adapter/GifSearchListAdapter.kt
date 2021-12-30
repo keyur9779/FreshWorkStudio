@@ -16,14 +16,14 @@
 
 package com.app.freshworkstudio.ui.adapter
 
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ItemGifDetailsBinding
 import com.app.freshworkstudio.databinding.ItemLoadingBinding
 import com.app.freshworkstudio.model.GifData
+import com.app.freshworkstudio.ui.adapter.viewHolders.GifListViewHolder
+import com.app.freshworkstudio.ui.adapter.viewHolders.LoadingVH
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.skydoves.bindables.binding
@@ -37,29 +37,37 @@ import com.skydoves.bindables.binding
  * */
 class GifSearchListAdapter(
     private val onAdapterPositionClicked: (GifData) -> Unit,
-    private val onRetry: (Int) -> Unit) :
+    private val onRetry: (Int) -> Unit
+) :
     BaseGifAdapter<RecyclerView.ViewHolder>() {
 
     val items: MutableList<GifData> = arrayListOf()
     private var retryPageLoad: Boolean = false
-    private var errorMsg: String? = ""
+    private var errorMsg: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return if (viewType == item) {
             val binding = parent.binding<ItemGifDetailsBinding>(R.layout.item_gif_details)
-            GifListViewHolder(binding, onAdapterPositionClicked)
+            GifListViewHolder(binding, onAdapterPositionClicked).apply {
+                    binding.root.setOnClickListener() {
+                        val item = items[absoluteAdapterPosition]
+                        onAdapterPositionClicked(item)
+                    }
+            }
         } else {
             val binding = parent.binding<ItemLoadingBinding>(R.layout.item_loading)
-            LoadingVH(errorMsg!!, binding, onRetry)
+            LoadingVH(binding, onRetry)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == item) {
-            with((holder as GifListViewHolder).binding) {
+            with((holder as GifListViewHolder).binding as ItemGifDetailsBinding) {
                 gifData = items[position]
             }
+        } else {
+            (holder as LoadingVH).bind(errorMsg)
         }
     }
 
@@ -71,6 +79,7 @@ class GifSearchListAdapter(
         val gifs = list as List<GifData>
         if (retryPageLoad) {
             retryPageLoad = false
+            errorMsg = ""
             removeLoadingFooter()
         }
         val previousItemSize = items.size
@@ -110,6 +119,9 @@ class GifSearchListAdapter(
     }
 
     override fun showErrorPage(s: String) {
+        if (retryPageLoad) {
+            return
+        }
         retryPageLoad = true
         val itemSize = items.size
         this.errorMsg = s
@@ -119,53 +131,11 @@ class GifSearchListAdapter(
 
     override fun clear() {
         retryPageLoad = false
-        if(items.isEmpty()){
+        if (items.isEmpty()) {
             return
         }
         items.clear()
         notifyDataSetChanged()
     }
 
-    inner class GifListViewHolder(
-        val binding: ItemGifDetailsBinding,
-        private val onAdapterPositionClicked: (GifData) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener() {
-                val item = items[absoluteAdapterPosition]
-                onAdapterPositionClicked(item)
-            }
-        }
-    }
-
-    inner class LoadingVH(
-        errorMsg: String,
-        binding: ItemLoadingBinding,
-        private val onRetry: (Int) -> Unit
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-
-            binding.loadmoreRetry.setOnClickListener {
-                onRetry(absoluteAdapterPosition)
-            }
-            binding.loadmoreErrortxt.setOnClickListener {
-                binding.progressBar.visibility = VISIBLE
-                onRetry(absoluteAdapterPosition)
-            }
-
-            binding.loadmoreErrortxt.text = "$errorMsg"
-            if (binding.loadmoreErrortxt.text.isNullOrEmpty()) {
-                binding.loadmoreRetry.visibility = GONE
-                binding.tap.visibility = GONE
-                binding.loadmoreErrortxt.visibility = GONE
-                binding.progressBar.visibility = VISIBLE
-            } else {
-                binding.loadmoreRetry.visibility = VISIBLE
-                binding.tap.visibility = VISIBLE
-                binding.loadmoreErrortxt.visibility = VISIBLE
-                binding.progressBar.visibility = GONE
-            }
-        }
-    }
 }

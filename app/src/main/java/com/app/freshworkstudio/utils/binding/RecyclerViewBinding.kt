@@ -49,11 +49,11 @@ object RecyclerViewBinding {
                         }
                         adapter?.addGif(modelData.data)
                     }
-                } else {
+                } /*else {
                     if (viewModel.searchQuery.isEmpty())
                         adapter?.showErrorPage("")
 
-                }
+                }*/
                 return@whatIfNotNull
             }
 
@@ -63,10 +63,10 @@ object RecyclerViewBinding {
                     adapter?.showErrorPage("$modelData")
                 }
             }
-        } ?: kotlin.run {
+        } /*?: kotlin.run {
             if (viewModel.searchQuery.isEmpty())
                 adapter?.showErrorPage("")
-        }
+        }*/
     }
 
     @JvmStatic
@@ -90,7 +90,7 @@ object RecyclerViewBinding {
                                 view.post {
                                     adapter.showErrorPage("")
                                 }
-                                viewModel.loadGifPage(viewModel.lastPageNumber)
+                                viewModel.loadGifPage(viewModel.getCurrentPage().plus(loading))
                             } else {
                                 viewModel.isLastPage = true
                             }

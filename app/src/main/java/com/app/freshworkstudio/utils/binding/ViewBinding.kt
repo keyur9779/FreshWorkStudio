@@ -11,8 +11,6 @@ import androidx.databinding.BindingAdapter
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.viewDataModels.BaseViewModel
-import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
-import com.app.freshworkstudio.utils.DataUtils
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -106,7 +104,7 @@ object ViewBinding {
     @JvmStatic
     @BindingAdapter("isFav")
     fun bindCheckBox(view: AppCompatCheckBox, list: List<GifFavourite>) {
-        view.isChecked = list[DataUtils.item] != null
+        view.isChecked = list.isEmpty() || list[item] != null
 
         view.text = if (view.isChecked) {
             view.context.getString(R.string.unFav)
@@ -125,7 +123,7 @@ object ViewBinding {
 
     @JvmStatic
     @BindingAdapter("loadLoader", "loaderViewModel")
-    fun bindLoader(view: ProgressBar,isLoading:Boolean, viewModel: SearchViewModel) {
+    fun bindLoader(view: ProgressBar, isLoading: Boolean, viewModel: BaseViewModel) {
         view.visibility = if (viewModel.lastPageNumber == item) {
             if (isLoading) VISIBLE else GONE
         } else {

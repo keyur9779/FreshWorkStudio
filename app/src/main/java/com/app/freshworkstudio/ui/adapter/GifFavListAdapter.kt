@@ -17,12 +17,11 @@
 package com.app.freshworkstudio.ui.adapter
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ItemGifFavBinding
 import com.app.freshworkstudio.model.Media
 import com.app.freshworkstudio.model.entity.GifFavourite
-import com.app.freshworkstudio.ui.adapter.GifFavListAdapter.GifFavListViewHolder
+import com.app.freshworkstudio.ui.adapter.viewHolders.GifListViewHolder
 import com.app.freshworkstudio.utils.DataUtils.item
 import com.skydoves.bindables.binding
 
@@ -32,20 +31,29 @@ import com.skydoves.bindables.binding
  *
  * @param onAdapterPositionClicked = higher order function return clicked item model to remove it in local db
  * */
-class GifFavListAdapter(private val onAdapterPositionClicked: (GifFavourite) -> Unit) :
-    BaseGifAdapter<GifFavListViewHolder>() {
+class GifFavListAdapter(private val onAdapterPositionClicked: (Any) -> Unit) :
+    BaseGifAdapter<GifListViewHolder>() {
 
     val items: MutableList<GifFavourite> = arrayListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifFavListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifListViewHolder {
 
         val binding = parent.binding<ItemGifFavBinding>(R.layout.item_gif_fav)
-        return GifFavListViewHolder(binding, onAdapterPositionClicked)
+        return GifListViewHolder(binding, onAdapterPositionClicked).apply {
+            binding.square.apply {
+                setOnClickListener() {
+                    val pos = absoluteAdapterPosition
+                    val item = items[pos]
+                    items.removeAt(pos)
+                    notifyItemRemoved(pos)
+                    onAdapterPositionClicked(item)
+                }
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: GifFavListViewHolder, position: Int) {
-        with(holder.binding) {
-
+    override fun onBindViewHolder(holder: GifListViewHolder, position: Int) {
+        with(holder.binding as ItemGifFavBinding) {
             val item = items[position]
             media = Media(item.url, true, item.title)
         }
@@ -70,23 +78,6 @@ class GifFavListAdapter(private val onAdapterPositionClicked: (GifFavourite) -> 
     }
 
     override fun getItemCount(): Int = items.size
-
-    inner class GifFavListViewHolder(
-        val binding: ItemGifFavBinding,
-        private val onAdapterPositionClicked: (GifFavourite) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.square.apply {
-                setOnClickListener() {
-                    val pos = absoluteAdapterPosition
-                    val item = items[pos]
-                    items.removeAt(pos)
-                    notifyItemRemoved(pos)
-                    onAdapterPositionClicked(item)
-                }
-            }
-        }
-    }
 
     override fun showErrorPage(error: String) {
         // no implementation as we don't have error page for fav gif list

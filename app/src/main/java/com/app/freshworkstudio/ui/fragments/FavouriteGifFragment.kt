@@ -59,8 +59,8 @@ class FavouriteGifFragment : BaseFragment<FragmentFavBinding>(R.layout.fragment_
     /*
     *  callback to save item in db for fav.
     * */
-    private fun onAdapterPositionClicked(): (GifFavourite) -> Unit {
-        return { vm.deleteItem(it) }
+    private fun onAdapterPositionClicked(): (Any) -> Unit {
+        return { vm.deleteItem(it as GifFavourite) }
     }
 
     companion object {

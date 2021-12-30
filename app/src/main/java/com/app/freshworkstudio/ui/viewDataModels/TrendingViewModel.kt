@@ -56,5 +56,4 @@ class TrendingViewModel @Inject constructor(private val giphyTrendingRepository:
         giphyTrendingRepository.insertFav(gifFavourite)
     }
 
-
 }

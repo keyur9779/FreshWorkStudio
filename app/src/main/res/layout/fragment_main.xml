@@ -14,20 +14,39 @@
             type="com.app.freshworkstudio.ui.adapter.GifListAdapter" />
     </data>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:adapter="@{adapter}"
-        app:adapterGifList="@{viewModel.gifList}"
-        app:adapterGifModel="@{viewModel}"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintStart_toStartOf="parent"
-        app:paginationGifList="@{viewModel}"
-        app:spanCount="2"
-        tools:listitem="@layout/item_gif" />
+        android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adapter="@{adapter}"
+            app:adapterGifList="@{viewModel.gifList}"
+            app:adapterGifModel="@{viewModel}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:paginationGifList="@{viewModel}"
+            app:spanCount="2"
+            tools:listitem="@layout/item_gif" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="@dimen/_60dp"
+            android:layout_height="@dimen/_60dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:theme="@style/CircularProgress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadLoader="@{viewModel.loading}"
+            app:loaderViewModel="@{viewModel}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
