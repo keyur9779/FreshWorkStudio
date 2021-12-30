@@ -65,17 +65,22 @@ dependencies {
     // architecture components
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
 
+    // lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-    implementation "com.github.skydoves:baserecyclerviewadapter:$baseAdapterVersion"
-    implementation "com.github.skydoves:whatif:$whatIfVersion"
-    implementation "com.github.rubensousa:gravitysnaphelper:$nestedVersion"
-    implementation "com.github.skydoves:bindables:$bindablesVersion"
+
+    // room database
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     testImplementation "androidx.arch.core:core-testing:$archCompomentVersion"
+
+    // data binding library
+    implementation "com.github.skydoves:baserecyclerviewadapter:$baseAdapterVersion"
+    implementation "com.github.skydoves:whatif:$whatIfVersion"
+    implementation "com.github.skydoves:bindables:$bindablesVersion"
+    implementation "com.github.skydoves:bundler:$bundlerVersion"
 
 
     // hilt
@@ -95,7 +100,6 @@ dependencies {
     implementation "com.github.skydoves:sandwich:$sandwichVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.github.skydoves:bundler:$bundlerVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
     testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
 

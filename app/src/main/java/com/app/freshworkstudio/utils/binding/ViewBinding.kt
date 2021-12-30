@@ -51,7 +51,7 @@ object ViewBinding {
                     target: Target<GifDrawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    progress.visibility = View.GONE
+                    progress.visibility = GONE
                     return false
                 }
 
