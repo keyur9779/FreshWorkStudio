@@ -23,9 +23,17 @@ open class BaseActivity<T : ViewDataBinding>(rLayout: Int) : BindingActivity<T>(
         with(window) {
             requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
             // set an start animation transition
-            enterTransition = Slide(Gravity.RIGHT)
+
+
+            enterTransition = Slide(Gravity.RIGHT).apply {
+                excludeTarget(android.R.id.statusBarBackground, true);
+                excludeTarget(android.R.id.navigationBarBackground, true);
+            }
             // set an exit transition
-            exitTransition = Slide(Gravity.LEFT)
+            exitTransition = Slide(Gravity.LEFT).apply {
+                excludeTarget(android.R.id.statusBarBackground, true);
+                excludeTarget(android.R.id.navigationBarBackground, true);
+            }
         }
         super.onCreate(savedInstanceState)
     }

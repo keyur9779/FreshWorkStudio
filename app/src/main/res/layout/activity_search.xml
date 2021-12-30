@@ -14,12 +14,11 @@
             type="com.app.freshworkstudio.ui.adapter.GifSearchListAdapter" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="false"
         android:background="@color/purple_500"
+        android:fitsSystemWindows="false"
         tools:context=".ui.uiActivity.SearchActivity">
 
         <androidx.appcompat.widget.AppCompatImageView
