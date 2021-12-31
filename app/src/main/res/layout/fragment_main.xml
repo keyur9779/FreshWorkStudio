@@ -18,11 +18,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.app.freshworkstudio.ui.view.GridRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:adapter="@{adapter}"
+            android:layoutAnimation="@anim/grid_layout_animation_scale_random"
             app:adapterGifList="@{viewModel.gifList}"
             app:adapterGifModel="@{viewModel}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

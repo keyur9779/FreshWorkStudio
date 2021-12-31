@@ -20,10 +20,11 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.TrendingFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.app.freshworkstudio.ui.view.GridRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layoutAnimation="@anim/grid_layout_animation_scale_random"
             app:adapter="@{adapter}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

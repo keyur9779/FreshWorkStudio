@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/purple_500"
+        android:background="@color/colorPrimary"
         android:fitsSystemWindows="false"
         tools:context=".ui.uiActivity.SearchActivity">
 
@@ -62,8 +62,8 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_8sdp"
             android:padding="@dimen/_8sdp"
-            android:visibility="invisible"
             android:src="@drawable/ic_baseline_cancel_24"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/search_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -73,8 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_0dp"
             android:background="@color/white"
-            app:adapter="@{adapter}"
             android:layoutAnimation="@anim/layout_animation_from_right"
+            app:adapter="@{adapter}"
             app:adapterGifList="@{viewModel.gifSearched}"
             app:adapterGifModel="@{viewModel}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

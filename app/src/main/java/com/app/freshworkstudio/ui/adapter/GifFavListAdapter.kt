@@ -22,7 +22,6 @@ import com.app.freshworkstudio.databinding.ItemGifFavBinding
 import com.app.freshworkstudio.model.Media
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.adapter.viewHolders.GifListViewHolder
-import com.app.freshworkstudio.utils.DataUtils.item
 import com.skydoves.bindables.binding
 
 
@@ -62,15 +61,16 @@ class GifFavListAdapter(private val onAdapterPositionClicked: (Any) -> Unit) :
     override fun addGif(gifs: Any) {
 
         val list = gifs as List<GifFavourite>
+        val listSize = list.size
         val oItemSize = items.size
 
-        if (oItemSize == list.size) {
+        if (oItemSize == listSize) {
             return
         }
         items.clear()
         items.addAll(list)
         val nItemSize = items.size
-        if (oItemSize == item) {
+        if (oItemSize < listSize) {
             notifyDataSetChanged()
         } else {
             notifyItemRangeInserted(oItemSize, nItemSize)

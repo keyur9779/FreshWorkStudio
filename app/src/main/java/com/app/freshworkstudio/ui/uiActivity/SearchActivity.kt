@@ -50,6 +50,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
                 override fun afterTextChanged(text: Editable) {
                     if (text.isEmpty()) {
+                        vm.isLoading = false
                         gifSearchListAdapter.clear()
                         cancelButton.visibility = INVISIBLE
                     }

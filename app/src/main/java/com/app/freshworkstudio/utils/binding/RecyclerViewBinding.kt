@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.utils.binding
 
-import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.app.freshworkstudio.utils.DataUtils.item
 import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
-import com.skydoves.baserecyclerviewadapter.RecyclerViewPaginator
 import com.skydoves.whatif.whatIfNotNull
 
 
@@ -41,7 +39,12 @@ object RecyclerViewBinding {
                 if (ioTask.data is GiphyResponseModel) {
                     val modelData = ioTask.data
 
-                    viewModel.possibleTotalPage = modelData.pagination!!.total_count / pageCount
+                    val pageCount = modelData.pagination!!.total_count / pageCount
+                    viewModel.possibleTotalPage = pageCount
+
+                    if (pageCount <= item) {
+                        viewModel.isLastPage = true
+                    }
 
                     if (modelData.data.isEmpty()) {
                         adapter?.showErrorPage(view.context.getString(R.string.no_result))
@@ -119,7 +122,8 @@ object RecyclerViewBinding {
             currentPage = 1
         }*/
 
-        view.addOnScrollListener(object : PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
+        view.addOnScrollListener(object :
+            PaginationScrollListener(view.layoutManager as LinearLayoutManager) {
             override fun loadMoreItems() {
 
                 val adapter = view.adapter as? BaseGifAdapter
