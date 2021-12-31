@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.ui.uiActivity
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View.INVISIBLE
@@ -28,8 +27,9 @@ class SplashScreen : BaseActivity<ActivitySplashScreenBinding>(R.layout.activity
                     headerIcon.clearAnimation()
                     val intent = Intent(this@SplashScreen, MainActivity::class.java)
                     startActivity(
-                        intent,
+                        intent/*,
                         ActivityOptions.makeSceneTransitionAnimation(this@SplashScreen).toBundle()
+                    */
                     )
                     finish()
                 }
