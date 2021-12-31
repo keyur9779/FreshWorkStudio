@@ -63,10 +63,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 searchBar.setText("")
             }
 
-            searchBar.postDelayed({
+            /*searchBar.postDelayed({
                 searchBar.requestFocus()
                 showKeyBoard(searchBar)
-            }, DataUtils.delay.toLong())
+            }, DataUtils.delay.toLong())*/
 
         }
     }

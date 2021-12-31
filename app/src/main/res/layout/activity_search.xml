@@ -53,7 +53,10 @@
             android:textColorHint="@color/HintText"
             app:layout_constraintEnd_toStartOf="@id/cancel_button"
             app:layout_constraintStart_toEndOf="@+id/backIv"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <requestFocus />
+        </androidx.appcompat.widget.AppCompatEditText>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/cancel_button"
