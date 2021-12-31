@@ -1,6 +1,6 @@
 # FreshWorkStudio
 
-# Developer Note - Run code in [Android Studio Arctic Fox](https://developer.android.com/studio) with Java-11 support inorder to compile code correctly and download required dependencies
+# Developer Note - [Run code in Android Studio Arctic Fox with Java-11 support inorder to compile code correctly and download required dependencies](https://developer.android.com/studio)
 
 ## Library and tech stack
 
