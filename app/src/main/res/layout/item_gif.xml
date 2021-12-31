@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_baseline_favorite" />
+            app:srcCompat="@drawable/ic_baseline_favorite_border" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/titleText"

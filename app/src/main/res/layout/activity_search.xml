@@ -39,8 +39,6 @@
             android:layout_width="@dimen/_0dp"
             android:layout_height="@dimen/_60dp"
             android:background="@android:color/transparent"
-            android:focusable="true"
-            android:focusedByDefault="true"
             android:hint="@string/search_hint"
             android:iconifiedByDefault="false"
             android:imeOptions="actionDone"
@@ -55,7 +53,6 @@
             app:layout_constraintStart_toEndOf="@+id/backIv"
             app:layout_constraintTop_toTopOf="parent">
 
-            <requestFocus />
         </androidx.appcompat.widget.AppCompatEditText>
 
         <androidx.appcompat.widget.AppCompatImageView

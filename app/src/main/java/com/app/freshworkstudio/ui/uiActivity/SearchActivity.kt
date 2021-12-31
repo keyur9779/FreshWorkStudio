@@ -1,10 +1,12 @@
 package com.app.freshworkstudio.ui.uiActivity
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.WindowInsets
 import androidx.activity.viewModels
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.R
@@ -63,10 +65,12 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 searchBar.setText("")
             }
 
-            /*searchBar.postDelayed({
+            searchBar.postDelayed({
                 searchBar.requestFocus()
-                showKeyBoard(searchBar)
-            }, DataUtils.delay.toLong())*/
+
+                    showKeyBoard(searchBar)
+
+            }, DataUtils.delayKeyBoard.toLong())
 
         }
     }

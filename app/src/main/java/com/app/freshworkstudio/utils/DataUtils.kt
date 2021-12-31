@@ -11,6 +11,7 @@ object DataUtils {
 
     const val pageCount = 20
     const val delay = 700
+    const val delayKeyBoard = 1000
 
 
     const val item: Int = 0
