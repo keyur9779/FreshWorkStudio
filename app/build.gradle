@@ -43,6 +43,8 @@ android {
     }
     kotlinOptions {
         jvmTarget = '11'
+        useIR = true
+
     }
     buildFeatures {
         dataBinding true
@@ -52,7 +54,11 @@ android {
     }
 
 }
-
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
