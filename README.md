@@ -14,6 +14,8 @@ You can try some of the following options:
 - changing the JAVA_HOME environment variable.
 - changing `org.gradle.java.home` in `gradle.properties`.
 
+[Solution](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently) Go to Preferences(Android studio Left top)-->Build,Execution,Deployment-->Build Tools-->Gradle-->Gradle JDK (update to JDK 11)-->APPLY-->OK
+
 
 ## Library and tech stack
 
