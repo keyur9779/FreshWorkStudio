@@ -8,12 +8,19 @@ import com.app.freshworkstudio.databinding.FavDialogBinding
 import com.app.freshworkstudio.model.GifData
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.ui.viewDataModels.BaseViewModel
-import com.app.freshworkstudio.ui.viewDataModels.TrendingViewModel
 import kotlin.random.Random
 
 object ViewUtils {
+    private var isDialogShowning = false
+
+
     fun showFavDialog(gifData: GifData, context: Context, vm: BaseViewModel) {
 
+        if (isDialogShowning) {
+            return
+        }
+
+        isDialogShowning = true
         val alert: AlertDialog.Builder = AlertDialog.Builder(context)
         val dBinding = FavDialogBinding.inflate(LayoutInflater.from(context));
 
@@ -25,6 +32,9 @@ object ViewUtils {
             viewModel = vm
             media = gifData.images.fixed_width
             val alertView = alert.show()
+            alertView.setOnDismissListener {
+                isDialogShowning = false
+            }
             val radim = gifData.id.substring(Random.nextInt(gifData.id.length))
             vm.fetchGifFavMarket(radim)
             square.setOnClickListener {

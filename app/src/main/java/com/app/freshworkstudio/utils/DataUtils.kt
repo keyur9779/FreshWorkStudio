@@ -23,7 +23,6 @@ object DataUtils {
     const val limit = "limit"
     const val offset = "offset"
     const val query = "q"
-    const val randomQuery = "AnAn"
     const val urlPath = "urlPath"
 
 

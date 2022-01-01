@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseGifAdapter<T:RecyclerView.ViewHolder>() : RecyclerView.Adapter<T>() {
 
 
-    abstract fun addGif(gif:Any)
-    abstract fun showErrorPage(error: String)
+    abstract fun addGif(dList:Any)
+    abstract fun showErrorPage(message: String)
     abstract fun clear()
 
 }

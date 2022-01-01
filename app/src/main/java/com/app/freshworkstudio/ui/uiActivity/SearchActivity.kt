@@ -1,12 +1,10 @@
 package com.app.freshworkstudio.ui.uiActivity
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.WindowInsets
 import androidx.activity.viewModels
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.R
@@ -39,7 +37,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             searchBar.addTextChangedListener(object : TextWatcher {
                 //This method is called to notify you that, within s, the count characters beginning at start are about to be
                 // replaced by new text with length after.
-                override fun beforeTextChanged( text: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged( text: CharSequence,start: Int,count: Int,after: Int) {}
 
                 override fun onTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
                     vm.lastPageNumber = item
@@ -56,7 +54,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                         gifSearchListAdapter.clear()
                         cancelButton.visibility = INVISIBLE
                     }
-
                 }
             })
 
@@ -68,7 +65,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             searchBar.postDelayed({
                 searchBar.requestFocus()
 
-                    showKeyBoard(searchBar)
+                showKeyBoard(searchBar)
 
             }, DataUtils.delayKeyBoard.toLong())
 

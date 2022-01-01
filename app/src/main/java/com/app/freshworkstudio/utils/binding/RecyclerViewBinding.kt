@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.utils.binding
 
+import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,8 @@ object RecyclerViewBinding {
     @JvmStatic
     @BindingAdapter("adapterGifList", "adapterGifModel")
     fun bindAdapterGifList(view: RecyclerView, gif: IOTaskResult<*>, viewModel: BaseViewModel) {
+
+
         val adapter = view.adapter as? BaseGifAdapter
         gif.whatIfNotNull {
 
@@ -54,6 +57,7 @@ object RecyclerViewBinding {
                         }
                         adapter?.addGif(modelData.data)
                         view.scheduleLayoutAnimation()
+                        modelData.data = emptyList()
 
                     }
                 } /*else {

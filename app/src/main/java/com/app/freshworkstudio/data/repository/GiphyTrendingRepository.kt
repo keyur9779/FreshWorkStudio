@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.data.repository
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.FreshWorkApp
@@ -15,6 +16,7 @@ import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.app.freshworkstudio.utils.DataUtils.query
 import com.app.freshworkstudio.utils.DataUtils.search
 import com.app.freshworkstudio.utils.DataUtils.trend
+import com.skydoves.whatif.whatIf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -38,11 +40,16 @@ class GiphyTrendingRepository constructor(
         // Just making sure we are not duplicating by any means, as url of
         // gif are getting different all time, so sometimes room is not able to resolve conflicts replace
         val item = gFavouriteDao.getGifById(data.gifID)
-        if (item != null) {
-            gFavouriteDao.deleteByGif(item)
+
+        whatIf(item != null,
+            { gFavouriteDao.deleteByGif(item) },
+            { gFavouriteDao.insertGif(data) }
+        )
+        /*if (item != null) {
+
         } else {
             gFavouriteDao.insertGif(data)
-        }
+        }*/
     }
 
     @WorkerThread
@@ -58,10 +65,14 @@ class GiphyTrendingRepository constructor(
     @WorkerThread
     fun loadTrendingGif(page: Int, q: String, success: () -> Unit) = flow {
 
+        //kotlinx.coroutines.delay(delay.toLong())
+
+        //Build request map with url path
         val map = mutableMapOf<String, String>()
         map[api_key] = API_KEY
         map[limit] = pageCount.toString()
         map[offset] = page.toString()
+
         val queryPath = if (q.isEmpty()) {
             trend
         } else {
@@ -69,30 +80,24 @@ class GiphyTrendingRepository constructor(
             search
         }
 
-        val response =
-            giphyService.fetchTrendingGif(queryPath/*, apiKEY, pageCount, page,query*/, map)
+        val response = giphyService.fetchTrendingGif(queryPath, map)
 
-        if (response.isSuccessful) {
+        emit(if (response.isSuccessful) {
             val body = response.body()
             body?.let {
+
                 if (it.data.isNotEmpty()) {
-                    emit(IOTaskResult.OnSuccess(it))
+                    IOTaskResult.OnSuccess(it)
                 } else {
-                    emit(IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result)))
+                    IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result))
                 }
             } ?: kotlin.run {
-                emit(IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result)))
+                IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result))
             }
         } else {
             // can be improve error handling by adding error code based message - I'M just passing all error as message
-            emit(
-                IOTaskResult.OnFailed(
-                    "${FreshWorkApp.context.getString(R.string.error)} ${
-                        response.errorBody()?.string()
-                    }"
-                )
-            )
-        }
+            IOTaskResult.OnFailed("${FreshWorkApp.context.getString(R.string.error)} ${response.errorBody()?.string()}")
+        })
     }.catch { e ->
         // can be improve error handling based on type of exception - I'M just passing all error as message
         emit(IOTaskResult.OnFailed("${FreshWorkApp.context.getString(R.string.error)} ${e.message}"))

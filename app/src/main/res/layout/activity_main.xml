@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.app.freshworkstudio.ui.viewDataModels.SearchViewModel" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,27 +21,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/Theme.FreshWorkStudio.AppBarOverlay">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                app:title="@string/app_name"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"/>
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:title="@string/app_name" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                app:tabMaxWidth="@dimen/_0dp"
+                android:layout_height="wrap_content"
                 app:tabGravity="fill"
-                app:tabMode="fixed"
-                android:layout_height="wrap_content" />
+                app:tabMaxWidth="@dimen/_0dp"
+                app:tabMode="fixed" />
         </com.google.android.material.appbar.AppBarLayout>
+
+        <com.app.freshworkstudio.ui.view.CustomSearchView
+            android:id="@+id/search_view"
+            style="@style/MaterialSearchViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="10dp"
+            app:searchViewModel="@{viewModel}" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

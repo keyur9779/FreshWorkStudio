@@ -11,9 +11,15 @@
     <string name="error_msg_timeout">The server took too long to respond</string>
     <string name="error_msg_unknown">An unexpected error occurred</string>
     <string name="tap_to_reload">Tap to reload</string>
-    <string name="search_hint">search gif</string>
     <string name="no_result">No Result for your searched query.</string>
     <string name="error">Retry with error .</string>
     <string name="unFav">Undo Favourite</string>
     <string name="fav">Mark Favourite</string>
+
+    <string name="search_hint">Search Gif &#8230;</string>
+    <string name="hint_prompt">Speak an item name or a number</string>
+    <string name="cd_up_button">Up navigation button</string>
+    <string name="cd_voice_search">Voice search</string>
+    <string name="cd_clear_button">Clear field</string>
+    <string name="cd_suggestion_icon">List item icon</string>
 </resources>

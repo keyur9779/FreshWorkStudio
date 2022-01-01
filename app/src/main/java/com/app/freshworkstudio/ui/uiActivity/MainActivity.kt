@@ -3,18 +3,21 @@ package com.app.freshworkstudio.ui.uiActivity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.viewbinding.BuildConfig
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivityMainBinding
 import com.app.freshworkstudio.ui.adapter.SectionsPagerAdapter
-import com.app.freshworkstudio.utils.DataUtils
-import com.app.freshworkstudio.utils.DataUtils.item
-import com.app.freshworkstudio.utils.DataUtils.loading
+import com.app.freshworkstudio.ui.view.callBack.OnSearchCallBack
+import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
 import com.app.freshworkstudio.utils.DataUtils.pagerTitleList
-import com.google.android.material.tabs.TabLayoutMediator
-import com.skydoves.bindables.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import com.google.android.material.tabs.TabLayoutMediator
+import com.app.freshworkstudio.BuildConfig.isFragmentSearch
+
 
 /**
  * Main class where user will interact with application
@@ -22,12 +25,23 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
+    val vm: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(binding) {
 
             setSupportActionBar(toolbar)
+
+            viewModel = vm
+
+            searchView.onSearchView = object : OnSearchCallBack {
+                override fun onClose() {
+                    updateToolBar(true,toolbar)
+                }
+
+            }
+
             viewPager.adapter = SectionsPagerAdapter(supportFragmentManager, lifecycle)
             TabLayoutMediator(tabs, viewPager) { tab, position ->
                 tab.text = pagerTitleList[position]
@@ -47,12 +61,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_search -> {
-                // Open the search view on the menu item click.
-                DataUtils.condition = DataUtils.randomQuery
-                startActivity(
-                    Intent(this@MainActivity, SearchActivity::class.java),
-                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-                )
+
+
+                if(isFragmentSearch) {
+                    binding.searchView.openSearch()
+                    updateToolBar(false, binding.toolbar)
+                }else{
+                    // Open the search view on the menu item click.
+                    startActivity(
+                        Intent(this@MainActivity, SearchActivity::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
+                }
+
                 return true
             }
         }
@@ -63,12 +84,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     * Handle back stack of tab layout, just make sure activity is not finishing.
     * */
     override fun onBackPressed() {
-        with(binding) {
-            if (viewPager.currentItem > item) {
-                viewPager.currentItem = viewPager.currentItem - loading
-            } else {
-                super.onBackPressed()
-            }
-        }
+        Log.d("keyur", "on actovotu onBackPressed")
+        super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        Log.d("keyur", "on actovotu onDestroy")
+
+        super.onDestroy()
     }
 }

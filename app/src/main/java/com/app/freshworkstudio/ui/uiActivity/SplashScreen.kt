@@ -16,6 +16,7 @@ class SplashScreen : BaseActivity<ActivitySplashScreenBinding>(R.layout.activity
         /* Translates ImageView from current position to its original position, scales it from
         larger scale to its original scale.*/
         val translateScale = AnimationUtils.loadAnimation(this, R.anim.translate_scale)
+        translateScale.fillAfter = true
 
         with(binding) {
             translateScale.setAnimationListener(object : Animation.AnimationListener {

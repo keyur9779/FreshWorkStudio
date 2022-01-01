@@ -65,8 +65,6 @@ object ViewBinding {
                     progress.visibility = View.GONE
                     return false
                 }
-
-
             })
             .apply(
                 RequestOptions()
@@ -91,15 +89,12 @@ object ViewBinding {
     fun bindLoadImage(view: AppCompatImageView, url: String, targetView: View) {
         Glide.with(view)
             .load(url)
-            .listener(
-                GlidePalette.with(url)
+            .listener(GlidePalette.with(url)
                     .use(BitmapPalette.Profile.VIBRANT)
                     .intoBackground(targetView)
-                    .crossfade(true)
-            )
+                    .crossfade(true))
             .into(view)
     }
-
 
     @JvmStatic
     @BindingAdapter("isFav")

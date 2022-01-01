@@ -37,6 +37,23 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    flavorDimensions 'version'
+    productFlavors {
+
+        SingleSearch {
+            dimension = 'version'
+            applicationId = 'com.app.freshworkstudio'
+            buildConfigField("boolean", "isFragmentSearch", 'true')
+        }
+
+        activitySearch {
+            dimension = 'version'
+            applicationId = 'com.app.search.freshworkstudio'
+            buildConfigField("boolean", "isFragmentSearch", 'false')
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11

@@ -22,13 +22,13 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val giphyTrendingRepository: GiphyTrendingRepository) :
     BaseViewModel() {
 
-    val query = MutableStateFlow("")
+    internal val query = MutableStateFlow("")
 
     // search gif with delay in typing to avoid multiple query to server
     private val queryFlow =
         query.debounce(delay.toLong()).filter {
             return@filter it.isNotEmpty()
-        }.distinctUntilChanged().flatMapLatest {
+        }.flatMapLatest {
             isLoading = true
             giphyTrendingRepository.loadTrendingGif(lastPageNumber, searchQuery) {
                 isLoading = false

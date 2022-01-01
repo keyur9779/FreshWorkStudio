@@ -8,8 +8,10 @@ import android.view.Gravity
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import com.app.freshworkstudio.utils.DataUtils.item
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.skydoves.bindables.BindingActivity
 
@@ -46,8 +48,21 @@ open class BaseActivity<T : ViewDataBinding>(rLayout: Int) : BindingActivity<T>(
     }
 
     fun showKeyBoard(view: AppCompatEditText) {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(view, item)
+    }
+
+    fun updateToolBar(isHide: Boolean, toolbar: Toolbar) {
+
+        val params = toolbar.layoutParams as AppBarLayout.LayoutParams
+        if (isHide) {
+            params.scrollFlags = (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                    or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
+        } else {
+            params.scrollFlags = item
+        }
+
     }
 
     @SuppressLint("MissingSuperCall")
