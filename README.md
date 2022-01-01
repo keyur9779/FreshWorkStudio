@@ -6,10 +6,12 @@
 
 - Minimum SDK level 21
 - [Kotlin](https://kotlinlang.org/) based
-    + [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+    + [Coroutines](https://developer.android.com/kotlin/coroutines)
+    + [Flow](https://developer.android.com/kotlin/flow)
 - JetPack
     - Lifecycle - dispose observing data when lifecycle state changes.
     - ViewModel - UI related data holder, lifecycle aware.
+    - LiveData - observable data holder class, lifecycle aware.
     - Room - Store data offline
 - Architecture
     - MVVM Architecture (View - DataBinding - ViewModel - Model)
@@ -21,6 +23,10 @@
     - Base Recycler Viewadapter - Used to bind view in adapter
     - Whatif - Plugin gives direct access to scope function without using if conditions
     - Bindables - Observable data binding library
+- Unit test case
+    - robolectric - Used to test android specific test case without using android device
+    - mockwebserver - Help to mock http request
+    - Mockito - Used for mocking dummy interface
 - Material Design & Animations
 - [Glide](https://github.com/bumptech/glide) - loading images
 - Shared element transition - for activity launch animation
