@@ -6,10 +6,12 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Rect
+import android.os.Build
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -695,7 +697,13 @@ class CustomSearchView @JvmOverloads constructor(
         dBinding.searchBar.layoutParams.height = height
     }
 
-
+    fun setVoiceHintPrompt(hintPrompt: String) {
+        mHintPrompt = if (hintPrompt.isNotBlank()) {
+            hintPrompt
+        } else {
+            mContext.getString(R.string.hint_prompt)
+        }
+    }
 
     /**
      * Returns the actual AppCompat ActionBar height value. This will be used as the default

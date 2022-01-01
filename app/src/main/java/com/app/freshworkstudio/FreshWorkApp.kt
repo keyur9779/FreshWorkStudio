@@ -1,5 +1,6 @@
 package com.app.freshworkstudio
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager

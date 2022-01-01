@@ -4,6 +4,8 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.view.View
 import android.view.ViewAnimationUtils
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewPropertyAnimatorListener
 
 /**
  *

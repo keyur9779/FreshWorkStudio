@@ -1,5 +1,6 @@
 package com.app.freshworkstudio.data.repository
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.FreshWorkApp
