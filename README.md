@@ -4,8 +4,8 @@
   + [singleSearch] - This build flavour will load search feature within single launched activity with open close search animation.
   + [activitySearch]- This build flavour will load search feature in new activity with animation
   
-## [Developer Note] - Run code in [Android Studio Arctic Fox with Java-11 support](https://developer.android.com/studio) inorder to compile code correctly and download required dependencies
-## [Known issue] - If java-8 is default java_home you will be see below error while building the Application, which can be [resolved by following steps written here](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently)
+## [Developer Note](https://developer.android.com/studio) - Run code in [Android Studio Arctic Fox with Java-11 support](https://developer.android.com/studio) inorder to compile code correctly and download required dependencies
+## [Known issue](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently) - If java-8 is default java_home you will be see below error while building the Application, which can be [resolved by following steps written here](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently)
 An exception occurred applying plugin request [id: 'com.android.application']
 > Failed to apply plugin 'com.android.internal.application'.
 > Android Gradle plugin requires Java 11 to run. You are currently using Java 1.8.
