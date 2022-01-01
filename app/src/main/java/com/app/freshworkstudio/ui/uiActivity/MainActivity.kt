@@ -3,7 +3,6 @@ package com.app.freshworkstudio.ui.uiActivity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels

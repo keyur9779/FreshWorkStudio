@@ -1,6 +1,5 @@
 package com.app.freshworkstudio.utils.binding
 
-import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
