@@ -56,12 +56,13 @@ buildscript {
         junitVersion = '4.12'
         androidxTest = '1.1.1'
         unitTestCoreVersion = '1.2.0'
-        robolectricVersion = '4.3'
+        robolectricVersion = '4.5.1'
         androidxTestRules = '1.2.0-alpha04'
         mockWebServerVersion = '3.9.0'
         mockitoKotlinVersion = '2.1.0'
         espressoVersion = '3.2.0'
         jacocoVersion = '0.8.4'
+        googleTruth = '1.1.2'
 
     }
 
