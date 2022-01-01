@@ -41,7 +41,7 @@ android {
     flavorDimensions 'version'
     productFlavors {
 
-        SingleSearch {
+        singleSearch {
             dimension = 'version'
             applicationId = 'com.app.freshworkstudio'
             buildConfigField("boolean", "isFragmentSearch", 'true')

@@ -1,6 +1,19 @@
 # FreshWorkStudio
+  Application is developed with two search implementation which can be tested using below build flavours 
+- [Build Flavours]
+  + [singleSearch] - This build flavour will load search feature within single launched activity with open close search animation.
+  + [activitySearch]- This build flavour will load search feature in new activity with animation
+  
+## Developer Note - [Run code in Android Studio Arctic Fox with Java-11 support inorder to compile code correctly and download required dependencies](https://developer.android.com/studio)
+## Known issue - If java-8 is default java_home you will be see below error while building the Application, which can be [resolved by following steps written here](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently)
+An exception occurred applying plugin request [id: 'com.android.application']
+> Failed to apply plugin 'com.android.internal.application'.
+> Android Gradle plugin requires Java 11 to run. You are currently using Java 1.8.
+You can try some of the following options:
+- changing the IDE settings.
+- changing the JAVA_HOME environment variable.
+- changing `org.gradle.java.home` in `gradle.properties`.
 
-# Developer Note - [Run code in Android Studio Arctic Fox with Java-11 support inorder to compile code correctly and download required dependencies](https://developer.android.com/studio)
 
 ## Library and tech stack
 
@@ -26,7 +39,7 @@
 - Unit test case
     - robolectric - Used to test android specific test case without using android device
     - mockwebserver - Help to mock http request
-    - Mockito - Used for mocking dummy interface
+    - Mockito - Used for mocking dummy class or data(interface)
 - Material Design & Animations
 - [Glide](https://github.com/bumptech/glide) - loading images
 - Shared element transition - for activity launch animation
