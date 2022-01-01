@@ -7,16 +7,17 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.viewbinding.BuildConfig
+import com.app.freshworkstudio.BuildConfig.isFragmentSearch
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivityMainBinding
 import com.app.freshworkstudio.ui.adapter.SectionsPagerAdapter
 import com.app.freshworkstudio.ui.view.callBack.OnSearchCallBack
 import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
+import com.app.freshworkstudio.utils.DataUtils.item
+import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pagerTitleList
-import dagger.hilt.android.AndroidEntryPoint
 import com.google.android.material.tabs.TabLayoutMediator
-import com.app.freshworkstudio.BuildConfig.isFragmentSearch
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
@@ -37,7 +38,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
             searchView.onSearchView = object : OnSearchCallBack {
                 override fun onClose() {
-                    updateToolBar(true,toolbar)
+                    updateToolBar(true, toolbar)
                 }
 
             }
@@ -63,10 +64,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             R.id.action_search -> {
 
 
-                if(isFragmentSearch) {
+                if (isFragmentSearch) {
                     binding.searchView.openSearch()
                     updateToolBar(false, binding.toolbar)
-                }else{
+                } else {
                     // Open the search view on the menu item click.
                     startActivity(
                         Intent(this@MainActivity, SearchActivity::class.java),
@@ -84,13 +85,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     * Handle back stack of tab layout, just make sure activity is not finishing.
     * */
     override fun onBackPressed() {
-        Log.d("keyur", "on actovotu onBackPressed")
-        super.onBackPressed()
-    }
-
-    override fun onDestroy() {
-        Log.d("keyur", "on actovotu onDestroy")
-
-        super.onDestroy()
+        with(binding) {
+            if (viewPager.currentItem > item) {
+                viewPager.currentItem = viewPager.currentItem - loading
+            } else {
+                super.onBackPressed()
+            }
+        }
     }
 }
