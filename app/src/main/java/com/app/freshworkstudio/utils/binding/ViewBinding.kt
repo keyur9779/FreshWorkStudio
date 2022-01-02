@@ -21,8 +21,6 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.github.florent37.glidepalette.BitmapPalette
-import com.github.florent37.glidepalette.GlidePalette
 
 object ViewBinding {
 
@@ -30,9 +28,9 @@ object ViewBinding {
     @BindingAdapter("visible")
     fun setVisibleGone(view: View, isVisible: Boolean?) {
         view.visibility = if (isVisible != false) {
-            View.VISIBLE
+            VISIBLE
         } else {
-            View.GONE
+            GONE
         }
     }
 
@@ -40,7 +38,7 @@ object ViewBinding {
     @BindingAdapter("loadGif", "progressGif")
     fun loadGif(itemView: AppCompatImageView, url: String, progress: ProgressBar) {
 
-        progress.visibility = View.VISIBLE
+        progress.visibility = VISIBLE
         Glide.with(itemView.context)
             .asGif()
             .load(url)
@@ -62,7 +60,7 @@ object ViewBinding {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    progress.visibility = View.GONE
+                    progress.visibility = GONE
                     return false
                 }
             })
@@ -81,18 +79,6 @@ object ViewBinding {
         Glide.with(view.context)
             .load(url)
             .apply(RequestOptions().circleCrop())
-            .into(view)
-    }
-
-    @JvmStatic
-    @BindingAdapter("loadPaletteImage", "loadPaletteTarget")
-    fun bindLoadImage(view: AppCompatImageView, url: String, targetView: View) {
-        Glide.with(view)
-            .load(url)
-            .listener(GlidePalette.with(url)
-                    .use(BitmapPalette.Profile.VIBRANT)
-                    .intoBackground(targetView)
-                    .crossfade(true))
             .into(view)
     }
 

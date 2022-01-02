@@ -112,6 +112,7 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:$hiltVersion"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltCoreVersion"
     kaptAndroidTest "com.google.dagger:hilt-compiler:$hiltCoreVersion"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hiltCoreVersion"
 
     // coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
@@ -128,7 +129,6 @@ dependencies {
 
     // glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    implementation "com.github.florent37:glidepalette:$glidePaletteVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
 
