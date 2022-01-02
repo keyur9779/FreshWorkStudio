@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.onCompletion
 /**
  * class is used to fetch and save data related to trending and searched gif.
  *
- * @param giphyService = list of network methods
+ * @param gFavouriteDao = list of room operations methods
  * */
 class GiFavouriteRepository constructor(
     private val gFavouriteDao: GFavouriteDao
