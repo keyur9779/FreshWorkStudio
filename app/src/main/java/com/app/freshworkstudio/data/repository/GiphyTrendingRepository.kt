@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.onCompletion
  * class is used to fetch and save data related to trending and searched gif.
  *
  * @param giphyService = list of network methods
+ * @param gFavouriteDao = room interface
  * */
 class GiphyTrendingRepository constructor(
     private val giphyService: GiphyApiService,
@@ -84,18 +85,17 @@ class GiphyTrendingRepository constructor(
         emit(if (response.isSuccessful) {
             val body = response.body()
             body?.let {
-
-                if (it.data.isNotEmpty()) {
-                    IOTaskResult.OnSuccess(it)
-                } else {
-                    IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result))
-                }
+                IOTaskResult.OnSuccess(it)
             } ?: kotlin.run {
                 IOTaskResult.OnFailed(FreshWorkApp.context.getString(R.string.no_result))
             }
         } else {
             // can be improve error handling by adding error code based message - I'M just passing all error as message
-            IOTaskResult.OnFailed("${FreshWorkApp.context.getString(R.string.error)} ${response.errorBody()?.string()}")
+            IOTaskResult.OnFailed(
+                "${FreshWorkApp.context.getString(R.string.error)} ${
+                    response.errorBody()?.string()
+                }"
+            )
         })
     }.catch { e ->
         // can be improve error handling based on type of exception - I'M just passing all error as message

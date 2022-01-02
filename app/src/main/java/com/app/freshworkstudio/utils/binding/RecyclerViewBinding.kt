@@ -15,6 +15,7 @@ import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.DataUtils.pageCount
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
 import com.skydoves.whatif.whatIfNotNull
+import kotlin.random.Random
 
 
 object RecyclerViewBinding {
@@ -44,11 +45,14 @@ object RecyclerViewBinding {
                     val pageCount = modelData.pagination!!.total_count / pageCount
                     viewModel.possibleTotalPage = pageCount
 
-                    if (pageCount <= item) {
-                        viewModel.isLastPage = true
-                    }
+
+                        viewModel.isLastPage = pageCount <= item
+
 
                     if (modelData.data.isEmpty()) {
+                        if (viewModel.lastPageNumber == item) {
+                            adapter?.clear()
+                        }
                         adapter?.showErrorPage(view.context.getString(R.string.no_result))
                     } else {
                         if (viewModel.lastPageNumber == item) {
@@ -69,8 +73,12 @@ object RecyclerViewBinding {
 
             if (ioTask is IOTaskResult.OnFailed<*>) {
                 if (ioTask.message is String) {
-                    val modelData = ioTask.message
+                    var modelData = ioTask.message
+
                     adapter?.showErrorPage("$modelData")
+                    modelData = "IOTaskResult.OnFailed ${Random.nextInt()}"
+
+
                 }
             }
         } /*?: kotlin.run {

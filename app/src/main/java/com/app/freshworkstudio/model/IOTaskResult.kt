@@ -10,5 +10,5 @@ package com.app.freshworkstudio.model
  */
 sealed class IOTaskResult<out T : Any> {
     data class OnSuccess<out T : Any>(val data: T) : IOTaskResult<T>()
-    data class OnFailed<out T : Any>(val message: T) : IOTaskResult<T>()
+    data class OnFailed<T : Any>(var message: T) : IOTaskResult<T>()
 }

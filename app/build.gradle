@@ -47,7 +47,7 @@ android {
             buildConfigField("boolean", "isFragmentSearch", 'true')
         }
 
-        activitySearch {
+        vActivitySearch {
             dimension = 'version'
             applicationId = 'com.app.search.freshworkstudio'
             buildConfigField("boolean", "isFragmentSearch", 'false')

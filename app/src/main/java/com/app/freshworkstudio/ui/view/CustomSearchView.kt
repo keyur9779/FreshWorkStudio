@@ -30,6 +30,8 @@ import com.app.freshworkstudio.ui.viewDataModels.SearchViewModel
 import com.app.freshworkstudio.utils.AnimationUtils.circleHideView
 import com.app.freshworkstudio.utils.AnimationUtils.circleRevealView
 import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.utils.DataUtils.item
+import com.app.freshworkstudio.utils.DataUtils.loading
 import com.app.freshworkstudio.utils.binding.ViewUtils
 import com.skydoves.whatif.whatIfNotNull
 import kotlinx.coroutines.*
@@ -230,15 +232,20 @@ class CustomSearchView @JvmOverloads constructor(
         }
     }
 
+
+    var pageCount:Int = loading
+
     /*
     *  callback to retry emit last page due to recovery from error
     * */
     private fun onRetry(): (Int) -> Unit {
         return {
+
             if (FreshWorkApp.isInternetAvailable()) {
                 searchViewModel.whatIfNotNull {
+                    pageCount++
                     it.loadGifPage(
-                        it.getCurrentPage().plus(DataUtils.loading)
+                        it.getCurrentPage().plus(pageCount)
                     )
                 }
             } else {
