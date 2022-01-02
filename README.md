@@ -19,7 +19,7 @@ You can try some of the following options:
 
 ## Library and tech stack
 
-- Minimum SDK level 21
+- Minimum SDK level 23
 - [Kotlin](https://kotlinlang.org/) based
     + [Coroutines](https://developer.android.com/kotlin/coroutines)
     + [Flow](https://developer.android.com/kotlin/flow)
