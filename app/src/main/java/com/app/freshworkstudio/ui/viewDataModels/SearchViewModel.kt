@@ -2,7 +2,8 @@ package com.app.freshworkstudio.ui.viewDataModels
 
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
+import com.app.freshworkstudio.data.repository.GiphyTrendingRepositoryImpl
+import com.app.freshworkstudio.data.repository.repositoryService.GiphyTrendingRepository
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils.delay

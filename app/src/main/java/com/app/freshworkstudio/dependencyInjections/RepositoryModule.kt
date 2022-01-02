@@ -1,8 +1,10 @@
 package com.app.freshworkstudio.dependencyInjections
 
 import com.app.freshworkstudio.data.api.service.GiphyApiService
-import com.app.freshworkstudio.data.repository.GiFavouriteRepository
-import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
+import com.app.freshworkstudio.data.repository.GiFavouriteRepositoryImpl
+import com.app.freshworkstudio.data.repository.GiphyTrendingRepositoryImpl
+import com.app.freshworkstudio.data.repository.repositoryService.GiFavouriteRepository
+import com.app.freshworkstudio.data.repository.repositoryService.GiphyTrendingRepository
 import com.app.freshworkstudio.data.room.GFavouriteDao
 import dagger.Module
 import dagger.Provides
@@ -20,7 +22,7 @@ object RepositoryModule {
         giphyService: GiphyApiService,
         gFavouriteDao: GFavouriteDao
     ): GiphyTrendingRepository {
-        return GiphyTrendingRepository(giphyService, gFavouriteDao)
+        return GiphyTrendingRepositoryImpl(giphyService, gFavouriteDao)
     }
 
     @Provides
@@ -28,6 +30,6 @@ object RepositoryModule {
     fun provideGiFavouriteRepository(
         gFavouriteDao: GFavouriteDao
     ): GiFavouriteRepository {
-        return GiFavouriteRepository(gFavouriteDao)
+        return GiFavouriteRepositoryImpl(gFavouriteDao)
     }
 }

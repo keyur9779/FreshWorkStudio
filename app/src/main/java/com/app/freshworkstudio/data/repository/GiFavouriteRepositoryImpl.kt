@@ -1,6 +1,7 @@
 package com.app.freshworkstudio.data.repository
 
 import androidx.annotation.WorkerThread
+import com.app.freshworkstudio.data.repository.repositoryService.GiFavouriteRepository
 import com.app.freshworkstudio.data.room.GFavouriteDao
 import com.app.freshworkstudio.model.entity.GifFavourite
 import kotlinx.coroutines.Dispatchers
@@ -13,12 +14,12 @@ import kotlinx.coroutines.flow.onCompletion
  *
  * @param gFavouriteDao = list of room operations methods
  * */
-class GiFavouriteRepository constructor(
+class GiFavouriteRepositoryImpl constructor(
     private val gFavouriteDao: GFavouriteDao
-) {
+) : GiFavouriteRepository {
 
     @WorkerThread
-    suspend fun delete(data: GifFavourite) {
+    override suspend fun delete(data: GifFavourite) {
         gFavouriteDao.deleteByGif(data)
     }
 
@@ -27,7 +28,7 @@ class GiFavouriteRepository constructor(
     * This method is used to fetch gif from local room data
     * */
     @WorkerThread
-    fun loadFavGif(success: () -> Unit) =
+    override fun loadFavGif(success: () -> Unit) =
         gFavouriteDao.getGifList()
             .onCompletion { success() }.flowOn(Dispatchers.IO)
 

@@ -41,7 +41,7 @@
             android:background="@android:color/transparent"
             android:hint="@string/search_hint"
             android:iconifiedByDefault="false"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:inputType="text"
             android:lines="1"
             android:maxLines="1"

@@ -43,14 +43,17 @@ android {
 
         singleSearch {
             dimension = 'version'
-            applicationId = 'com.app.freshworkstudio'
             buildConfigField("boolean", "isFragmentSearch", 'true')
         }
 
         vActivitySearch {
             dimension = 'version'
-            applicationId = 'com.app.search.freshworkstudio'
             buildConfigField("boolean", "isFragmentSearch", 'false')
+        }
+    }
+    configurations {
+        androidTestImplementation {
+            exclude group: 'io.mockk', module: 'mockk-agent-jvm'
         }
     }
 
@@ -140,6 +143,13 @@ dependencies {
     testImplementation "com.google.truth:truth:$googleTruth"
 
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxTest"
     androidTestImplementation "androidx.test:rules:$androidxTestRules"
+    androidTestImplementation "androidx.test:runner:$androidxTest"
+    androidTestImplementation "androidx.test:core:$androidxTest"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$androidxTest"
+    androidTestImplementation "io.mockk:mockk-android:$mockk_version"
+    androidTestImplementation "io.mockk:mockk-agent-jvm:$mockk_version"
+
 }

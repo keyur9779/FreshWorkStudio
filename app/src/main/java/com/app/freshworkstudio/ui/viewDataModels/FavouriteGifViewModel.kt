@@ -3,7 +3,7 @@ package com.app.freshworkstudio.ui.viewDataModels
 import androidx.databinding.Bindable
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.app.freshworkstudio.data.repository.GiFavouriteRepository
+import com.app.freshworkstudio.data.repository.repositoryService.GiFavouriteRepository
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
 import com.skydoves.bindables.BindingViewModel

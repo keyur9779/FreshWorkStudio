@@ -5,6 +5,7 @@ import com.app.freshworkstudio.BuildConfig.API_KEY
 import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.data.api.service.GiphyApiService
+import com.app.freshworkstudio.data.repository.repositoryService.GiphyTrendingRepository
 import com.app.freshworkstudio.data.room.GFavouriteDao
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
@@ -29,13 +30,13 @@ import kotlinx.coroutines.flow.onCompletion
  * @param giphyService = list of network methods
  * @param gFavouriteDao = room interface
  * */
-class GiphyTrendingRepository constructor(
+class GiphyTrendingRepositoryImpl constructor(
     private val giphyService: GiphyApiService,
     private val gFavouriteDao: GFavouriteDao
-) {
+):GiphyTrendingRepository {
 
     @WorkerThread
-    suspend fun insertFav(data: GifFavourite) {
+   override suspend fun insertFav(data: GifFavourite) {
 
         // Just making sure we are not duplicating by any means, as url of
         // gif are getting different all time, so sometimes room is not able to resolve conflicts replace
@@ -53,7 +54,7 @@ class GiphyTrendingRepository constructor(
     }
 
     @WorkerThread
-    suspend fun getGifByID(gifID: String) = flow {
+   override suspend fun getGifByID(gifID: String) = flow {
         val item = gFavouriteDao.getGifById(gifID)
         emit(arrayListOf(item))
     }.flowOn(Dispatchers.IO)
@@ -63,7 +64,7 @@ class GiphyTrendingRepository constructor(
     * avoid maintaining multiple list for gifs.
     * */
     @WorkerThread
-    fun loadTrendingGif(page: Int, q: String, success: () -> Unit) = flow {
+   override fun loadTrendingGif(page: Int, q: String, success: () -> Unit) = flow {
 
         //kotlinx.coroutines.delay(delay.toLong())
 

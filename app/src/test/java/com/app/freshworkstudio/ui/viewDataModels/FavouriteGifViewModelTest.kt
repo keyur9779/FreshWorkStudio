@@ -3,7 +3,7 @@ package com.app.freshworkstudio.ui.viewDataModels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.app.freshworkstudio.data.repository.GiFavouriteRepository
+import com.app.freshworkstudio.data.repository.GiFavouriteRepositoryImpl
 import com.app.freshworkstudio.data.room.AppDatabase
 import com.app.freshworkstudio.util.MainCoroutineRule
 import com.app.freshworkstudio.util.MockDataUtil
@@ -43,7 +43,7 @@ class FavouriteGifViewModelTest {
         )
             .allowMainThreadQueries()
             .build()
-        viewModel = FavouriteGifViewModel(GiFavouriteRepository(db.gifFavouriteDao()))
+        viewModel = FavouriteGifViewModel(GiFavouriteRepositoryImpl(db.gifFavouriteDao()))
     }
 
     @Test

@@ -2,7 +2,8 @@ package com.app.freshworkstudio.ui.viewDataModels
 
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.app.freshworkstudio.data.repository.GiphyTrendingRepository
+import com.app.freshworkstudio.data.repository.GiphyTrendingRepositoryImpl
+import com.app.freshworkstudio.data.repository.repositoryService.GiphyTrendingRepository
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
@@ -17,7 +18,7 @@ import javax.inject.Inject
  *
  * Note: BindingViewModel - base view model class derived from skydoves-bindables library which makes easier to maintain the view model
  *
- * @param giphyTrendingRepository = repository class of model, used to fetch data from network or room based on call stack
+ * @param giphyTrendingRepository = repository interface, used to fetch data from network or room based on call stack
  * */
 @HiltViewModel
 class TrendingViewModel @Inject constructor(private val giphyTrendingRepository: GiphyTrendingRepository) :
