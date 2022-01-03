@@ -233,8 +233,6 @@ class CustomSearchView @JvmOverloads constructor(
     }
 
 
-    var pageCount:Int = loading
-
     /*
     *  callback to retry emit last page due to recovery from error
     * */
@@ -243,9 +241,12 @@ class CustomSearchView @JvmOverloads constructor(
 
             if (FreshWorkApp.isInternetAvailable()) {
                 searchViewModel.whatIfNotNull {
-                    pageCount++
                     it.loadGifPage(
-                        it.getCurrentPage().plus(pageCount)
+                        if (it.getCurrentPage() > loading) {
+                            loading
+                        } else {
+                            item
+                        }
                     )
                 }
             } else {
@@ -515,14 +516,14 @@ class CustomSearchView @JvmOverloads constructor(
         onSearchView?.onClose()
         dismissSuggestions()
 
-            val listenerAdapter: AnimatorListenerAdapter = object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    // After the animation is done. Hide the root view.
-                    dBinding.searchLayout.visibility = INVISIBLE
-                }
+        val listenerAdapter: AnimatorListenerAdapter = object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                // After the animation is done. Hide the root view.
+                dBinding.searchLayout.visibility = INVISIBLE
             }
-                circleHideView(dBinding.searchBar, listenerAdapter)
+        }
+        circleHideView(dBinding.searchBar, listenerAdapter)
 
 
         // Call listener if we have one

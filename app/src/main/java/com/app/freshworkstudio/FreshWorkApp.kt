@@ -4,16 +4,19 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.app.freshworkstudio.utils.network.NetworkChangeReceiver
 import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
 class FreshWorkApp : Application() {
 
-
     companion object {
         lateinit var context: Context
-        private val connectivityManager: ConnectivityManager by lazy {
+
+        lateinit var networkChangeReceiver: NetworkChangeReceiver
+
+        val connectivityManager: ConnectivityManager by lazy {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         }
 
@@ -33,6 +36,9 @@ class FreshWorkApp : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
+        networkChangeReceiver = NetworkChangeReceiver()
+
+        networkChangeReceiver.registerNetworkEvent()
     }
 
 

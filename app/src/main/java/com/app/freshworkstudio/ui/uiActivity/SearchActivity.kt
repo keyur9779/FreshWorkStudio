@@ -37,7 +37,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             searchBar.addTextChangedListener(object : TextWatcher {
                 //This method is called to notify you that, within s, the count characters beginning at start are about to be
                 // replaced by new text with length after.
-                override fun beforeTextChanged( text: CharSequence,start: Int,count: Int,after: Int) {}
+                override fun beforeTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
                     vm.lastPageNumber = item
@@ -90,7 +96,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     private fun onRetry(): (Int) -> Unit {
         return {
             if (FreshWorkApp.isInternetAvailable()) {
-                vm.loadGifPage(vm.getCurrentPage().plus(DataUtils.loading))
+                vm.loadGifPage(
+                    if (vm.getCurrentPage() > DataUtils.loading) {
+                        DataUtils.loading
+                    } else {
+                        item
+                    }
+                )
             } else {
                 showError(getString(R.string.error_msg_no_internet))
                 gifSearchListAdapter.showErrorPage(getString(R.string.error_msg_no_internet))

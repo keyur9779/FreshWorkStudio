@@ -1,6 +1,7 @@
 package com.app.freshworkstudio.ui.viewDataModels
 
 import androidx.databinding.Bindable
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
 import com.app.freshworkstudio.data.repository.GiphyTrendingRepositoryImpl
 import com.app.freshworkstudio.data.repository.repositoryService.GiphyTrendingRepository
@@ -52,6 +53,7 @@ class SearchViewModel @Inject constructor(private val giphyTrendingRepository: G
     override fun getGifItemList(): IOTaskResult<Any> = gifSearched
 
     override suspend fun getGifByID(id: String) = giphyTrendingRepository.getGifByID(id)
+
 
     override suspend fun insertFav(gifFavourite: GifFavourite) {
         giphyTrendingRepository.insertFav(gifFavourite)

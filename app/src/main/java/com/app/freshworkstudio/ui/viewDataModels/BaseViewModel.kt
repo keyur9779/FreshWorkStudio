@@ -1,10 +1,15 @@
 package com.app.freshworkstudio.ui.viewDataModels
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
+import com.app.freshworkstudio.FreshWorkApp
 import com.app.freshworkstudio.model.IOTaskResult
 import com.app.freshworkstudio.model.entity.GifFavourite
 import com.app.freshworkstudio.utils.DataUtils
+import com.app.freshworkstudio.utils.DataUtils.item
+import com.app.freshworkstudio.utils.DataUtils.loading
+import com.app.freshworkstudio.utils.network.NetworkChangeReceiver
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
@@ -19,7 +24,11 @@ import kotlinx.coroutines.launch
  * Base view model class to simply the code usage
  * */
 abstract class BaseViewModel() :
-    BindingViewModel() {
+    BindingViewModel(), NetworkChangeReceiver.NetworkChangeListener {
+
+    init {
+        FreshWorkApp.networkChangeReceiver.addNetowrkListener(this)
+    }
 
     // bindable property to save possible total page of current GIF category
     @get:Bindable
@@ -48,9 +57,10 @@ abstract class BaseViewModel() :
     //fetch gif is marked as favourite or not
     protected val gifFavouriteStateFlow: MutableStateFlow<String> = MutableStateFlow("")
 
-    private val gifFavFlow = gifFavouriteStateFlow.filter { return@filter gifFavID.isNotEmpty() }.flatMapLatest {
-        getGifByID(gifFavID)
-    }
+    private val gifFavFlow =
+        gifFavouriteStateFlow.filter { return@filter gifFavID.isNotEmpty() }.flatMapLatest {
+            getGifByID(gifFavID)
+        }
 
     // get fav gif by id
     fun fetchGifFavMarket(id: String) {
@@ -69,6 +79,27 @@ abstract class BaseViewModel() :
     val gifFav: List<GifFavourite> by gifFavFlow.asBindingProperty(
         viewModelScope, emptyList<GifFavourite>()
     )
+
+    override fun onNetworkChange(isNetworkAvailable: Boolean) {
+
+        Log.d("keyur", "on network change")
+        if (isNetworkAvailable) {
+            if (getGifItemList() is IOTaskResult.OnFailed<*>) {
+                loadGifPage(
+                    if (getCurrentPage() > loading) {
+                        item
+                    } else {
+                        loading
+                    }
+                )
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        FreshWorkApp.networkChangeReceiver.removeNetowrkListener(this)
+    }
 
     abstract fun loadGifPage(data: Any)
     abstract fun getCurrentPage(): Int
