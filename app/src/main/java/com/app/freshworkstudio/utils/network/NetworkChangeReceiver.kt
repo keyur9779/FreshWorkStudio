@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import com.app.freshworkstudio.FreshWorkApp
 
 /**
- *Broadcast receiver for network change event.
+ *network event receiver for network change event.
  */
 class NetworkChangeReceiver() {
 

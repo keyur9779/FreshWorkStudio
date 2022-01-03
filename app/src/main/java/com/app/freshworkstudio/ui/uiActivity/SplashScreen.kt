@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View.INVISIBLE
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import com.app.freshworkstudio.FreshWorkApp.Companion.registerEvent
 import com.app.freshworkstudio.R
 import com.app.freshworkstudio.databinding.ActivitySplashScreenBinding
 import com.app.freshworkstudio.utils.DataUtils
@@ -26,6 +27,7 @@ class SplashScreen : BaseActivity<ActivitySplashScreenBinding>(R.layout.activity
                     headerIcon.visibility = INVISIBLE
                     animation.cancel()
                     headerIcon.clearAnimation()
+                    registerEvent()
                     val intent = Intent(this@SplashScreen, MainActivity::class.java)
                     startActivity(
                         intent/*,

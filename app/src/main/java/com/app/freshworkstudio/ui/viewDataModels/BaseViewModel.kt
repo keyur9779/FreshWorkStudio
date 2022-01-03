@@ -27,7 +27,7 @@ abstract class BaseViewModel() :
     BindingViewModel(), NetworkChangeReceiver.NetworkChangeListener {
 
     init {
-        FreshWorkApp.networkChangeReceiver.addNetowrkListener(this)
+        FreshWorkApp.networkChangeReceiver?.addNetowrkListener(this)
     }
 
     // bindable property to save possible total page of current GIF category
@@ -82,7 +82,6 @@ abstract class BaseViewModel() :
 
     override fun onNetworkChange(isNetworkAvailable: Boolean) {
 
-        Log.d("keyur", "on network change")
         if (isNetworkAvailable) {
             if (getGifItemList() is IOTaskResult.OnFailed<*>) {
                 loadGifPage(
@@ -98,7 +97,7 @@ abstract class BaseViewModel() :
 
     override fun onCleared() {
         super.onCleared()
-        FreshWorkApp.networkChangeReceiver.removeNetowrkListener(this)
+        FreshWorkApp.networkChangeReceiver?.removeNetowrkListener(this)
     }
 
     abstract fun loadGifPage(data: Any)

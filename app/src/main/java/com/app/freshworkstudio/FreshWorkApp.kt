@@ -14,7 +14,7 @@ class FreshWorkApp : Application() {
     companion object {
         lateinit var context: Context
 
-        lateinit var networkChangeReceiver: NetworkChangeReceiver
+        var networkChangeReceiver: NetworkChangeReceiver? = null
 
         val connectivityManager: ConnectivityManager by lazy {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -31,15 +31,18 @@ class FreshWorkApp : Application() {
                 else -> false
             }
         }
+        fun registerEvent(){
+            networkChangeReceiver?.registerNetworkEvent()
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
         context = this
         networkChangeReceiver = NetworkChangeReceiver()
-
-        networkChangeReceiver.registerNetworkEvent()
     }
+
+
 
 
 }
