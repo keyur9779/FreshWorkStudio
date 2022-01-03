@@ -63,6 +63,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             R.id.action_search -> {
 
 
+
+                // TODO Build variant will change this condition for search feature.
+
                 if (isFragmentSearch) {
                     binding.searchView.openSearch()
                     updateToolBar(false, binding.toolbar)
