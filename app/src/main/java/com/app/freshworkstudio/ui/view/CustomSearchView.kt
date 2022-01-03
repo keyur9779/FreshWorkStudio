@@ -191,15 +191,6 @@ class CustomSearchView @JvmOverloads constructor(
         dBinding = SearchViewBinding.inflate(LayoutInflater.from(context), this, true)
 
 
-        /* // Get items
-         dBinding.searchLayout = findViewById(R.id.search_layout)
-         mTintView = dBinding.searchLayout.findViewById(R.id.transparent_view)
-         dBinding.searchBar = dBinding.searchLayout.findViewById(R.id.search_bar)
-         mBack = dBinding.searchLayout.findViewById(R.id.action_back)
-         dBinding.etSearch = dBinding.searchLayout.findViewById(R.id.et_search)
-         dBinding.actionClear = dBinding.searchLayout.findViewById(R.id.action_clear)
-         mSuggestionsRecyclerView = dBinding.searchLayout.findViewById(R.id.suggestion_list)*/
-
         // Set click listeners
         with(dBinding) {
 
@@ -478,14 +469,11 @@ class CustomSearchView @JvmOverloads constructor(
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
                 // After the animation is done. Hide the root view.
+                dBinding.searchBar.clearAnimation()
                 showSuggestions()
             }
         }
-
         circleRevealView(view = dBinding.searchBar, listenerAdapter = listenerAdapter)
-
-
-
         isOpen = true
     }
     //endregion
@@ -520,6 +508,7 @@ class CustomSearchView @JvmOverloads constructor(
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
                 // After the animation is done. Hide the root view.
+                dBinding.searchBar.clearAnimation()
                 dBinding.searchLayout.visibility = INVISIBLE
             }
         }
