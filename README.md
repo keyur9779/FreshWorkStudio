@@ -5,7 +5,7 @@
   + [activitySearch]- This build flavour will load search feature in new activity with animation
   
 ## [Developer Note](https://developer.android.com/studio) - Run code in [Android Studio Arctic Fox with Java-11 support](https://developer.android.com/studio) inorder to compile code correctly and download required dependencies
-## [Known issue](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently) - If java-8 is default java_home you will be see below error while building the APK file
+## [Known issue](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently) - If java-8 is default java_home in your machine, you will see below error while building the APK file in android studio.
 An exception occurred applying plugin request [id: 'com.android.application']
 > Failed to apply plugin 'com.android.internal.application'.
 > Android Gradle plugin requires Java 11 to run. You are currently using Java 1.8.
@@ -13,7 +13,7 @@ You can try some of the following options:
 - changing the IDE settings.
 - changing the JAVA_HOME environment variable.
 - changing `org.gradle.java.home` in `gradle.properties`.
-## [Above issue can be resolved by following steps written here or follow steps mentioned below in android studio](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently)
+## [Above issue can be resolved by following steps CLICK-ME or follow steps mentioned below in android studio](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently)
 [Steps](https://stackoverflow.com/questions/66980512/error-message-android-gradle-plugin-requires-java-11-to-run-you-are-currently) Go to Preferences(Android studio Left top)-->Build,Execution,Deployment-->Build Tools-->Gradle-->Gradle JDK (update to JDK 11)-->APPLY-->OK
 
 
