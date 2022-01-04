@@ -55,7 +55,7 @@ class TrendingFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_mai
     /*
     *  callback to save item in db for fav.
     * */
-    private fun onAdapterPositionClicked(): (GifData) -> Unit {
+    private inline fun onAdapterPositionClicked(): (GifData) -> Unit {
         return { gifData ->
 
             // show dialog of gif to mark fav and unfav
@@ -67,7 +67,7 @@ class TrendingFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_mai
     /*
     *  callback to retry emit last page due to recovery from error
     * */
-    private fun onRetry(): (Int) -> Unit {
+    private inline fun onRetry(): (Int) -> Unit {
         return {
             if (FreshWorkApp.isInternetAvailable()) {
                 vm.loadGifPage(vm.getCurrentPage().plus(loading))

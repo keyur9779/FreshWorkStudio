@@ -81,8 +81,15 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
     /*
     *  callback to save item in db for fav.
+    *
+    * the higher-order functions or lambda expressions, all stored as an object so memory allocation,
+    * for both function objects and classes, and virtual calls might introduce runtime overhead.
+    *  Sometimes we can eliminate the memory overhead by inlining the lambda expression.
+    *  In order to reduce the memory overhead of such higher-order functions or lambda expressions,
+    *  we can use the inline keyword which ultimately requests the compiler to not allocate memory
+    * and simply copy the inlined code of that function at the calling place.
     * */
-    private fun onAdapterPositionClicked(): (GifData) -> Unit {
+    private inline fun onAdapterPositionClicked(): (GifData) -> Unit {
         return { gifData ->
 
             // show dialog of gif to mark fav and unfav
@@ -93,7 +100,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     /*
     *  callback to retry emit last page due to recovery from error
     * */
-    private fun onRetry(): (Int) -> Unit {
+    private inline fun onRetry(): (Int) -> Unit {
         return {
             if (FreshWorkApp.isInternetAvailable()) {
                 vm.loadGifPage(

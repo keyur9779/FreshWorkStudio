@@ -88,59 +88,6 @@ class CustomSearchView @JvmOverloads constructor(
      */
     private lateinit var mHintPrompt: String
 
-/*
-
-    //region UI Elements
-    */
-    /**
-     * The tint that appears over the search view.
-     *//*
-
-    private lateinit var mTintView: View
-
-    */
-    /**
-     * The root of the search view.
-     *//*
-
-    private lateinit var dBinding.searchLayout: FrameLayout
-
-    */
-    /**
-     * The bar at the top of the SearchView containing the EditText and ImageButtons.
-     *//*
-
-    private lateinit var dBinding.searchBar: LinearLayout
-
-    */
-    /**
-     * The EditText for entering a search.
-     *//*
-
-    private lateinit var dBinding.etSearch: EditText
-
-    */
-    /**
-     * The ImageButton for navigating back.
-     *//*
-
-    private lateinit var mBack: ImageButton
-
-
-    */
-    /**
-     * The ImageButton for clearing the search text.
-     *//*
-
-    private lateinit var dBinding.actionClear: ImageButton
-
-    */
-    /**
-     * The ListView for displaying suggestions based on the search.
-     *//*
-
-    private lateinit var mSuggestionsRecyclerView: RecyclerView
-*/
 
     /**
      * Adapter for displaying suggestions.
@@ -215,7 +162,7 @@ class CustomSearchView @JvmOverloads constructor(
     /*
     *  callback to save item in db for fav.
     * */
-    private fun onAdapterPositionClicked(): (GifData) -> Unit {
+    private inline fun onAdapterPositionClicked(): (GifData) -> Unit {
         return { gifData ->
 
             // show dialog of gif to mark fav and unfav
@@ -227,7 +174,7 @@ class CustomSearchView @JvmOverloads constructor(
     /*
     *  callback to retry emit last page due to recovery from error
     * */
-    private fun onRetry(): (Int) -> Unit {
+    private inline fun onRetry(): (Int) -> Unit {
         return {
 
             if (FreshWorkApp.isInternetAvailable()) {
