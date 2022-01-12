@@ -72,7 +72,7 @@ class GiphyTrendingRepositoryImpl constructor(
         val map = mutableMapOf<String, String>()
         map[api_key] = API_KEY
         map[limit] = pageCount.toString()
-        map[offset] = page.toString()
+        map[offset] = (page * pageCount).toString()
 
         val queryPath = if (q.isEmpty()) {
             trend
